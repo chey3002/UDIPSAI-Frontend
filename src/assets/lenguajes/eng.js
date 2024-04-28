@@ -1,0 +1,25 @@
+export const login = {
+    login_title: "Login",
+    login_username: "Username",
+    login_password: "Password",
+    login_button: "Log in",
+    login_register: "Register",
+    login_incorrect: "Incorrect username or password",
+    login_button_loading: "Logging in...",
+}
+export const register = {
+    register_title: "User Registration",
+    register_cedula: "ID Number",
+    register_primerNombre: "First Name",
+    register_segundoNombre: "Middle Name",
+    register_primerApellido: "Last Name",
+    register_segundoApellido: "Second Last Name",
+    register_id_especialidad: "Specialty ID",
+    register_esPasante: "Intern?",
+    register_password: "Password",
+    register_passwordConfirm: "Confirm Password",
+    register_button: "Register",
+    register_button_loading: "Registering...",
+    register_error: "Error registering user",
+    register_login: "Log in",
+}
