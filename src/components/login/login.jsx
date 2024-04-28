@@ -1,16 +1,21 @@
 'use client'
 import React, { useState } from "react";
-import { Form, Button, Alert } from "react-bootstrap";
+import { Form, Button, Alert, Row, Col } from "react-bootstrap";
 import "./login.css";
 
-// import BackgroundImage from "../../assets/images/background.png";
 import Logo from "@/assets/ucacue-logo.png";
 import Image from "next/image";
+import Link from "next/link";
+import { login as esp } from "@/assets/lenguajes/esp.js";
+import { login as eng } from "@/assets/lenguajes/eng.js";
 
 const Login = () => {
-    const [inputUsername, setInputUsername] = useState("");
-    const [inputPassword, setInputPassword] = useState("");
+    const [formData, setFormData] = useState({
+        username: "",
+        password: ""
+    });
 
+    const [lang, setLang] = useState(esp);
     const [show, setShow] = useState(false);
     const [loading, setLoading] = useState(false);
 
@@ -19,92 +24,88 @@ const Login = () => {
         setLoading(true);
         const form = event.currentTarget;
         await delay(500);
-        console.log(`Username :${inputUsername}, Password :${inputPassword}`);
-        if (inputUsername !== "admin" || inputPassword !== "admin") {
+        console.log(`Username: ${formData.username}, Password: ${formData.password}`);
+        if (formData.username !== "admin" || formData.password !== "admin") {
             setShow(true);
         }
         setLoading(false);
     };
 
-    const handlePassword = () => { };
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
 
     function delay(ms) {
         return new Promise((resolve) => setTimeout(resolve, ms));
     }
 
     return (
-        <div
-            className="sign-in__wrapper"
-            // style={{ backgroundImage: `url(${BackgroundImage})` }}
-            style={{ backgroundColor: "#f4cccc" }}
-        >
-            {/* Overlay */}
+        <div className="sign-in__wrapper">
             <div className="sign-in__backdrop"></div>
-            {/* Form */}
             <Form className="shadow p-4 bg-white rounded" onSubmit={handleSubmit}>
-                {/* Header */}
-                <Image
-                    className=" mx-auto d-block mb-2"
-                    src={Logo}
-                    alt="logo"
-                    width={100}
-                    height={80}
-                />
-                <div className="h4 mb-2 text-center">Sign In</div>
-                {/* ALert */}
-                {show ? (
-                    <Alert
-                        className="mb-2"
-                        variant="danger"
-                        onClose={() => setShow(false)}
-                        dismissible
-                    >
-                        Incorrect username or password.
+                <Image className="mx-auto d-block mb-2" src={Logo} alt="logo" width={100} height={100} />
+                <div className="h4 mb-2 text-center">{lang.login_title}</div>
+                {show && (
+                    <Alert className="mb-2" variant="danger" onClose={() => setShow(false)} dismissible>
+                        {lang.login_incorrect}
                     </Alert>
-                ) : (
-                    <div />
                 )}
                 <Form.Group className="mb-2" controlId="username">
-                    <Form.Label>Username</Form.Label>
+                    <Form.Label>{lang.login_username}</Form.Label>
                     <Form.Control
                         type="text"
-                        value={inputUsername}
-                        placeholder="Username"
-                        onChange={(e) => setInputUsername(e.target.value)}
+                        name="username"
+                        value={formData.username}
+                        placeholder={lang.login_username}
+                        onChange={handleChange}
                         required
                     />
                 </Form.Group>
                 <Form.Group className="mb-2" controlId="password">
-                    <Form.Label>Password</Form.Label>
+                    <Form.Label>{lang.login_password}</Form.Label>
                     <Form.Control
                         type="password"
-                        value={inputPassword}
-                        placeholder="Password"
-                        onChange={(e) => setInputPassword(e.target.value)}
+                        name="password"
+                        value={formData.password}
+                        placeholder={lang.login_password}
+                        onChange={handleChange}
                         required
                     />
                 </Form.Group>
-                <Form.Group className="mb-2" controlId="checkbox">
-                    <Form.Check type="checkbox" label="Remember me" />
-                </Form.Group>
                 {!loading ? (
                     <Button className="w-100" variant="primary" type="submit">
-                        Log In
+                        {lang.login_button}
                     </Button>
                 ) : (
                     <Button className="w-100" variant="primary" type="submit" disabled>
-                        Logging In...
+                        {lang.login_button_loading}
                     </Button>
                 )}
-                <div className="d-grid justify-content-end">
-                    <Button
-                        className="text-muted px-0"
-                        variant="link"
-                        onClick={handlePassword}
-                    >
-                        Forgot password?
-                    </Button>
-                </div>
+                <Row>
+                    <Col>
+                        <Row>
+                            <Col xs="auto" className="p-1">
+                                <Button variant="link" className="" onClick={() => { setLang(esp) }}>
+                                    <span role="img" aria-label="Spanish Flag">🇪🇸</span>
+                                </Button>
+                            </Col>
+                            <Col xs="auto" className="p-1">
+                                <Button variant="link" onClick={() => { setLang(eng) }}>
+                                    <span role="img" aria-label="American Flag">🇺🇸</span>
+                                </Button>
+                            </Col>
+                        </Row>
+                    </Col>
+                    <Col className="d-grid justify-content-end">
+                        <Link href="/registro">
+                            <span>{lang.login_register}</span>
+                        </Link>
+                    </Col>
+                </Row>
             </Form>
         </div>
     );

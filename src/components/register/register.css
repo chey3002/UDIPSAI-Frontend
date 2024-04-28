@@ -26,7 +26,6 @@
 }
 
 .sign-in__wrapper form {
-    min-width: 365px;
     max-width: 90%;
     z-index: 1;
 }
