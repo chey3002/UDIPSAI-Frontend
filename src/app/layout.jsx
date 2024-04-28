@@ -1,8 +1,8 @@
 'client-side'
+import React from 'react';
 import { Inter } from "next/font/google";
 import "./globals.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -11,8 +11,9 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+
   return (
-    <html lang="en">
+    <html lang="es">
       <head>
         <script src="https://cdn.jsdelivr.net/npm/react/umd/react.production.min.js" async crossorigin></script>
 
@@ -25,7 +26,10 @@ export default function RootLayout({ children }) {
         ></script>
 
       </head>
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        {children}
+
+      </body>
     </html>
   );
 }
