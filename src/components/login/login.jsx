@@ -8,8 +8,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { login as esp } from "@/assets/lenguajes/esp.js";
 import { login as eng } from "@/assets/lenguajes/eng.js";
+import { useUserContext } from "@/assets/useUserContext";
 
 const Login = () => {
+    const { setUser } = useUserContext();
     const [formData, setFormData] = useState({
         username: "",
         password: ""
@@ -27,8 +29,12 @@ const Login = () => {
         console.log(`Username: ${formData.username}, Password: ${formData.password}`);
         if (formData.username !== "admin" || formData.password !== "admin") {
             setShow(true);
+        } else {
+            setUser({ username: formData.username });
+
         }
         setLoading(false);
+
     };
 
     const handleChange = (e) => {
