@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 
-const FormPaciente = ({ paciente }) => {
+const FormPaciente = () => {
     const [formState, setFormState] = useState({
         fechaApertura: '',
         nombresApellidos: '',
@@ -29,11 +29,6 @@ const FormPaciente = ({ paciente }) => {
         nombreExaminador: '',
         anotaciones: ''
     });
-    useEffect(() => {
-        if (paciente) {
-            setFormState(paciente);
-        }
-    }, []);
 
     const handleChange = (event) => {
         setFormState({
