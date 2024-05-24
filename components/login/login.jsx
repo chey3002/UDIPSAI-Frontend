@@ -1,25 +1,31 @@
-'use client'
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Button, Alert, Row, Col } from "react-bootstrap";
-import "./login.css";
-
 import Logo from "@/assets/ucacue-logo.png";
 import Image from "next/image";
 import Link from "next/link";
 import { login as esp } from "@/assets/lenguajes/esp.js";
 import { login as eng } from "@/assets/lenguajes/eng.js";
 import { useUserContext } from "@/assets/useUserContext";
+import Router from 'next/router'
+import styles from "./login.module.css";
+
 
 const Login = () => {
-    const { setUser } = useUserContext();
+    const { user, setUser } = useUserContext();
+
+    useEffect(() => {
+        if (user) {
+            Router.push('/dashboard');
+        }
+    }, [user]);
     const [formData, setFormData] = useState({
         username: "",
         password: ""
     });
-
     const [lang, setLang] = useState(esp);
     const [show, setShow] = useState(false);
     const [loading, setLoading] = useState(false);
+
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -50,8 +56,8 @@ const Login = () => {
     }
 
     return (
-        <div className="sign-in__wrapper">
-            <div className="sign-in__backdrop"></div>
+        <div className={styles["sign-in__wrapper"]}>
+            <div className={styles["sign-in__backdrop"]}></div>
             <Form className="shadow p-4 bg-white rounded" onSubmit={handleSubmit}>
                 <Image className="mx-auto d-block mb-2" src={Logo} alt="logo" width={100} height={100} />
                 <div className="h4 mb-2 text-center">{lang.login_title}</div>

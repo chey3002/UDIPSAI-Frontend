@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from "react";
 import { Form, Button, Alert, Row, Col } from "react-bootstrap";
-import "./register.css";
+import styles from "./register.module.css";
 
 import Logo from "@/assets/ucacue-logo.png";
 import Image from "next/image";
@@ -49,8 +49,8 @@ const Register = () => {
     };
 
     return (
-        <div className="sign-in__wrapper">
-            <div className="sign-in__backdrop"></div>
+        <div className={styles["sign-in__wrapper"]}>
+            <div className={styles["sign-in__backdrop"]}></div>
             <Form className="shadow p-4 bg-white rounded" onSubmit={handleSubmit}>
                 <Image className="mx-auto d-block mb-2" src={Logo} alt="logo" width={100} height={100} />
                 <div className="h4 mb-2 text-center">{lang.register_title}</div>
