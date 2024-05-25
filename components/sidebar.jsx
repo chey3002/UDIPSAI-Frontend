@@ -93,7 +93,7 @@ export default function MenuWrapper({ children }) {
                                 <Link href="/dashboard/" ><div style={{ display: "grid", justifyContent: "center" }}><Image src={logo} width="200" alt="UcacueLogo"></Image> </div></Link>
                                 <SubMenu label="Pacientes">
                                     <MenuItem component={<Link href="/pacientes/" />}>Listar</MenuItem>
-                                    <MenuItem component={<Link href="/pacientes/form" />}>Crear</MenuItem>
+                                    <MenuItem component={<Link href="/pacientes/new" />}>Crear</MenuItem>
                                 </SubMenu>
                                 <SubMenu label="Especialistas">
                                     <MenuItem component={<Link href="/dashboard/" />}>Listar</MenuItem>
@@ -107,7 +107,9 @@ export default function MenuWrapper({ children }) {
 
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: "25px" }}>
-                            <Button style={{ color: "#fff", width: "98%", fontWeight: "500", fontSize: "1.5rem", border: "5px solid #dc3545" }} variant='outline-danger' onClick={() => logout()}>Logout</Button>
+                            <Button style={{ color: "#fff", width: "98%", fontWeight: "500", fontSize: "1.5rem", border: "5px solid #dc3545" }}
+                                variant='outline-danger'
+                                onClick={() => logout()}>Logout</Button>
 
                         </div>
                     </div>

@@ -1,11 +1,11 @@
-'use client'
-
-import FormPaciente from '@/components/pacientes/patientForm';
 import MenuWrapper from '@/components/sidebar';
 import { Input, Table } from 'antd';
-import React, { useState } from 'react'
-import { Button } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react'
+import { Card } from 'react-bootstrap';
 import { useTableSearch } from '@/utils/useTableSearch';
+import Link from 'next/link';
+import { useUserContext } from '@/assets/useUserContext';
+import { toIndex } from '@/utils/toindex/toindex';
 
 
 const fetchPacientes = async () => {
@@ -13,15 +13,21 @@ const fetchPacientes = async () => {
 
     const data = [{ name: 'John', lastName: 'Brown', dni: 32 }, { name: 'Jim', lastName: 'Green', dni: 42 }, { name: 'Joe', lastName: 'Black', dni: 32 },]
     return { data };
-}; export default function IndexPaciente() {
+};
+export default function IndexPaciente() {
     const [searchVal, setSearchVal] = useState(null);
 
     const { filteredData, loading } = useTableSearch({
         searchVal,
         retrieve: fetchPacientes
     });
+    const { user } = useUserContext();
+
+    useEffect(() => {
+        toIndex(user);
+    }, [user]);
     return <MenuWrapper>
-        <div>
+        <Card>
             <h1>Listar Pacientes</h1>
             <Input
                 onChange={e => setSearchVal(e.target.value)}
@@ -49,10 +55,10 @@ const fetchPacientes = async () => {
                     {
                         title: 'Acciones',
                         key: 'actions',
-                        render: () => (
+                        dataIndex: 'dni',
+                        render: (text) => (
                             <div>
-                                <Button variant="success" style={{ marginRight: "5px" }}>Editar</Button>
-                                <Button variant="danger">Eliminar</Button>
+                                <Link href={`/pacientes/${text}`} className='btn btn-success' variant="success" style={{ marginRight: "5px" }}>Más información</Link>
                             </div>
                         ),
                     },
@@ -60,6 +66,6 @@ const fetchPacientes = async () => {
                 loading={loading}
                 pagination={{ defaultPageSize: 25, showSizeChanger: true, pageSizeOptions: ['25', '50', '100'] }}
             />
-        </div>
+        </Card>
     </MenuWrapper>;
 }
