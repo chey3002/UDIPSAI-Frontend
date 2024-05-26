@@ -29,9 +29,11 @@ const themes = {
         },
     },
 };
-export default function MenuWrapper({ children }) {
+export default function MenuWrapper({ children, setLang, esp, eng }) {
     const { logout } = useUserContext();
-
+    console.log(esp)
+    console.log(eng)
+    console.log(setLang)
     const theme = 'dark'
     const hexToRgba = (hex, alpha) => {
         const r = parseInt(hex.slice(1, 3), 16);
@@ -105,6 +107,10 @@ export default function MenuWrapper({ children }) {
                                 </SubMenu>
                             </Menu>
 
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'space-around', marginBottom: "25px", }}>
+                            {setLang ? <Button variant="link" style={{ color: "#fff" }} onClick={() => { setLang(esp) }}> 🇪🇸 </Button> : ""}
+                            {setLang ? <Button variant="link" style={{ color: "#fff" }} onClick={() => { setLang(eng) }}> 🇺🇸 </Button> : ""}
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: "25px" }}>
                             <Button style={{ color: "#fff", width: "98%", fontWeight: "500", fontSize: "1.5rem", border: "5px solid #dc3545" }}
