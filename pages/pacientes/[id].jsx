@@ -42,7 +42,8 @@ export default function DetailPaciente({ paciente }) {
                     <Row>
                         <div className="col-md-3">
                             <Row className='flex justify-content-center align-content-center'>
-                                <img src={paciente.imagen} style={{ objectFit: 'cover', borderRadius: '15px', border: '3px solid #0044ff', marginLeft: "auto" }}
+                                <img src={paciente.imagen ? `data:image/jpeg;base64, ${paciente.imagen}` : 'https://as1.ftcdn.net/v2/jpg/01/28/56/34/1000_F_128563441_kn96kL8fUOtfZlBRBV4kATepeGXuiLzI.jpg'}
+                                    style={{ objectFit: 'cover', borderRadius: '15px', border: '3px solid #0044ff', marginLeft: "auto" }}
                                     alt="avatar"
                                     width="240"
                                     height="300" />
