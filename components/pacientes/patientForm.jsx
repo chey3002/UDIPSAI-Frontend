@@ -11,7 +11,7 @@ const FormPaciente = ({ paciente, lang }) => {
         id: 'Nueva Ficha',
         fechaApertura: '',
         proyectoAlQuePertence: '',
-        imagen: 'https://as1.ftcdn.net/v2/jpg/01/28/56/34/1000_F_128563441_kn96kL8fUOtfZlBRBV4kATepeGXuiLzI.jpg',
+        imagen: null,
         nombresApellidos: '',
         ciudad: '',
         fechaNacimiento: '',
@@ -33,8 +33,10 @@ const FormPaciente = ({ paciente, lang }) => {
         celular: '',
         diagnostico: ''
     });
+    console.log(formState)
     useEffect(() => {
         if (paciente) {
+            console.log(paciente);
             setFormState({
                 ...formState,
                 ...paciente
@@ -57,11 +59,12 @@ const FormPaciente = ({ paciente, lang }) => {
         const file = e.target.files[0];
         const reader = new FileReader();
         reader.onloadend = () => {
-            console.log(reader.result);
+            const base64Data = reader.result.split(",")[1]; // Eliminar el tipo MIME
+            console.log(base64Data);
 
             setFormState({
                 ...formState,
-                imagen: reader.result,
+                imagen: base64Data,
             });
         };
         if (file) {
@@ -84,8 +87,12 @@ const FormPaciente = ({ paciente, lang }) => {
                 );
         } else {
             // Create
-            const res = await axios.post(process.env['BASE_URL'] + 'api/pacientes/insertar/', formState).
-                then(() => {
+            var request = { ...formState, pacienteEstado: 1 };
+            //eliminar id
+            delete request.id;
+            const res = await axios.post(process.env['BASE_URL'] + 'api/pacientes/insertar', request).
+                then((response) => {
+                    console.log(response);
                     window.location.href = '/pacientes';
                 }).catch((error) => {
                     console.log(error);
@@ -105,7 +112,7 @@ const FormPaciente = ({ paciente, lang }) => {
                     <Row>
                         <Col>
                             <img
-                                src={formState.imagen ?? 'https://as1.ftcdn.net/v2/jpg/01/28/56/34/1000_F_128563441_kn96kL8fUOtfZlBRBV4kATepeGXuiLzI.jpg'}
+                                src={formState.imagen ? `data:image/jpeg;base64, ${formState.imagen}` : 'https://as1.ftcdn.net/v2/jpg/01/28/56/34/1000_F_128563441_kn96kL8fUOtfZlBRBV4kATepeGXuiLzI.jpg'}
                                 style={{ objectFit: 'cover', borderRadius: '15px', border: '3px solid #0044ff' }}
                                 alt="avatar"
                                 width="160"
@@ -180,7 +187,7 @@ const FormPaciente = ({ paciente, lang }) => {
                         label={lang.informacionDelPaciente_institucionEducativa} />
                     <FormControlDosColumnas type="text" placeholder={lang.informacionDelPaciente_direccionInstitucion} name="direccionInstitucion" value={formState.direccionInstitucion} onChange={handleChange}
                         label={lang.informacionDelPaciente_direccionInstitucion} />
-                    <FormControlDosColumnas as="select" name={lang.informacionDelPaciente_jornada} value={formState.jornada} onChange={handleChange}
+                    <FormControlDosColumnas as="select" name="jornada" value={formState.jornada} onChange={handleChange}
                         label={lang.informacionDelPaciente_jornada}>
                         <option value={1}>Matutina</option>
                         <option value={2}>Despertina</option>
