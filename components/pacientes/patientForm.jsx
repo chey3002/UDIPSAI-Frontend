@@ -4,13 +4,14 @@ import React, { use, useEffect, useState } from 'react';
 import { Button, Card, Col, Form, Row } from 'react-bootstrap';
 import FormControl from '../commons/formControl';
 import FormControlDosColumnas from '../commons/formControlDosColumnas';
+import axios from 'axios';
 
 const FormPaciente = ({ paciente, lang }) => {
     const [formState, setFormState] = useState({
         id: 'Nueva Ficha',
         fechaApertura: '',
         proyectoAlQuePertence: '',
-        imagenUrl: 'https://as1.ftcdn.net/v2/jpg/01/28/56/34/1000_F_128563441_kn96kL8fUOtfZlBRBV4kATepeGXuiLzI.jpg',
+        imagen: 'https://as1.ftcdn.net/v2/jpg/01/28/56/34/1000_F_128563441_kn96kL8fUOtfZlBRBV4kATepeGXuiLzI.jpg',
         nombresApellidos: '',
         ciudad: '',
         fechaNacimiento: '',
@@ -21,16 +22,16 @@ const FormPaciente = ({ paciente, lang }) => {
         institucionEducativa: '',
         tipoInstitucion: 1, // Replace with default value of
         jornada: 1, // Replace with default value of 
-        anioEduacion: '',
+        anioEducacion: '',
         direccionInstitucion: '',
         paralelo: '',
         tieneDiscapacidad: 'no', // Replace with default value of 
         portadorCarnet: false, // Replace with default value of 
         motivoConsulta: '',
         observaciones: '',
-        educacionInclusiva: '',
+        perteneceInclusion: '',
         celular: '',
-        tipoDiscapacidad: ''
+        diagnostico: ''
     });
     useEffect(() => {
         if (paciente) {
@@ -60,7 +61,7 @@ const FormPaciente = ({ paciente, lang }) => {
 
             setFormState({
                 ...formState,
-                imagenUrl: reader.result,
+                imagen: reader.result,
             });
         };
         if (file) {
@@ -68,10 +69,31 @@ const FormPaciente = ({ paciente, lang }) => {
         }
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         // Handle form submission here
         console.log(formState);
+        if (paciente) {
+            // Update
+            const res = await axios.put(process.env['BASE_URL'] + 'api/pacientes/actualizar/' + formState.id, formState).
+                then(() => {
+                    window.location.href = '/pacientes';
+                }).catch((error) => {
+                    console.log(error);
+                }
+                );
+        } else {
+            // Create
+            const res = await axios.post(process.env['BASE_URL'] + 'api/pacientes/insertar/', formState).
+                then(() => {
+                    window.location.href = '/pacientes';
+                }).catch((error) => {
+                    console.log(error);
+                }
+                );
+        }
+
+
     };
 
     return (
@@ -83,7 +105,7 @@ const FormPaciente = ({ paciente, lang }) => {
                     <Row>
                         <Col>
                             <img
-                                src={formState.imagenUrl}
+                                src={formState.imagen ?? 'https://as1.ftcdn.net/v2/jpg/01/28/56/34/1000_F_128563441_kn96kL8fUOtfZlBRBV4kATepeGXuiLzI.jpg'}
                                 style={{ objectFit: 'cover', borderRadius: '15px', border: '3px solid #0044ff' }}
                                 alt="avatar"
                                 width="160"
@@ -93,11 +115,10 @@ const FormPaciente = ({ paciente, lang }) => {
                             <FormControl
                                 type="text"
                                 placeholder="Ingrese URL de la imagen"
-                                name="imagenUrl"
-                                value={formState.imagenUrl}
+                                name="imagen"
+                                value={formState.imagen}
                                 onChange={handleChange}
                             /> */}
-
                         </Col>
                         <Col md="10">
                             <Form.Label>{lang.informacionDelPaciente_fechaApertura}</Form.Label>
@@ -146,8 +167,8 @@ const FormPaciente = ({ paciente, lang }) => {
                         <option value="no" defaultChecked> No</option>
                     </FormControlDosColumnas>
 
-                    <FormControlDosColumnas type="text" placeholder={lang.informacionDelPaciente_tipoDiscapacidad} name="tipoDiscapacidad" value={formState.tipoDiscapacidad} onChange={handleChange}
-                        label={lang.informacionDelPaciente_tipoDiscapacidad} />
+                    <FormControlDosColumnas type="text" placeholder={lang.informacionDelPaciente_diagnostico} name="diagnostico" value={formState.diagnostico} onChange={handleChange}
+                        label={lang.informacionDelPaciente_diagnostico} />
 
                     <Col md="6" sm="12">
                         <Form.Check type="checkbox" label={lang.informacionDelPaciente_portadorCarnet} name="portadorCarnet" checked={formState.portadorCarnet} onChange={handleChangeCheck} />
@@ -170,10 +191,10 @@ const FormPaciente = ({ paciente, lang }) => {
                         <option value={2}>Fiscomisional</option>
                         <option value={3}>Privada</option>
                     </FormControlDosColumnas>
-                    <FormControlDosColumnas type="text" placeholder={lang.informacionDelPaciente_educacionInclusiva} name="educacionInclusiva" value={formState.educacionInclusiva} onChange={handleChange}
-                        label={lang.informacionDelPaciente_educacionInclusiva} />
-                    <FormControlDosColumnas type="text" placeholder={lang.informacionDelPaciente_anioEduacion} name="anioEduacion" value={formState.anioEduacion} onChange={handleChange}
-                        label={lang.informacionDelPaciente_anioEduacion} />
+                    <FormControlDosColumnas type="text" placeholder={lang.informacionDelPaciente_perteneceInclusion} name="perteneceInclusion" value={formState.perteneceInclusion} onChange={handleChange}
+                        label={lang.informacionDelPaciente_perteneceInclusion} />
+                    <FormControlDosColumnas type="text" placeholder={lang.informacionDelPaciente_anioEducacion} name="anioEducacion" value={formState.anioEducacion} onChange={handleChange}
+                        label={lang.informacionDelPaciente_anioEducacion} />
                     <FormControlDosColumnas type="text" placeholder={lang.informacionDelPaciente_paralelo} name="paralelo" value={formState.paralelo} onChange={handleChange}
                         label={lang.informacionDelPaciente_paralelo} />
                 </Form.Group>

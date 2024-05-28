@@ -6,13 +6,24 @@ import { useTableSearch } from '@/utils/useTableSearch';
 import Link from 'next/link';
 import { useUserContext } from '@/assets/useUserContext';
 import { toIndex } from '@/utils/toindex/toindex';
+import axios from 'axios';
 
 
 const fetchPacientes = async () => {
-    // const { data } = await axios.get(process.env['BASE_URL'] + 'api/estudiantes')
 
-    const data = [{ name: 'John', lastName: 'Brown', dni: 32 }, { name: 'Jim', lastName: 'Green', dni: 42 }, { name: 'Joe', lastName: 'Black', dni: 32 },]
-    return { data };
+    console.log(process.env['BASE_URL'] + 'api/pacientes/listar');
+    try {
+        const { data } = await axios.get(process.env['BASE_URL'] + 'api/pacientes/listar').catch((error) => {
+            console.log(error);
+        }
+        );
+
+        return { data };
+    } catch (error) {
+        console.log(error);
+    }
+    // return res.data;
+
 };
 export default function IndexPaciente() {
     const [searchVal, setSearchVal] = useState(null);
@@ -38,24 +49,34 @@ export default function IndexPaciente() {
                 dataSource={filteredData}
                 columns={[
                     {
-                        title: 'Nombre',
-                        dataIndex: 'name',
-                        key: 'name',
+                        title: 'Número de ficha',
+                        dataIndex: 'id',
+                        key: 'id',
                     },
                     {
-                        title: 'Apellido',
-                        dataIndex: 'lastName',
-                        key: 'lastName',
+                        title: 'Nombres y Apellidos',
+                        dataIndex: 'nombresApellidos',
+                        key: 'nombresApellidos',
                     },
                     {
-                        title: 'DNI',
-                        dataIndex: 'dni',
-                        key: 'dni',
+                        title: 'Cédula',
+                        dataIndex: 'cedula',
+                        key: 'cedula',
+                    },
+                    {
+                        title: 'Teléfono',
+                        dataIndex: 'telefono',
+                        key: 'telefono',
+                    },
+                    {
+                        title: 'Celular',
+                        dataIndex: 'celular',
+                        key: 'celular',
                     },
                     {
                         title: 'Acciones',
                         key: 'actions',
-                        dataIndex: 'dni',
+                        dataIndex: 'id',
                         render: (text) => (
                             <div>
                                 <Link href={`/pacientes/${text}`} className='btn btn-success' variant="success" style={{ marginRight: "5px" }}>Más información</Link>
