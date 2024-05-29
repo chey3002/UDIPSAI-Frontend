@@ -1,0 +1,16 @@
+{
+    "register_title": "Registro de usuario",
+    "register_cedula": "Cédula",
+    "register_primerNombre": "Primer Nombre",
+    "register_segundoNombre": "Segundo Nombre",
+    "register_primerApellido": "Primer Apellido",
+    "register_segundoApellido": "Segundo Apellido",
+    "register_id_especialidad": "ID de Especialidad",
+    "register_esPasante": "¿Es Pasante?",
+    "register_password": "Contraseña",
+    "register_passwordConfirm": "Confirmar Contraseña",
+    "register_button": "Registrarse",
+    "register_button_loading": "Registrando...",
+    "register_error": "Error al registrar usuario",
+    "register_login": "Inicia sesión"
+}

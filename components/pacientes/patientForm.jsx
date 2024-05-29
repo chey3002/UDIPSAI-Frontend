@@ -5,8 +5,10 @@ import { Button, Card, Col, Form, Row } from 'react-bootstrap';
 import FormControl from '../commons/formControl';
 import FormControlDosColumnas from '../commons/formControlDosColumnas';
 import axios from 'axios';
+import useTranslation from 'next-translate/useTranslation'
 
-const FormPaciente = ({ paciente, lang }) => {
+
+const FormPaciente = ({ paciente }) => {
     const [formState, setFormState] = useState({
         id: 'Nueva Ficha',
         fechaApertura: '',
@@ -33,7 +35,6 @@ const FormPaciente = ({ paciente, lang }) => {
         celular: '',
         diagnostico: ''
     });
-    console.log(formState)
     useEffect(() => {
         if (paciente) {
             console.log(paciente);
@@ -43,6 +44,10 @@ const FormPaciente = ({ paciente, lang }) => {
             });
         }
     }, []);
+    var edit = false;
+
+    const { t } = useTranslation('home');
+    const lang = t;
     const handleChange = (event) => {
         setFormState({
             ...formState,
@@ -106,8 +111,8 @@ const FormPaciente = ({ paciente, lang }) => {
     return (
         <Card className='p-3'>
             <Form onSubmit={handleSubmit}>
-                <h1> {lang.informacionDelPaciente_title}{formState.id}</h1>
-                <h2>{lang.informacionDelPaciente_personal}</h2>
+                <h1> {lang('informacionDelPaciente_title')}{formState.id}</h1>
+                <h2>{lang('informacionDelPaciente_personal')}</h2>
                 <Form.Group controlId="fichaUnica" >
                     <Row>
                         <Col>
@@ -128,11 +133,11 @@ const FormPaciente = ({ paciente, lang }) => {
                             /> */}
                         </Col>
                         <Col md="10">
-                            <Form.Label>{lang.informacionDelPaciente_fechaApertura}</Form.Label>
-                            <FormControl type="date" placeholder={lang.informacionDelPaciente_fechaApertura} name="fechaApertura" value={formState.fechaApertura} onChange={handleChange} />
-                            <Form.Label>{lang.informacionDelPaciente_proyecto}</Form.Label>
-                            <FormControl type="text" placeholder={lang.informacionDelPaciente_proyecto} name="proyecto" value={formState.proyecto} onChange={handleChange} />
-                            <Form.Label>{lang.informacionDelPaciente_subirImagen}</Form.Label>
+                            <Form.Label>{lang('informacionDelPaciente_fechaApertura')}</Form.Label>
+                            <FormControl type="date" placeholder={lang('informacionDelPaciente_fechaApertura')} name="fechaApertura" value={formState.fechaApertura} onChange={handleChange} />
+                            <Form.Label>{lang('informacionDelPaciente_proyecto')}</Form.Label>
+                            <FormControl type="text" placeholder={lang('informacionDelPaciente_proyecto')} name="proyecto" value={formState.proyecto} onChange={handleChange} />
+                            <Form.Label>{lang('informacionDelPaciente_subirImagen')}</Form.Label>
                             <FormControl
                                 type="file"
                                 accept="image/*"
@@ -142,78 +147,78 @@ const FormPaciente = ({ paciente, lang }) => {
                         </Col>
                     </Row>
                 </Form.Group>
-                <h2>{lang.informacionDelPaciente_datosPersonales}</h2>
+                <h2>{lang('informacionDelPaciente_datosPersonales')}</h2>
                 <Form.Group as={Row} controlId="datosPersonales">
 
 
-                    <FormControlDosColumnas type="text" placeholder={lang.informacionDelPaciente_nombre} name="nombresApellidos" value={formState.nombresApellidos} onChange={handleChange}
-                        label={lang.informacionDelPaciente_nombre} />
+                    <FormControlDosColumnas type="text" placeholder={lang('informacionDelPaciente_nombre')} name="nombresApellidos" value={formState.nombresApellidos} onChange={handleChange}
+                        label={lang('informacionDelPaciente_nombre')} />
 
-                    <FormControlDosColumnas type="text" placeholder={lang.informacionDelPaciente_cedula} name="cedula" value={formState.cedula} onChange={handleChange}
-                        label={lang.informacionDelPaciente_cedula} />
-                    <FormControlDosColumnas type="date" placeholder={lang.informacionDelPaciente_fechaNacimiento} name="fechaNacimiento" value={formState.fechaNacimiento} onChange={handleChange}
-                        label={lang.informacionDelPaciente_fechaNacimiento} />
-                    <FormControlDosColumnas type="text" placeholder={lang.informacionDelPaciente_edad} name="edad" value={formState.edad} onChange={handleChange}
-                        label={lang.informacionDelPaciente_edad} />
-                    <FormControlDosColumnas type="text" placeholder={lang.informacionDelPaciente_domicilio} name="domicilio" value={formState.domicilio} onChange={handleChange}
-                        label={lang.informacionDelPaciente_domicilio} />
-                    <FormControlDosColumnas type="text" placeholder={lang.informacionDelPaciente_ciudad} name="ciudad" value={formState.ciudad} onChange={handleChange}
-                        label={lang.informacionDelPaciente_ciudad} />
-                    <FormControlDosColumnas type="text" placeholder={lang.informacionDelPaciente_telefono} name="telefono" value={formState.telefono} onChange={handleChange}
-                        label={lang.informacionDelPaciente_telefono} />
-                    <FormControlDosColumnas type="text" placeholder={lang.informacionDelPaciente_celular} name="celular" value={formState.celular} onChange={handleChange}
-                        label={lang.informacionDelPaciente_celular} />
+                    <FormControlDosColumnas type="text" placeholder={lang('informacionDelPaciente_cedula')} name="cedula" value={formState.cedula} onChange={handleChange}
+                        label={lang('informacionDelPaciente_cedula')} />
+                    <FormControlDosColumnas type="date" placeholder={lang('informacionDelPaciente_fechaNacimiento')} name="fechaNacimiento" value={formState.fechaNacimiento} onChange={handleChange}
+                        label={lang('informacionDelPaciente_fechaNacimiento')} />
+                    <FormControlDosColumnas type="text" placeholder={lang('informacionDelPaciente_edad')} name="edad" value={formState.edad} onChange={handleChange}
+                        label={lang('informacionDelPaciente_edad')} />
+                    <FormControlDosColumnas type="text" placeholder={lang('informacionDelPaciente_domicilio')} name="domicilio" value={formState.domicilio} onChange={handleChange}
+                        label={lang('informacionDelPaciente_domicilio')} />
+                    <FormControlDosColumnas type="text" placeholder={lang('informacionDelPaciente_ciudad')} name="ciudad" value={formState.ciudad} onChange={handleChange}
+                        label={lang('informacionDelPaciente_ciudad')} />
+                    <FormControlDosColumnas type="text" placeholder={lang('informacionDelPaciente_telefono')} name="telefono" value={formState.telefono} onChange={handleChange}
+                        label={lang('informacionDelPaciente_telefono')} />
+                    <FormControlDosColumnas type="text" placeholder={lang('informacionDelPaciente_celular')} name="celular" value={formState.celular} onChange={handleChange}
+                        label={lang('informacionDelPaciente_celular')} />
 
                 </Form.Group>
-                <h2>{lang.informacionDelPaciente_discapacidad}</h2>
+                <h2>{lang('informacionDelPaciente_discapacidad')}</h2>
                 <Form.Group as={Row} controlId="datosDiscapacidad">
 
                     <FormControlDosColumnas as="select" name="tieneDiscapacidad" value={formState.tieneDiscapacidad} onChange={handleChange}
-                        label={lang.informacionDelPaciente_presentaDiscapacidad}>
+                        label={lang('informacionDelPaciente_presentaDiscapacidad')}>
                         <option value="si">Sí</option>
                         <option value="no" defaultChecked> No</option>
                     </FormControlDosColumnas>
 
-                    <FormControlDosColumnas type="text" placeholder={lang.informacionDelPaciente_diagnostico} name="diagnostico" value={formState.diagnostico} onChange={handleChange}
-                        label={lang.informacionDelPaciente_diagnostico} />
+                    <FormControlDosColumnas type="text" placeholder={lang('informacionDelPaciente_diagnostico')} name="diagnostico" value={formState.diagnostico} onChange={handleChange}
+                        label={lang('informacionDelPaciente_diagnostico')} />
 
                     <Col md="6" sm="12">
-                        <Form.Check type="checkbox" label={lang.informacionDelPaciente_portadorCarnet} name="portadorCarnet" checked={formState.portadorCarnet} onChange={handleChangeCheck} />
+                        <Form.Check type="checkbox" label={lang('informacionDelPaciente_portadorCarnet')} name="portadorCarnet" checked={formState.portadorCarnet} onChange={handleChangeCheck} />
                     </Col>
                 </Form.Group>
-                <h2>{lang.informacionDelPaciente_title_educativa}</h2>
+                <h2>{lang('informacionDelPaciente_title_educativa')}</h2>
                 <Form.Group as={Row} controlId="rightColumn">
-                    <FormControlDosColumnas type="text" placeholder={lang.informacionDelPaciente_institucionEducativa} name="institucionEducativa" value={formState.institucionEducativa} onChange={handleChange}
-                        label={lang.informacionDelPaciente_institucionEducativa} />
-                    <FormControlDosColumnas type="text" placeholder={lang.informacionDelPaciente_direccionInstitucion} name="direccionInstitucion" value={formState.direccionInstitucion} onChange={handleChange}
-                        label={lang.informacionDelPaciente_direccionInstitucion} />
+                    <FormControlDosColumnas type="text" placeholder={lang('informacionDelPaciente_institucionEducativa')} name="institucionEducativa" value={formState.institucionEducativa} onChange={handleChange}
+                        label={lang('informacionDelPaciente_institucionEducativa')} />
+                    <FormControlDosColumnas type="text" placeholder={lang('informacionDelPaciente_direccionInstitucion')} name="direccionInstitucion" value={formState.direccionInstitucion} onChange={handleChange}
+                        label={lang('informacionDelPaciente_direccionInstitucion')} />
                     <FormControlDosColumnas as="select" name="jornada" value={formState.jornada} onChange={handleChange}
-                        label={lang.informacionDelPaciente_jornada}>
+                        label={lang('informacionDelPaciente_jornada')}>
                         <option value={1}>Matutina</option>
                         <option value={2}>Despertina</option>
                     </FormControlDosColumnas>
                     <FormControlDosColumnas as="select" name="tipoInstitucion" value={formState.tipoInstitucion} onChange={handleChange}
-                        label={lang.informacionDelPaciente_tipoInstitucion}>
+                        label={lang('informacionDelPaciente_tipoInstitucion')}>
                         <option value={1}>Fiscal</option>
                         <option value={2}>Fiscomisional</option>
                         <option value={3}>Privada</option>
                     </FormControlDosColumnas>
-                    <FormControlDosColumnas type="text" placeholder={lang.informacionDelPaciente_perteneceInclusion} name="perteneceInclusion" value={formState.perteneceInclusion} onChange={handleChange}
-                        label={lang.informacionDelPaciente_perteneceInclusion} />
-                    <FormControlDosColumnas type="text" placeholder={lang.informacionDelPaciente_anioEducacion} name="anioEducacion" value={formState.anioEducacion} onChange={handleChange}
-                        label={lang.informacionDelPaciente_anioEducacion} />
-                    <FormControlDosColumnas type="text" placeholder={lang.informacionDelPaciente_paralelo} name="paralelo" value={formState.paralelo} onChange={handleChange}
-                        label={lang.informacionDelPaciente_paralelo} />
+                    <FormControlDosColumnas type="text" placeholder={lang('informacionDelPaciente_perteneceInclusion')} name="perteneceInclusion" value={formState.perteneceInclusion} onChange={handleChange}
+                        label={lang('informacionDelPaciente_perteneceInclusion')} />
+                    <FormControlDosColumnas type="text" placeholder={lang('informacionDelPaciente_anioEducacion')} name="anioEducacion" value={formState.anioEducacion} onChange={handleChange}
+                        label={lang('informacionDelPaciente_anioEducacion')} />
+                    <FormControlDosColumnas type="text" placeholder={lang('informacionDelPaciente_paralelo')} name="paralelo" value={formState.paralelo} onChange={handleChange}
+                        label={lang('informacionDelPaciente_paralelo')} />
                 </Form.Group>
-                <h2>{lang.informacionDelPaciente_title_adicional}</h2>
+                <h2>{lang('informacionDelPaciente_title_adicional')}</h2>
                 <Form.Group as={Row} controlId="diagnostico">
-                    <FormControlDosColumnas as="textarea" rows={3} placeholder={lang.informacionDelPaciente_motivoConsulta} name="motivoConsulta" value={formState.motivoConsulta} onChange={handleChange}
-                        label={lang.informacionDelPaciente_motivoConsulta} />
-                    <FormControlDosColumnas as="textarea" rows={3} placeholder={lang.informacionDelPaciente_observaciones} name="observaciones" value={formState.observaciones} onChange={handleChange}
-                        label={lang.informacionDelPaciente_observaciones} />
+                    <FormControlDosColumnas as="textarea" rows={3} placeholder={lang('informacionDelPaciente_motivoConsulta')} name="motivoConsulta" value={formState.motivoConsulta} onChange={handleChange}
+                        label={lang('informacionDelPaciente_motivoConsulta')} />
+                    <FormControlDosColumnas as="textarea" rows={3} placeholder={lang('informacionDelPaciente_observaciones')} name="observaciones" value={formState.observaciones} onChange={handleChange}
+                        label={lang('informacionDelPaciente_observaciones')} />
                 </Form.Group>
                 <Button variant="primary" type="submit">
-                    {paciente ? lang.editar : lang.guardar}
+                    {paciente ? lang('editar') : lang('guardar')}
                 </Button>
             </Form>
         </Card>

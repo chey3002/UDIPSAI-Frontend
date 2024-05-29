@@ -1,3 +1,4 @@
+'use client'
 import {
     Sidebar,
     Menu,
@@ -10,6 +11,8 @@ import logo from '@/assets/images/logo_institucion.png'
 import Image from 'next/image';
 import { Container, Button } from 'react-bootstrap';
 import { useUserContext } from '@/assets/useUserContext';
+import { usePathname } from 'next/navigation'
+
 const themes = {
     dark: {
         sidebar: {
@@ -29,11 +32,9 @@ const themes = {
         },
     },
 };
-export default function MenuWrapper({ children, setLang, esp, eng }) {
+export default function MenuWrapper({ children, setLang }) {
     const { logout } = useUserContext();
-    console.log(esp)
-    console.log(eng)
-    console.log(setLang)
+    const pathname = usePathname()
     const theme = 'dark'
     const hexToRgba = (hex, alpha) => {
         const r = parseInt(hex.slice(1, 3), 16);
@@ -109,8 +110,12 @@ export default function MenuWrapper({ children, setLang, esp, eng }) {
 
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'space-around', marginBottom: "25px", }}>
-                            {setLang ? <Button variant="link" style={{ color: "#fff" }} onClick={() => { setLang(esp) }}> 🇪🇸 </Button> : ""}
-                            {setLang ? <Button variant="link" style={{ color: "#fff" }} onClick={() => { setLang(eng) }}> 🇺🇸 </Button> : ""}
+                            {setLang ? <Link href={pathname} locale="es" style={{ color: "#fff" }}>
+                                <span>🇪🇸</span>
+                            </Link> : ""}
+                            {setLang ? <Link href={pathname} locale="en" style={{ color: "#fff" }}>
+                                <span>🇺🇸</span>
+                            </Link> : ""}
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: "25px" }}>
                             <Button style={{ color: "#fff", width: "98%", fontWeight: "500", fontSize: "1.5rem", border: "5px solid #dc3545" }}

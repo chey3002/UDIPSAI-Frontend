@@ -1,12 +1,10 @@
-"use client"
-
 import React, { useEffect, useState } from 'react'
 import MenuWrapper from '@/components/sidebar';
 import FormPaciente from '@/components/pacientes/patientForm';
 import { useUserContext } from '@/assets/useUserContext';
 import { toIndex } from '@/utils/toindex/toindex';
-import { informacionDelPaciente as esp } from "@/assets/lenguajes/esp.js";
-import { informacionDelPaciente as eng } from "@/assets/lenguajes/eng.js";
+import useTranslation from 'next-translate/useTranslation'
+
 
 export default function NuevoPaciente() {
     const { user } = useUserContext();
@@ -14,9 +12,9 @@ export default function NuevoPaciente() {
     useEffect(() => {
         toIndex(user);
     }, [user]);
-    const [lang, setLang] = useState(esp);
-
-    return <MenuWrapper setLang={setLang} esp={esp} eng={eng}>
+    const { t } = useTranslation('home');
+    const lang = t;
+    return <MenuWrapper setLang={true}>
         <FormPaciente lang={lang} />
     </MenuWrapper>;
 }

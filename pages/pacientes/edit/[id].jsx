@@ -3,10 +3,9 @@ import FormPaciente from '@/components/pacientes/patientForm'
 import MenuWrapper from '@/components/sidebar'
 import { toIndex } from '@/utils/toindex/toindex';
 import React, { useEffect, useState } from 'react'
-import { informacionDelPaciente as esp } from "@/assets/lenguajes/esp.js";
-import { informacionDelPaciente as eng } from "@/assets/lenguajes/eng.js";
 import { Card } from 'react-bootstrap';
 import axios from 'axios';
+import useTranslation from 'next-translate/useTranslation'
 
 export default function EditarPaciente({ paciente }) {
     const { user } = useUserContext();
@@ -14,10 +13,11 @@ export default function EditarPaciente({ paciente }) {
     useEffect(() => {
         toIndex(user);
     }, [user]);
-    const [lang, setLang] = useState(esp);
+    const { t } = useTranslation('home');
+    const lang = t;
     if (paciente === null) {
         return (
-            <MenuWrapper setLang={setLang} esp={esp} eng={eng}>
+            <MenuWrapper setLang={true} >
                 <Card>
                     <Card.Header>
                         <h1>Detalle del Paciente</h1>
@@ -30,7 +30,7 @@ export default function EditarPaciente({ paciente }) {
         )
     }
     return (
-        <MenuWrapper setLang={setLang} esp={esp} eng={eng}>
+        <MenuWrapper setLang={true} >
             <FormPaciente paciente={paciente} lang={lang} />
         </MenuWrapper>
     )
