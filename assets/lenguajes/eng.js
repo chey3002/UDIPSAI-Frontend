@@ -26,7 +26,7 @@ export const register = {
 export const informacionDelPaciente = {
     informacionDelPaciente_title: "Unique Record",
     informacionDelPaciente_fechaApertura: "Date of opening the record",
-    informacionDelPaciente_proyectoAlQuePertence: "Project to which it belongs",
+    informacionDelPaciente_proyecto: "Project to which it belongs",
     informacionDelPaciente_personal: "Patient Information",
     informacionDelPaciente_nombre: "Names and Last names",
     informacionDelPaciente_ciudad: "City",

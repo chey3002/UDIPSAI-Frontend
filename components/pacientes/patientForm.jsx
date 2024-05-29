@@ -10,7 +10,7 @@ const FormPaciente = ({ paciente, lang }) => {
     const [formState, setFormState] = useState({
         id: 'Nueva Ficha',
         fechaApertura: '',
-        proyectoAlQuePertence: '',
+        proyecto: '',
         imagen: null,
         nombresApellidos: '',
         ciudad: '',
@@ -130,8 +130,8 @@ const FormPaciente = ({ paciente, lang }) => {
                         <Col md="10">
                             <Form.Label>{lang.informacionDelPaciente_fechaApertura}</Form.Label>
                             <FormControl type="date" placeholder={lang.informacionDelPaciente_fechaApertura} name="fechaApertura" value={formState.fechaApertura} onChange={handleChange} />
-                            <Form.Label>{lang.informacionDelPaciente_proyectoAlQuePertence}</Form.Label>
-                            <FormControl type="text" placeholder={lang.informacionDelPaciente_proyectoAlQuePertence} name="proyectoAlQuePertence" value={formState.proyectoAlQuePertence} onChange={handleChange} />
+                            <Form.Label>{lang.informacionDelPaciente_proyecto}</Form.Label>
+                            <FormControl type="text" placeholder={lang.informacionDelPaciente_proyecto} name="proyecto" value={formState.proyecto} onChange={handleChange} />
                             <Form.Label>{lang.informacionDelPaciente_subirImagen}</Form.Label>
                             <FormControl
                                 type="file"
