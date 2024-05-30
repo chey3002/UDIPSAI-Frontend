@@ -35,10 +35,19 @@
     "informacionDelPaciente_perteneceInclusion": "Inclusive Education",
     "informacionDelPaciente_subirImagen": "Upload Image",
     "informacionDelPaciente_datosPersonales": "Personal information",
+    "numeroDeFicha": "Record Number",
     "guardar": "Save",
     "editar": "Edit",
     "cancelar": "Cancel",
     "eliminar": "Delete",
+    "modificar":"Modify",
+    "acciones": "Actions",
+    "nuevo": "New",
+    "buscar":"Search",
+    "salir":"LogOut",
+    "pacientes": "Patients",
+    "listarPacientes": "List Patients",
+    "masInformacion":"More Information",
     "register_title": "User Registration",
     "register_cedula": "ID Number",
     "register_primerNombre": "First Name",
@@ -53,4 +62,5 @@
     "register_button_loading": "Registering...",
     "register_error": "Error registering user",
     "register_login": "Log in"
+
 }

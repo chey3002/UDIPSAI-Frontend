@@ -9,9 +9,12 @@ import {
 import Link from 'next/link';
 import logo from '@/assets/images/logo_institucion.png'
 import Image from 'next/image';
-import { Container, Button } from 'react-bootstrap';
+import { Container, Button, Navbar } from 'react-bootstrap';
 import { useUserContext } from '@/assets/useUserContext';
 import { usePathname } from 'next/navigation'
+import useTranslation from 'next-translate/useTranslation'
+import { use, useEffect, useState } from 'react';
+
 
 const themes = {
     dark: {
@@ -33,7 +36,7 @@ const themes = {
     },
 };
 export default function MenuWrapper({ children, setLang }) {
-    const { logout } = useUserContext();
+    const { logout, user } = useUserContext();
     const pathname = usePathname()
     const theme = 'dark'
     const hexToRgba = (hex, alpha) => {
@@ -76,6 +79,15 @@ export default function MenuWrapper({ children, setLang }) {
             fontWeight: open ? 600 : undefined,
         }),
     };
+    const { t } = useTranslation('home');
+    const lang = t;
+    const [hydrated, setHydrated] = useState(false);
+
+    useEffect(() => {
+        setHydrated(true);
+    }, []);
+
+
     return (
         <>
             <div style={{
@@ -94,12 +106,12 @@ export default function MenuWrapper({ children, setLang }) {
                         <div style={{ flex: 1, marginBottom: '32px' }}>
                             <Menu menuItemStyles={menuItemStyles}>
                                 <Link href="/dashboard/" ><div style={{ display: "grid", justifyContent: "center" }}><Image src={logo} width="200" alt="UcacueLogo"></Image> </div></Link>
-                                <SubMenu label="Pacientes">
-                                    <MenuItem component={<Link href="/pacientes/" />}>Listar</MenuItem>
-                                    <MenuItem component={<Link href="/pacientes/new" />}>Crear</MenuItem>
+                                <SubMenu label={`${lang('pacientes')}`}>
+                                    <MenuItem component={<Link href="/pacientes/" />}>{lang('listarPacientes')}</MenuItem>
+                                    <MenuItem component={<Link href="/pacientes/new" />}>{lang('nuevo')}</MenuItem>
                                 </SubMenu>
                                 <SubMenu label="Especialistas">
-                                    <MenuItem component={<Link href="/dashboard/" />}>Listar</MenuItem>
+                                    <MenuItem component={<Link href="/registro/" />}>Listar</MenuItem>
                                     <MenuItem component={<Link href="/dashboard/" />}>Crear</MenuItem>
                                 </SubMenu>
                                 <SubMenu label="Soy un menú">
@@ -120,14 +132,25 @@ export default function MenuWrapper({ children, setLang }) {
                         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: "25px" }}>
                             <Button style={{ color: "#fff", width: "98%", fontWeight: "500", fontSize: "1.5rem", border: "5px solid #dc3545" }}
                                 variant='outline-danger'
-                                onClick={() => logout()}>Logout</Button>
+                                onClick={() => logout()}>{lang('salir')}</Button>
 
                         </div>
                     </div>
 
                 </Sidebar >
                 <main style={{ height: "100vh", width: "100%", overflow: "auto" }}>
-                    <Container style={{ marginTop: "50px" }}>
+                    <Container style={{}}>
+                        <Navbar className="bg-body-tertiary">
+                            <Container>
+                                <Navbar.Brand href="#home">UDIPSAI</Navbar.Brand>
+                                <Navbar.Toggle />
+                                <Navbar.Collapse className="justify-content-end">
+                                    {hydrated ? <Navbar.Text>
+                                        {user ? user.username : ""}
+                                    </Navbar.Text> : ""}
+                                </Navbar.Collapse>
+                            </Container>
+                        </Navbar>
                         {children}
                     </Container>
                 </main>
