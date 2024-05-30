@@ -4,9 +4,10 @@ import MenuWrapper from '@/components/sidebar'
 import { toIndex } from '@/utils/toindex/toindex';
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
-import { Card, CardBody, CardHeader, Row } from 'react-bootstrap'
+import { Button, Card, CardBody, CardHeader, Row } from 'react-bootstrap'
 import axios from 'axios';
 import useTranslation from 'next-translate/useTranslation'
+import { Modal, message } from 'antd';
 
 
 export default function DetailPaciente({ paciente }) {
@@ -31,6 +32,31 @@ export default function DetailPaciente({ paciente }) {
             </MenuWrapper>
         )
     }
+    console.log(process.env['BASE_URL']);
+    const handleDelete = async (id) => {
+        try {
+            await axios.delete(process.env['BASE_URL'] + `api/pacientes/eliminar/${id}`);
+            message.success(lang('pacienteEliminado'));
+            // Refetch or update data after deletion
+            window.location.href = '/pacientes';
+        } catch (error) {
+            message.error(lang('errorEliminarPaciente'));
+            console.error(error);
+        }
+    };
+
+    const showDeleteConfirm = (id) => {
+        Modal.confirm({
+            title: lang('confirmarEliminacion'),
+            content: lang('seguroEliminar'),
+            okText: lang('si'),
+            okType: 'danger',
+            cancelText: lang('no'),
+            onOk() {
+                handleDelete(id);
+            },
+        });
+    };
     return (
         <MenuWrapper setLang={true} >
             <Card>
@@ -51,7 +77,9 @@ export default function DetailPaciente({ paciente }) {
                                 marginTop: "10px"
                             }}>
                                 <Link href={`/pacientes/edit/${paciente.id}`} className='btn btn-success' variant="success" style={{ marginRight: "5px" }}>{lang('editar')}</Link>
-                                <Link href="/pacientes" className='btn btn-danger' variant="danger" style={{ marginTop: "10px" }}>{lang('eliminar')}</Link>
+                                <Button onClick={() => showDeleteConfirm(paciente.id)} className='btn btn-danger' variant="danger" style={{ marginRight: "5px" }}>
+                                    <i className="bi bi-trash"></i> {lang('eliminar')}
+                                </Button>
                             </Row>
                         </div>
                         <div className="col-md-9">

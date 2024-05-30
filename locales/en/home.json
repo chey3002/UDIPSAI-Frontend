@@ -40,14 +40,18 @@
     "editar": "Edit",
     "cancelar": "Cancel",
     "eliminar": "Delete",
-    "modificar":"Modify",
+    "modificar": "Modify",
     "acciones": "Actions",
     "nuevo": "New",
-    "buscar":"Search",
-    "salir":"LogOut",
+    "buscar": "Search",
+    "salir": "LogOut",
+    "si": "Yes",
+    "no": "No",
+    "seguroEliminar": "Are you sure you want to delete this record?",
+    "confirmarEliminacion": "Confirm Deletion",
     "pacientes": "Patients",
     "listarPacientes": "List Patients",
-    "masInformacion":"More Information",
+    "masInformacion": "More Information",
     "register_title": "User Registration",
     "register_cedula": "ID Number",
     "register_primerNombre": "First Name",
@@ -62,5 +66,4 @@
     "register_button_loading": "Registering...",
     "register_error": "Error registering user",
     "register_login": "Log in"
-
 }
