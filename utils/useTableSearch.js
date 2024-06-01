@@ -17,9 +17,7 @@ export const useTableSearch = ({ searchVal, retrieve }) => {
             return allValues;
         };
         const fetchData = async () => {
-            console.log("Fetching data");
-            console.log(retrieve);
-            const { data: users } = await retrieve();
+            const { data: users } = await retrieve(searchVal);
             setOrigData(users);
             setFilteredData(users);
             const searchInd = users.map(user => {
@@ -33,20 +31,29 @@ export const useTableSearch = ({ searchVal, retrieve }) => {
     }, [retrieve]);
 
     useEffect(() => {
-        if (searchVal) {
-            const reqData = searchIndex.map((user, index) => {
-                if (user.allValues.toLowerCase().indexOf(searchVal.toLowerCase()) >= 0)
-                    return origData[index];
-                return null;
+        setLoading(true);
+        const crawl = (user, allValues) => {
+            if (!allValues) allValues = [];
+            for (var key in user) {
+                if (typeof user[key] === "object") crawl(user[key], allValues);
+                else allValues.push(user[key] + " ");
+            }
+            return allValues;
+        };
+        const fetchData = async () => {
+            const { data: users } = await retrieve(searchVal);
+            setOrigData(users);
+            setFilteredData(users);
+            const searchInd = users.map(user => {
+                const allValues = crawl(user);
+                return { allValues: allValues.toString() };
             });
-            setFilteredData(
-                reqData.filter(user => {
-                    if (user) return true;
-                    return false;
-                })
-            );
-        } else setFilteredData(origData);
-    }, [searchVal, origData, searchIndex]);
+            setSearchIndex(searchInd);
+            if (users) setLoading(false);
+        };
+        fetchData();
+
+    }, [searchVal]);
 
     return { filteredData, loading };
 };

@@ -11,10 +11,12 @@ import useTranslation from 'next-translate/useTranslation';
 import FileUploadButton from '@/components/fileUploadButton';
 import DownloadTemplateButton from '@/components/downloadTemplateButton';
 
-const fetchPacientes = async () => {
-    console.log(process.env['BASE_URL'] + 'api/pacientes/listar');
+const fetchPacientes = async (searchVal) => {
     try {
-        const { data } = await axios.get(process.env['BASE_URL'] + 'api/pacientes/listar').catch((error) => {
+        const formData = new FormData();
+        formData.append('search', searchVal);
+
+        const { data } = await axios.post(process.env['BASE_URL'] + 'api/pacientes/buscar', formData).catch((error) => {
             console.log(error);
         });
 
@@ -26,11 +28,11 @@ const fetchPacientes = async () => {
 };
 
 export default function IndexPaciente() {
-    const [searchVal, setSearchVal] = useState(null);
-    const { filteredData, loading } = useTableSearch({
-        searchVal,
-        retrieve: fetchPacientes
-    });
+    const [searchVal, setSearchVal] = useState('');
+    const [filteredData, setFilteredData] = useState([]);
+    const [origData, setOrigData] = useState([]);
+    const [searchIndex, setSearchIndex] = useState([]);
+    const [loading, setLoading] = useState(true);
     const { user } = useUserContext();
     const { t } = useTranslation('home');
     const lang = t;
@@ -66,6 +68,34 @@ export default function IndexPaciente() {
         });
     };
 
+    const crawl = (user, allValues) => {
+        if (!allValues) allValues = [];
+        for (var key in user) {
+            if (typeof user[key] === "object") crawl(user[key], allValues);
+            else allValues.push(user[key] + " ");
+        }
+        return allValues;
+    };
+    const fetchData = async () => {
+        const { data: users } = await fetchPacientes(searchVal);
+        setOrigData(users);
+        setFilteredData(users);
+        const searchInd = users.map(user => {
+            const allValues = crawl(user);
+            return { allValues: allValues.toString() };
+        });
+        setSearchIndex(searchInd);
+        if (users) setLoading(false);
+    };
+    const onSearch = () => {
+        setLoading(true);
+        fetchData();
+    }
+
+    useEffect(() => {
+        setLoading(true);
+        fetchData();
+    }, []);
     return (
         <MenuWrapper setLang={true}>
             <Card>
@@ -92,11 +122,20 @@ export default function IndexPaciente() {
 
 
                 </Row>
-                <Input
-                    onChange={e => setSearchVal(e.target.value)}
-                    placeholder={`${lang('buscar')}`}
-                    style={{ position: "sticky" }}
-                />
+                <Row>
+                    <Col>
+                        <Input
+                            onChange={e => setSearchVal(e.target.value)}
+                            placeholder={`${lang('buscar')}`}
+                            style={{ position: "sticky" }}
+                        />
+                    </Col>
+                    <Col>
+                        <Button onClick={onSearch} className='btn btn-primary' variant="primary" style={{ marginRight: "5px" }}>
+                            <i className="bi bi-search"></i> {lang('buscar')}
+                        </Button>
+                    </Col>
+                </Row>
                 <Table
                     dataSource={filteredData}
                     columns={[
@@ -145,7 +184,7 @@ export default function IndexPaciente() {
                         },
                     ]}
                     loading={loading}
-                    pagination={{ defaultPageSize: 25, showSizeChanger: true, pageSizeOptions: ['25', '50', '100'] }}
+                    pagination={{ defaultPageSize: 10, showSizeChanger: true, pageSizeOptions: ['10', '25', '50', '100'], showQuickJumper: true }}
                 />
             </Card>
         </MenuWrapper>
