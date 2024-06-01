@@ -8,6 +8,8 @@ import { useUserContext } from '@/assets/useUserContext';
 import { toIndex } from '@/utils/toindex/toindex';
 import axios from 'axios';
 import useTranslation from 'next-translate/useTranslation';
+import FileUploadButton from '@/components/FileUploadButton';
+import DownloadTemplateButton from '@/components/downloadTemplateButton';
 
 const fetchPacientes = async () => {
     console.log(process.env['BASE_URL'] + 'api/pacientes/listar');
@@ -68,14 +70,27 @@ export default function IndexPaciente() {
         <MenuWrapper setLang={true}>
             <Card>
                 <Row style={{ marginTop: '10px' }}>
-                    <Col sm={12} md={10}>
+                    <Col sm={12} md={4} >
                         <h1>{lang('listarPacientes')}</h1>
                     </Col>
-                    <Col sm={12} md={2}>
-                        <Link href='/pacientes/new/' className='btn btn-primary' variant="primary" style={{ marginRight: "5px" }}>
-                            <i className="bi bi-plus-lg"></i> {lang('nuevo')}
-                        </Link>
+                    <Col sm={12} md={8}>
+                        <Row>
+                            <Col sm={12} md={'auto'} className='m-2 '>
+                                <DownloadTemplateButton />
+                            </Col>
+                            <Col sm={12} md={'auto'} className='m-2 '>
+                                <FileUploadButton />
+                            </Col>
+
+                            <Col sm={12} md={'auto'} className='m-2 '>
+                                <Link href='/pacientes/new/' className='btn btn-primary' variant="primary" style={{ marginRight: "5px" }}>
+                                    <i className="bi bi-plus-lg"></i> {lang('nuevo')}
+                                </Link>
+                            </Col>
+                        </Row>
                     </Col>
+
+
                 </Row>
                 <Input
                     onChange={e => setSearchVal(e.target.value)}
