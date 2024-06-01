@@ -8,7 +8,7 @@ import { useUserContext } from '@/assets/useUserContext';
 import { toIndex } from '@/utils/toindex/toindex';
 import axios from 'axios';
 import useTranslation from 'next-translate/useTranslation';
-import FileUploadButton from '@/components/FileUploadButton';
+import FileUploadButton from '@/components/fileUploadButton';
 import DownloadTemplateButton from '@/components/downloadTemplateButton';
 
 const fetchPacientes = async () => {
