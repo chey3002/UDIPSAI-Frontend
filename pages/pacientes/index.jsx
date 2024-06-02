@@ -155,7 +155,7 @@ export default function IndexPaciente() {
                             key: 'cedula',
                         },
                         {
-                            title: `${lang('informacionDelPaciente_telefono')}}`,
+                            title: `${lang('informacionDelPaciente_telefono')}`,
                             dataIndex: 'telefono',
                             key: 'telefono',
                         },
