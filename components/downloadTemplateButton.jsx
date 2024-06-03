@@ -1,6 +1,6 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { Button } from 'antd';
+import { DownloadOutlined } from '@ant-design/icons';
 
 const DownloadTemplateButton = () => {
     const handleDownload = () => {
@@ -14,11 +14,13 @@ const DownloadTemplateButton = () => {
 
     return (
         <Button
-            variant="success"
+            type="primary"
+            icon={<DownloadOutlined />}
             onClick={handleDownload}
             className=""
+            style={{ backgroundColor: '#1D9A6C', borderColor: '#1D9A6C' }}
         >
-            <i class="bi bi-download"></i> Descargar Plantilla
+            Descargar Plantilla
         </Button>
     );
 };

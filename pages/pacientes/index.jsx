@@ -1,8 +1,6 @@
 import MenuWrapper from '@/components/sidebar';
-import { Input, Table, Modal, message } from 'antd';
+import { Input, Table, Modal, message, Button, Card, Row, Col } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { Button, Card, Col, Row } from 'react-bootstrap';
-import { useTableSearch } from '@/utils/useTableSearch';
 import Link from 'next/link';
 import { useUserContext } from '@/assets/useUserContext';
 import { toIndex } from '@/utils/toindex/toindex';
@@ -24,7 +22,6 @@ const fetchPacientes = async (searchVal) => {
     } catch (error) {
         console.log(error);
     }
-    // return res.data;
 };
 
 export default function IndexPaciente() {
@@ -45,10 +42,7 @@ export default function IndexPaciente() {
         try {
             await axios.delete(process.env['BASE_URL'] + `api/pacientes/eliminar/${id}`);
             message.success(lang('pacienteEliminado'));
-            // Refetch or update data after deletion
             window.location.href = '/pacientes';
-
-
         } catch (error) {
             message.error(lang('errorEliminarPaciente'));
             console.error(error);
@@ -76,6 +70,7 @@ export default function IndexPaciente() {
         }
         return allValues;
     };
+
     const fetchData = async () => {
         const { data: users } = await fetchPacientes(searchVal);
         setOrigData(users);
@@ -87,52 +82,52 @@ export default function IndexPaciente() {
         setSearchIndex(searchInd);
         if (users) setLoading(false);
     };
+
     const onSearch = () => {
         setLoading(true);
         fetchData();
-    }
+    };
 
     useEffect(() => {
         setLoading(true);
         fetchData();
     }, []);
+
     return (
         <MenuWrapper setLang={true}>
             <Card>
-                <Row style={{ marginTop: '10px' }}>
-                    <Col sm={12} md={4} >
+                <Row style={{ marginTop: '10px' }} justify="space-between">
+                    <Col xs={24} md="auto">
                         <h1>{lang('listarPacientes')}</h1>
                     </Col>
-                    <Col sm={12} md={8}>
-                        <Row>
-                            <Col sm={12} md={'auto'} className='m-2 '>
+                    <Col xs={24} md="auto">
+                        <Row gutter={[16, 16]}>
+                            <Col>
                                 <DownloadTemplateButton />
                             </Col>
-                            <Col sm={12} md={'auto'} className='m-2 '>
+                            <Col>
                                 <FileUploadButton />
                             </Col>
-
-                            <Col sm={12} md={'auto'} className='m-2 '>
-                                <Link href='/pacientes/new/' className='btn btn-primary' variant="primary" style={{ marginRight: "5px" }}>
-                                    <i className="bi bi-plus-lg"></i> {lang('nuevo')}
+                            <Col>
+                                <Link href='/pacientes/new/'>
+                                    <Button type="primary" icon={<i className="bi bi-plus-lg"></i>}>
+                                        {lang('nuevo')}
+                                    </Button>
                                 </Link>
                             </Col>
                         </Row>
                     </Col>
-
-
                 </Row>
-                <Row>
-                    <Col>
+                <Row gutter={[16, 16]}>
+                    <Col xs={24} sm={12}>
                         <Input
                             onChange={e => setSearchVal(e.target.value)}
-                            placeholder={`${lang('buscar')}`}
-                            style={{ position: "sticky" }}
+                            placeholder={lang('buscar')}
                         />
                     </Col>
-                    <Col>
-                        <Button onClick={onSearch} className='btn btn-primary' variant="primary" style={{ marginRight: "5px" }}>
-                            <i className="bi bi-search"></i> {lang('buscar')}
+                    <Col xs={24} sm={12}>
+                        <Button onClick={onSearch} type="primary" icon={<i className="bi bi-search"></i>}>
+                            {lang('buscar')}
                         </Button>
                     </Col>
                 </Row>
@@ -140,44 +135,48 @@ export default function IndexPaciente() {
                     dataSource={filteredData}
                     columns={[
                         {
-                            title: `${lang('numeroDeFicha')}`,
+                            title: lang('numeroDeFicha'),
                             dataIndex: 'id',
                             key: 'id',
                         },
                         {
-                            title: `${lang('informacionDelPaciente_nombre')}`,
+                            title: lang('informacionDelPaciente_nombre'),
                             dataIndex: 'nombresApellidos',
                             key: 'nombresApellidos',
                         },
                         {
-                            title: `${lang('informacionDelPaciente_cedula')}`,
+                            title: lang('informacionDelPaciente_cedula'),
                             dataIndex: 'cedula',
                             key: 'cedula',
                         },
                         {
-                            title: `${lang('informacionDelPaciente_telefono')}`,
+                            title: lang('informacionDelPaciente_telefono'),
                             dataIndex: 'telefono',
                             key: 'telefono',
                         },
                         {
-                            title: `${lang('informacionDelPaciente_celular')}`,
+                            title: lang('informacionDelPaciente_celular'),
                             dataIndex: 'celular',
                             key: 'celular',
                         },
                         {
-                            title: `${lang('acciones')}`,
+                            title: lang('acciones'),
                             key: 'actions',
                             dataIndex: 'id',
                             render: (text) => (
                                 <div>
-                                    <Link href={`/pacientes/${text}`} className='btn btn-info' variant="info" style={{ marginRight: "5px" }}>
-                                        <i className="bi bi-person-badge-fill"></i> {lang('masInformacion')}
+                                    <Link href={`/pacientes/${text}`}>
+                                        <Button type="info" icon={<i className="bi bi-person-badge-fill"></i>} style={{ marginRight: 5, color: "#fff", backgroundColor: "#17a2b8" }}>
+                                            {lang('masInformacion')}
+                                        </Button>
                                     </Link>
-                                    <Link href={`/pacientes/edit/${text}`} className='btn btn-success' variant="success" style={{ marginRight: "5px" }}>
-                                        <i className="bi bi-pencil-square"></i> {lang('modificar')}
+                                    <Link href={`/pacientes/edit/${text}`}>
+                                        <Button type="success" icon={<i className="bi bi-pencil-square"></i>} style={{ marginRight: 5, color: "#fff", backgroundColor: "#28a745" }}>
+                                            {lang('modificar')}
+                                        </Button>
                                     </Link>
-                                    <Button onClick={() => showDeleteConfirm(text)} className='btn btn-danger' variant="danger" style={{ marginRight: "5px" }}>
-                                        <i className="bi bi-trash"></i> {lang('eliminar')}
+                                    <Button onClick={() => showDeleteConfirm(text)} type="danger" icon={<i className="bi bi-trash"></i>} style={{ marginRight: 5, color: "#fff", backgroundColor: "#dc3545" }}>
+                                        {lang('eliminar')}
                                     </Button>
                                 </div>
                             ),

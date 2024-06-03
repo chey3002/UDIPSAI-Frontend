@@ -1,9 +1,7 @@
-// components/FileUploadButton.jsx
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Upload, Button, message } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
-import { Col, Row, Button as BButton } from 'react-bootstrap';
+import { Upload, Button, message, Row, Col } from 'antd';
+import { UploadOutlined, FileExcelOutlined, UploadOutlined as UploadIcon } from '@ant-design/icons';
 
 const FileUploadButton = () => {
     const [fileList, setFileList] = useState([]);
@@ -51,21 +49,21 @@ const FileUploadButton = () => {
     };
 
     return (
-        <div className="container ">
-            <Row>
+        <div className="container">
+            <Row gutter={16}>
                 <Col>
-                    <Upload {...props} >
-                        <Button className='btn btn-outline-primary' icon={<i class="bi bi-file-earmark-excel"></i>}>Seleccionar Archivo</Button>
-                    </Upload></Col>
-                <Col className='mt-0'>
-                    <BButton
+                    <Upload {...props}>
+                        <Button icon={<FileExcelOutlined />}>Seleccionar Archivo</Button>
+                    </Upload>
+                </Col>
+                <Col>
+                    <Button
                         type="primary"
                         onClick={handleUpload}
                         disabled={fileList.length === 0}
-                        className=" btn"
                     >
-                        <i class="bi bi-upload"></i> Subir Archivo
-                    </BButton>
+                        <UploadIcon /> Subir Archivo
+                    </Button>
                 </Col>
             </Row>
         </div>
