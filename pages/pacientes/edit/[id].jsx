@@ -19,19 +19,17 @@ export default function EditarPaciente({ paciente }) {
         return (
             <MenuWrapper setLang={true} >
                 <Card>
-                    <Card.Header>
-                        <h1>Detalle del Paciente</h1>
-                    </Card.Header>
-                    <Card.Body>
+                    <Card.Meta title={<h1>Detalle del Paciente</h1>} />
+                    <div>
                         <h3>No se encontró el paciente</h3>
-                    </Card.Body>
+                    </div>
                 </Card>
             </MenuWrapper>
         )
     }
     return (
         <MenuWrapper setLang={true} >
-            <FormPaciente paciente={paciente} lang={lang} />
+            <FormPaciente paciente={paciente}  />
         </MenuWrapper>
     )
 }

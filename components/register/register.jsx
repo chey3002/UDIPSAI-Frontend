@@ -1,13 +1,13 @@
 'use client'
-import React, { useState } from "react";
-import { Form, Button, Alert, Row, Col } from "react-bootstrap";
-import styles from "./register.module.css";
-
-import Logo from "@/assets/ucacue-logo.png";
-import Image from "next/image";
+import React, { useEffect, useState } from "react";
+import { Form, Input, Button, Alert, Checkbox, Row, Col, Card, Upload, Image, message, Select, DatePicker } from "antd";
+import { UploadOutlined } from '@ant-design/icons';
 import Link from "next/link";
-import useTranslation from 'next-translate/useTranslation'
+import useTranslation from 'next-translate/useTranslation';
+import Logo from "@/assets/ucacue-logo.png";
+import axios from 'axios';
 
+const { Option } = Select;
 
 const Register = () => {
     const [formData, setFormData] = useState({
@@ -18,20 +18,41 @@ const Register = () => {
         segundoApellido: "",
         id_especialidad: "",
         esPasante: false,
-        password: "",
-        passwordConfirm: ""
+        contrasena: "",
+        contrasenaConfirm: "",
+        imagen: null,
+        inicioPasantia: null,
+        finPasantia: null,
+        cedulaEspecialistaAsignado: ""
     });
 
     const { t } = useTranslation('home');
     const lang = t;
     const [show, setShow] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [especialistas, setEspecialistas] = useState([]);
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
+    useEffect(() => {
+        const fetchEspecialistas = async () => {
+            try {
+                const response = await axios.get(`${process.env['BASE_URL']}/api/especialistas/listar`);
+                setEspecialistas(response.data);
+            } catch (error) {
+                console.error('Error fetching especialistas:', error);
+            }
+        };
+
+        fetchEspecialistas();
+    }, []);
+
+    const handleSubmit = async () => {
         setLoading(true);
-        const form = event.currentTarget;
         await delay(500);
+        if (formData.esPasante === false) {
+            formData.inicioPasantia = null;
+            formData.finPasantia = null;
+            formData.cedulaEspecialistaAsignado = "";
+        }
         console.log(formData);
         setLoading(false);
     };
@@ -40,139 +61,252 @@ const Register = () => {
         return new Promise((resolve) => setTimeout(resolve, ms));
     }
 
-    const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
-        console.log(name, value, type, checked);
-        setFormData(prevState => ({
-            ...prevState,
-            [name]: type === "checkbox" ? checked : value
+    const handleChange = (changedValues) => {
+        if (changedValues.esPasante === false) {
+            changedValues.inicioPasantia = null;
+            changedValues.finPasantia = null;
+            changedValues.cedulaEspecialistaAsignado = "";
+        }
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            ...changedValues,
         }));
     };
 
+    const handleFileChange = (info) => {
+        const file = info.fileList[0]?.originFileObj;
+        if (!file) {
+            setFormData({
+                ...formData,
+                imagen: null,
+            });
+            return;
+        }
+        if (!beforeUpload(file)) return;
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            const base64Data = reader.result.split(",")[1];
+            setFormData({
+                ...formData,
+                imagen: base64Data,
+            });
+        };
+        reader.readAsDataURL(file);
+    };
+
+    const beforeUpload = (file) => {
+        const isImage = file.type.startsWith('image/');
+        if (!isImage) {
+            message.error('You can only upload image files!');
+        }
+        return isImage;
+    };
+
     return (
-        <div className={styles["sign-in__wrapper"]}>
-            <div className={styles["sign-in__backdrop"]}></div>
-            <Form className="shadow p-4 bg-white rounded" onSubmit={handleSubmit}>
-                <Image className="mx-auto d-block mb-2" src={Logo} alt="logo" width={100} height={100} />
+        <Card style={{ maxWidth: '600px', margin: '0 auto', padding: '20px' }}>
+            <Form
+                layout="vertical"
+                onFinish={handleSubmit}
+                onValuesChange={handleChange}
+                initialValues={formData}
+            >
+                <Image src={Logo.src} alt="logo" width={100} height={100} preview={false} style={{ display: 'block', margin: '0 auto 16px' }} />
                 <div className="h4 mb-2 text-center">{lang('register_title')}</div>
-                {show ? (
-                    <Alert className="mb-2" variant="danger" onClose={() => setShow(false)} dismissible>
-                        {lang('register_error')}
-                    </Alert>
-                ) : null}
-                <Col>
-                    <Form.Group className="mb-2" controlId="cedula">
-                        <Form.Label>{lang('register_cedula')}</Form.Label>
-                        <Form.Control type="text" name="cedula" value={formData.cedula} placeholder={lang('register_cedula')} onChange={handleChange} required />
-                    </Form.Group>
-                    <Row>
-                        <Col>
-                            <Form.Group className="mb-2" controlId="primerNombre">
-                                <Form.Label>{lang('register_primerNombre')}</Form.Label>
-                                <Form.Control type="text" name="primerNombre" value={formData.primerNombre} placeholder={lang('register_primerNombre')} onChange={handleChange} required />
-                            </Form.Group>
-                        </Col>
-                        <Col>
-                            <Form.Group className="mb-2" controlId="segundoNombre">
-                                <Form.Label>{lang('register_segundoNombre')}</Form.Label>
-                                <Form.Control type="text" name="segundoNombre" value={formData.segundoNombre} placeholder={lang('register_segundoNombre')} onChange={handleChange} />
-                            </Form.Group>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <Form.Group className="mb-2" controlId="primerApellido">
-                                <Form.Label>{lang('register_primerApellido')}</Form.Label>
-                                <Form.Control type="text" name="primerApellido" value={formData.primerApellido} placeholder={lang('register_primerApellido')} onChange={handleChange} required />
-                            </Form.Group>
-                        </Col>
-                        <Col>
-                            <Form.Group className="mb-2" controlId="segundoApellido">
-                                <Form.Label>{lang('register_segundoApellido')}</Form.Label>
-                                <Form.Control type="text" name="segundoApellido" value={formData.segundoApellido} placeholder={lang('register_segundoApellido')} onChange={handleChange} />
-                            </Form.Group>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <Form.Group className="mb-2" controlId="id_especialidad">
-                                <Form.Label>{lang('register_id_especialidad')}</Form.Label>
-                                <Form.Control type="number" name="id_especialidad" value={formData.id_especialidad} placeholder={lang('register_id_especialidad')} onChange={handleChange} required />
-                            </Form.Group>
-                        </Col>
-                        <Col className="d-flex flex-column align-items-start">
-                            <Form.Group className="mb-2" controlId="esPasante">
-                                <Form.Check
-                                    type="checkbox"
-                                    label={lang('register_esPasante')}
-                                    checked={formData.esPasante}
-                                    onChange={handleChange}
-                                    name="esPasante"
-                                />
-                            </Form.Group>
-                        </Col>
-
-                    </Row>
-                    <Form.Group className="mb-2" controlId="password">
-                        <Form.Label>{lang('register_password')}</Form.Label>
-                        <Form.Control
-                            type="password"
-                            name="password"
-                            value={formData.password}
-                            placeholder={lang('register_password')}
-                            onChange={handleChange}
-                            required
-                        />
-                    </Form.Group>
-                    <Form.Group className="mb-2" controlId="passwordConfirm">
-                        <Form.Label>{lang('register_passwordConfirm')}</Form.Label>
-                        <Form.Control
-                            type="password"
-                            name="passwordConfirm"
-                            value={formData.passwordConfirm}
-                            placeholder={lang('register_passwordConfirm')}
-                            onChange={handleChange}
-                            required
-                            isInvalid={formData.password !== formData.passwordConfirm && formData.passwordConfirm !== ""}
-                        />
-                        <Form.Control.Feedback type="invalid">
-                            Las contraseñas no coinciden
-                        </Form.Control.Feedback>
-                    </Form.Group>
-
-                </Col>
-                {!loading ? (
-                    <Button className="w-100" variant="primary" type="submit">
-                        {lang('register_button')}
-                    </Button>
-                ) : (
-                    <Button className="w-100" variant="primary" type="submit" disabled>
-                        {lang('register_button_loading')}
-                    </Button>
+                {show && (
+                    <Alert
+                        message={lang('register_error')}
+                        type="error"
+                        closable
+                        onClose={() => setShow(false)}
+                        style={{ marginBottom: '16px' }}
+                    />
                 )}
-                <Row>
-                    <Col>
-                        <Row>
-                            <Col xs="auto" className="p-1">
-                                <Link href="/registro" locale="es">
-                                    <span>🇪🇸</span>
-                                </Link>
-                            </Col>
-                            <Col xs="auto" className="p-1">
-                                <Link href="/registro" locale="en">
-                                    <span>🇺🇸</span>
-                                </Link>
-                            </Col>
-                        </Row>
+                <Col style={{ marginTop: '16px', textAlign: 'center' }}>
+                    <img
+                        src={formData.imagen ? `data:image/jpeg;base64,${formData.imagen}` : 'https://as1.ftcdn.net/v2/jpg/01/28/56/34/1000_F_128563441_kn96kL8fUOtfZlBRBV4kATepeGXuiLzI.jpg'}
+                        alt="avatar"
+                        style={{ objectFit: 'cover', borderRadius: '15px', border: '3px solid #00ff00' }}
+                        width="160"
+                        height="200"
+                    />
+                </Col>
+                <Form.Item label={lang('register_imagen')}>
+                    <Upload
+                        accept='image/*'
+                        beforeUpload={() => false}
+                        onChange={handleFileChange}
+                        maxCount={1}
+                        showUploadList={false}
+                    >
+                        <Button icon={<UploadOutlined />}>{lang('register_subirImagen')}</Button>
+                    </Upload>
+                </Form.Item>
+                <Form.Item
+                    label={lang('register_cedula')}
+                    name="cedula"
+                    rules={[{ required: true, message: lang('register_cedula') }]}
+                >
+                    <Input />
+                </Form.Item>
+                <Row gutter={16}>
+                    <Col span={12}>
+                        <Form.Item
+                            label={lang('register_primerNombre')}
+                            name="primerNombre"
+                            rules={[{ required: true, message: lang('register_primerNombre') }]}
+                        >
+                            <Input />
+                        </Form.Item>
                     </Col>
-                    <Col className="d-grid justify-content-end">
-                        <Link href="/">
-                            <span>{lang('register_login')}</span>
-                        </Link>
+                    <Col span={12}>
+                        <Form.Item
+                            label={lang('register_segundoNombre')}
+                            name="segundoNombre"
+                        >
+                            <Input />
+                        </Form.Item>
                     </Col>
                 </Row>
+                <Row gutter={16}>
+                    <Col span={12}>
+                        <Form.Item
+                            label={lang('register_primerApellido')}
+                            name="primerApellido"
+                            rules={[{ required: true, message: lang('register_primerApellido') }]}
+                        >
+                            <Input />
+                        </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                        <Form.Item
+                            label={lang('register_segundoApellido')}
+                            name="segundoApellido"
+                        >
+                            <Input />
+                        </Form.Item>
+                    </Col>
+                </Row>
+                <Row gutter={16}>
+                    <Col span={12}>
+                        <Form.Item
+                            label={lang('register_id_especialidad')}
+                            name="id_especialidad"
+                            rules={[{ required: true, message: lang('register_id_especialidad') }]}
+                        >
+                            <Select
+                                showSearch
+                                placeholder={lang('register_selectEspecialidad')}
+                                optionFilterProp="children"
+                                onChange={value => setFormData({ ...formData, id_especialidad: value })}
+                                filterOption={(input, option) =>
+                                    (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                                }
+                                options={[
+                                    { value: '1', label: 'Coordinación' },
+                                    { value: '2', label: 'Secretaría' },
+                                    { value: '3', label: 'Psicología Educativa' },
+                                    { value: '4', label: 'Psicología Clínica' },
+                                    { value: '5', label: 'Terapia de Lenguaje y Fonoaudiología' },
+                                    { value: '6', label: 'Estimulación Temprana' },
+                                    { value: '7', label: 'Recuperación Pedagógica' },
+                                ]}
+                            />
+                        </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                        <Form.Item name="esPasante" valuePropName="checked">
+                            <Checkbox
+                                checked={formData.esPasante}
+                                onChange={e => setFormData({ ...formData, esPasante: e.target.checked })}
+                            >
+                                {lang('register_esPasante')}
+                            </Checkbox>
+                        </Form.Item>
+                    </Col>
+                </Row>
+                {formData.esPasante && (
+                    <>
+                        <Row gutter={16}>
+                            <Col span={12}>
+                                <Form.Item
+                                    label={lang('register_inicioPasantia')}
+                                    name="inicioPasantia"
+                                    rules={[{ required: formData.esPasante, message: lang('register_inicioPasantia') }]}
+                                >
+                                    <DatePicker
+                                        style={{ width: '100%' }}
+                                        onChange={(date, dateString) => setFormData({ ...formData, inicioPasantia: dateString })}
+                                    />
+                                </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                                <Form.Item
+                                    label={lang('register_finPasantia')}
+                                    name="finPasantia"
+                                    rules={[{ required: formData.esPasante, message: lang('register_finPasantia') }]}
+                                >
+                                    <DatePicker
+                                        style={{ width: '100%' }}
+                                        onChange={(date, dateString) => setFormData({ ...formData, finPasantia: dateString })}
+                                    />
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                        <Form.Item
+                            label={lang('register_cedulaEspecialistaAsignado')}
+                            name="cedulaEspecialistaAsignado"
+                            rules={[{
+                                required: formData.esPasante, message: lang('register_cedulaEspecialistaAsignado')
+                            }]}
+                        >
+                            <Select
+                                showSearch
+                                placeholder={lang('register_selectEspecialista')}
+                                optionFilterProp="children"
+                                onChange={value => setFormData({ ...formData, cedulaEspecialistaAsignado: value })}
+                                filterOption={(input, option) =>
+                                    (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                                }
+                                options={especialistas.map(especialista => ({
+                                    value: especialista.cedula,
+                                    label: `${especialista.nombre} ${especialista.apellido}`
+                                }))}
+                            />
+                        </Form.Item>
+                    </>
+                )}
+                <Form.Item
+                    label={lang('register_password')}
+                    name="contrasena"
+                    rules={[{ required: true, message: lang('register_password') }]}
+                >
+                    <Input.Password />
+                </Form.Item>
+                <Form.Item
+                    label={lang('register_passwordConfirm')}
+                    name="contrasenaConfirm"
+                    dependencies={['contrasena']}
+                    rules={[
+                        { required: true, message: lang('register_passwordConfirm') },
+                        ({ getFieldValue }) => ({
+                            validator(_, value) {
+                                if (!value || getFieldValue('contrasena') === value) {
+                                    return Promise.resolve();
+                                }
+                                return Promise.reject(new Error('Las contraseñas no coinciden'));
+                            },
+                        }),
+                    ]}
+                >
+                    <Input.Password />
+                </Form.Item>
+                <Form.Item>
+                    <Button type="primary" htmlType="submit" loading={loading} block>
+                        {loading ? lang('register_button_loading') : lang('register_button')}
+                    </Button>
+                </Form.Item>
             </Form>
-        </div>
+        </Card>
     );
 };
 

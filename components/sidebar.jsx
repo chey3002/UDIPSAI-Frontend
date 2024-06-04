@@ -1,9 +1,9 @@
-'use client'
 import {
     Layout,
     Menu,
     Button,
     Dropdown,
+    Spin,
 } from 'antd';
 import {
     MenuUnfoldOutlined,
@@ -23,7 +23,7 @@ import Image from 'next/image';
 
 const { Header, Sider, Content } = Layout;
 
-export default function MenuWrapper({ children, setLang }) {
+export default function MenuWrapper({ children }) {
     const { logout, user } = useUserContext();
     const pathname = usePathname();
     const [collapsed, setCollapsed] = useState(false);
@@ -98,7 +98,7 @@ export default function MenuWrapper({ children, setLang }) {
 
     return (
         <Layout style={{ height: '100vh' }}>
-            <Sider trigger={null} collapsible collapsed={collapsed} style={{ padding: 0, background: '#fff' }}>
+            <Sider trigger={null} collapsible collapsed={collapsed} style={{ padding: 0, background: '#fff', position: 'fixed', left: 0, zIndex: 1, minHeight: '100vh' }}>
                 <div style={{ display: 'grid', justifyContent: 'center', margin: '16px 0' }}>
                     <Link href="/dashboard/">
                         <Image src={logo} width={collapsed ? 80 : 200} alt="UcacueLogo" />
@@ -106,16 +106,16 @@ export default function MenuWrapper({ children, setLang }) {
                 </div>
                 <Menu mode="inline" defaultSelectedKeys={['1']} items={menuItems} />
             </Sider>
-            <Layout className="site-layout" >
-                <Header className="site-layout-background" style={{ padding: 0, background: '#fff' }}>
+            <Layout className="site-layout" style={{ marginLeft: collapsed ? 80 : 200 }}>
+                <Header className="site-layout-background" style={{ padding: 0, background: '#fff', zIndex: 0 }}>
                     {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
                         className: 'trigger',
                         onClick: toggle,
                     })}
                     <div style={{ float: 'right', marginRight: '16px' }}>
-                        {setLang ? <Dropdown overlay={languageMenu}>
+                        <Dropdown overlay={languageMenu}>
                             <Button icon={<GlobalOutlined />} />
-                        </Dropdown> : null}
+                        </Dropdown>
                         {hydrated && user && (
                             <span style={{ marginLeft: '16px' }}>{user.username}</span>
                         )}
@@ -130,8 +130,11 @@ export default function MenuWrapper({ children, setLang }) {
                         </Button>
                     </div>
                 </Header>
-                <Content style={{ margin: '24px 16px', padding: 24, background: '#fff', minHeight: 280 }}>
-                    {children}
+                <Content style={{ margin: '24px 16px', padding: 24, background: '#fff', minHeight: 280, zIndex: 0, height: '100%', overflow: 'auto' }}>
+                    <Spin spinning={!hydrated}>
+                        {children}
+                    </Spin>
+
                 </Content>
             </Layout>
         </Layout>
