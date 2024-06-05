@@ -33,11 +33,13 @@ const Login = () => {
         setLoading(true);
         await delay(500);
         console.log(`Username: ${formData.username}, Password: ${formData.password}`);
-        if (formData.username !== "admin" || formData.password !== "admin") {
-            setShow(true);
-        } else {
-            setUser({ username: formData.username });
+        if (formData.username === "admin" && formData.password === "admin") {
+            setUser({
+                ...formData,
+                username: formData.username,
+            });
         }
+        // const response = await axios.get(process.env['BASE_URL'] + 'api/pacientes/listar/')
         setLoading(false);
     };
 

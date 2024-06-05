@@ -9,7 +9,7 @@ import axios from 'axios';
 
 const { Option } = Select;
 
-const Register = () => {
+const Register = ({ especialista }) => {
     const [formData, setFormData] = useState({
         cedula: "",
         primerNombre: "",
@@ -26,6 +26,7 @@ const Register = () => {
         cedulaEspecialistaAsignado: ""
     });
 
+    const [form] = Form.useForm();
     const { t } = useTranslation('home');
     const lang = t;
     const [show, setShow] = useState(false);
@@ -37,6 +38,7 @@ const Register = () => {
             try {
                 const response = await axios.get(`${process.env['BASE_URL']}api/especialistas/listar`);
                 setEspecialistas(response.data);
+                console.log(response.data);
             } catch (error) {
                 console.error('Error fetching especialistas:', error);
             }
@@ -45,15 +47,33 @@ const Register = () => {
         fetchEspecialistas();
     }, []);
 
+    useEffect(() => {
+        if (especialista) {
+            form.setFieldsValue({
+                cedula: especialista.cedula,
+                primerNombre: especialista.primerNombre,
+                segundoNombre: especialista.segundoNombre,
+                primerApellido: especialista.primerApellido,
+                segundoApellido: especialista.segundoApellido,
+                id_especialidad: especialista.id_especialidad,
+                esPasante: especialista.esPasante,
+                inicioPasantia: especialista.inicioPasantia,
+                finPasantia: especialista.finPasantia,
+                cedulaEspecialistaAsignado: especialista.cedulaEspecialistaAsignado
+            });
+        }
+    }, [especialista]);
+
     const handleSubmit = async () => {
         setLoading(true);
         await delay(500);
-        if (formData.esPasante === false) {
-            formData.inicioPasantia = null;
-            formData.finPasantia = null;
-            formData.cedulaEspecialistaAsignado = "";
+        const values = form.getFieldsValue();
+        if (!values.esPasante) {
+            values.inicioPasantia = null;
+            values.finPasantia = null;
+            values.cedulaEspecialistaAsignado = "";
         }
-        console.log(formData);
+        console.log(values);
         setLoading(false);
     };
 
@@ -61,23 +81,10 @@ const Register = () => {
         return new Promise((resolve) => setTimeout(resolve, ms));
     }
 
-    const handleChange = (changedValues) => {
-        if (changedValues.esPasante === false) {
-            changedValues.inicioPasantia = null;
-            changedValues.finPasantia = null;
-            changedValues.cedulaEspecialistaAsignado = "";
-        }
-        setFormData((prevFormData) => ({
-            ...prevFormData,
-            ...changedValues,
-        }));
-    };
-
     const handleFileChange = (info) => {
         const file = info.fileList[0]?.originFileObj;
         if (!file) {
-            setFormData({
-                ...formData,
+            form.setFieldsValue({
                 imagen: null,
             });
             return;
@@ -86,8 +93,7 @@ const Register = () => {
         const reader = new FileReader();
         reader.onloadend = () => {
             const base64Data = reader.result.split(",")[1];
-            setFormData({
-                ...formData,
+            form.setFieldsValue({
                 imagen: base64Data,
             });
         };
@@ -105,9 +111,9 @@ const Register = () => {
     return (
         <Card style={{ maxWidth: '600px', margin: '0 auto', padding: '20px' }}>
             <Form
+                form={form}
                 layout="vertical"
                 onFinish={handleSubmit}
-                onValuesChange={handleChange}
                 initialValues={formData}
             >
                 <Image src={Logo.src} alt="logo" width={100} height={100} preview={false} style={{ display: 'block', margin: '0 auto 16px' }} />
@@ -197,7 +203,6 @@ const Register = () => {
                                 showSearch
                                 placeholder={lang('register_selectEspecialidad')}
                                 optionFilterProp="children"
-                                onChange={value => setFormData({ ...formData, id_especialidad: value })}
                                 filterOption={(input, option) =>
                                     (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
                                 }
@@ -215,10 +220,7 @@ const Register = () => {
                     </Col>
                     <Col span={12}>
                         <Form.Item name="esPasante" valuePropName="checked">
-                            <Checkbox
-                                checked={formData.esPasante}
-                                onChange={e => setFormData({ ...formData, esPasante: e.target.checked })}
-                            >
+                            <Checkbox>
                                 {lang('register_esPasante')}
                             </Checkbox>
                         </Form.Item>
@@ -235,7 +237,6 @@ const Register = () => {
                                 >
                                     <DatePicker
                                         style={{ width: '100%' }}
-                                        onChange={(date, dateString) => setFormData({ ...formData, inicioPasantia: dateString })}
                                     />
                                 </Form.Item>
                             </Col>
@@ -247,7 +248,6 @@ const Register = () => {
                                 >
                                     <DatePicker
                                         style={{ width: '100%' }}
-                                        onChange={(date, dateString) => setFormData({ ...formData, finPasantia: dateString })}
                                     />
                                 </Form.Item>
                             </Col>
@@ -263,13 +263,12 @@ const Register = () => {
                                 showSearch
                                 placeholder={lang('register_selectEspecialista')}
                                 optionFilterProp="children"
-                                onChange={value => setFormData({ ...formData, cedulaEspecialistaAsignado: value })}
                                 filterOption={(input, option) =>
                                     (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
                                 }
                                 options={especialistas.map(especialista => ({
                                     value: especialista.cedula,
-                                    label: `${especialista.nombre} ${especialista.apellido}`
+                                    label: `${especialista.primerNombre} ${especialista.primerApellido}`
                                 }))}
                             />
                         </Form.Item>
