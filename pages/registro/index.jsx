@@ -15,7 +15,7 @@ const fetchEspecialistas = async (searchVal) => {
         formData.append('search', searchVal);
 
         // const { data } = await axios.post(process.env['BASE_URL'] + 'api/especialistas/listar', formData).catch((error) => {
-        const { data } = await axios.get(process.env['BASE_URL'] + 'api/especialistas/listar').catch((error) => {
+        const { data } = await axios.get(process.env['BASE_URL'] + 'api/especialistas/activos').catch((error) => {
             console.log(error);
         });
 

@@ -34,7 +34,7 @@ export default function EditarEspecialista({ especialista }) {
     )
 }
 export const getServerSideProps = async (context) => {
-    const res = await axios.get(process.env['HOST'] + 'api/especialistas/listar/' + context.query.id)
+    const res = await axios.get(process.env['HOST'] + 'api/especialistas/' + context.query.id)
     console.log(res.data);
     if (res.data === null) {
         return {

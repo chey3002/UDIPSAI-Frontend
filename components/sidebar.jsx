@@ -9,6 +9,7 @@ import {
     MenuUnfoldOutlined,
     MenuFoldOutlined,
     UserOutlined,
+    BookOutlined,
     SettingOutlined,
     LogoutOutlined,
     GlobalOutlined
@@ -59,19 +60,20 @@ export default function MenuWrapper({ children }) {
         },
         {
             key: '3',
-            icon: <SettingOutlined />,
-            label: <Link style={{ color: 'fff', textDecoration: 'none' }} href="/registro/">Listar</Link>,
-        },
-
-        {
-            key: '4',
-            icon: <SettingOutlined />,
-            label: <Link style={{ color: 'fff', textDecoration: 'none' }} href="/dashboard/">Crear</Link>,
-        },
-        {
-            key: '5',
-            icon: <UserOutlined />,
-            label: <Link style={{ color: 'fff', textDecoration: 'none' }} href="/dashboard/">Listar</Link>,
+            icon: <BookOutlined />,
+            label: <span>{lang('especialistas')}</span>,
+            children: [
+                {
+                    key: '4',
+                    icon: <SettingOutlined />,
+                    label: <Link style={{ color: 'fff', textDecoration: 'none' }} href="/registro/">{lang('listarEspecialistas')}</Link>,
+                },
+                {
+                    key: '5',
+                    icon: <UserOutlined />,
+                    label: <Link style={{ color: 'fff', textDecoration: 'none' }} href="/registro/new">{lang('nuevo')}</Link>,
+                },
+            ]
         },
         {
             key: '6',

@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useState } from "react";
-import { Form, Input, Button, Alert, Checkbox, Row, Col, Card, Upload, Image, message, Select, DatePicker } from "antd";
+import { Form, Input, Button, Alert, Checkbox, Row, Col, Card, Upload, Image, message, Select } from "antd";
 import { UploadOutlined } from '@ant-design/icons';
 import Link from "next/link";
 import useTranslation from 'next-translate/useTranslation';
@@ -36,7 +36,7 @@ const Register = ({ especialista }) => {
     useEffect(() => {
         const fetchEspecialistas = async () => {
             try {
-                const response = await axios.get(`${process.env['BASE_URL']}api/especialistas/listar`);
+                const response = await axios.get(`${process.env['BASE_URL']}api/especialistas/activos`);
                 setEspecialistas(response.data);
                 console.log(response.data);
             } catch (error) {
@@ -48,6 +48,7 @@ const Register = ({ especialista }) => {
     }, []);
 
     useEffect(() => {
+        console.log(especialista);
         if (especialista) {
             form.setFieldsValue({
                 cedula: especialista.cedula,
@@ -55,11 +56,27 @@ const Register = ({ especialista }) => {
                 segundoNombre: especialista.segundoNombre,
                 primerApellido: especialista.primerApellido,
                 segundoApellido: especialista.segundoApellido,
-                id_especialidad: especialista.id_especialidad,
+                id_especialidad: { value: especialista.especialidad.id, label: especialista.especialidad.area },
                 esPasante: especialista.esPasante,
                 inicioPasantia: especialista.inicioPasantia,
                 finPasantia: especialista.finPasantia,
-                cedulaEspecialistaAsignado: especialista.cedulaEspecialistaAsignado
+                cedulaEspecialistaAsignado: {
+                    value: especialista.especialistaAsignado.cedula, label: `${especialista.especialistaAsignado.primerNombre} ${especialista.especialistaAsignado.primerApellido}`
+                },
+                imagen: especialista.imagen,
+            });
+            setFormData({
+                cedula: especialista.cedula,
+                primerNombre: especialista.primerNombre,
+                segundoNombre: especialista.segundoNombre,
+                primerApellido: especialista.primerApellido,
+                segundoApellido: especialista.segundoApellido,
+                id_especialidad: especialista.especialidad.id,
+                esPasante: especialista.esPasante,
+                inicioPasantia: especialista.inicioPasantia,
+                finPasantia: especialista.finPasantia,
+                cedulaEspecialistaAsignado: especialista.especialistaAsignado.cedula,
+                imagen: especialista.imagen,
             });
         }
     }, [especialista]);
@@ -73,7 +90,26 @@ const Register = ({ especialista }) => {
             values.finPasantia = null;
             values.cedulaEspecialistaAsignado = "";
         }
-        console.log(values);
+        if (especialista) {
+            // Update
+            await axios.put(process.env['BASE_URL'] + 'api/especialista/actualizar/' + values.cedula, values)
+                .then(() => {
+                    window.location.href = '/register';
+                }).catch((error) => {
+                    console.log(error);
+                });
+        } else {
+            // Create
+            const request = { ...formData, pacienteEstado: 1 };
+            delete request.id;
+            await axios.post(process.env['BASE_URL'] + 'api/especialista/insertar', request)
+                .then((response) => {
+                    console.log(response);
+                    window.location.href = '/register';
+                }).catch((error) => {
+                    console.log(error);
+                });
+        }
         setLoading(false);
     };
 
@@ -87,6 +123,10 @@ const Register = ({ especialista }) => {
             form.setFieldsValue({
                 imagen: null,
             });
+            setFormData({
+                ...formData,
+                imagen: null,
+            });
             return;
         }
         if (!beforeUpload(file)) return;
@@ -94,6 +134,10 @@ const Register = ({ especialista }) => {
         reader.onloadend = () => {
             const base64Data = reader.result.split(",")[1];
             form.setFieldsValue({
+                imagen: base64Data,
+            });
+            setFormData({
+                ...formData,
                 imagen: base64Data,
             });
         };
@@ -108,6 +152,24 @@ const Register = ({ especialista }) => {
         return isImage;
     };
 
+    const onChange = () => {
+        console.log(form.getFieldValue());
+        setFormData({
+            cedula: form.getFieldsValue().cedula,
+            primerNombre: form.getFieldsValue().primerNombre,
+            segundoNombre: form.getFieldValue().segundoNombre,
+            primerApellido: form.getFieldValue().primerApellido,
+            segundoApellido: form.getFieldValue().segundoApellido,
+            id_especialidad: form.getFieldValue().id_especialidad.value,
+            esPasante: form.getFieldValue().esPasante,
+            inicioPasantia: form.getFieldValue().inicioPasantia,
+            finPasantia: form.getFieldValue().finPasantia,
+            cedulaEspecialistaAsignado: form.getFieldValue().cedulaEspecialistaAsignado.value,
+            contrasena: form.getFieldValue().contrasena,
+            contrasenaConfirm: form.getFieldValue().contrasenaConfirm,
+        });
+    };
+
     return (
         <Card style={{ maxWidth: '600px', margin: '0 auto', padding: '20px' }}>
             <Form
@@ -115,6 +177,7 @@ const Register = ({ especialista }) => {
                 layout="vertical"
                 onFinish={handleSubmit}
                 initialValues={formData}
+                onChange={onChange}
             >
                 <Image src={Logo.src} alt="logo" width={100} height={100} preview={false} style={{ display: 'block', margin: '0 auto 16px' }} />
                 <div className="h4 mb-2 text-center">{lang('register_title')}</div>
@@ -235,9 +298,7 @@ const Register = ({ especialista }) => {
                                     name="inicioPasantia"
                                     rules={[{ required: formData.esPasante, message: lang('register_inicioPasantia') }]}
                                 >
-                                    <DatePicker
-                                        style={{ width: '100%' }}
-                                    />
+                                    <Input type="date" />
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
@@ -246,9 +307,7 @@ const Register = ({ especialista }) => {
                                     name="finPasantia"
                                     rules={[{ required: formData.esPasante, message: lang('register_finPasantia') }]}
                                 >
-                                    <DatePicker
-                                        style={{ width: '100%' }}
-                                    />
+                                    <Input type="date" />
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -266,6 +325,7 @@ const Register = ({ especialista }) => {
                                 filterOption={(input, option) =>
                                     (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
                                 }
+                                onChange={onChange}
                                 options={especialistas.map(especialista => ({
                                     value: especialista.cedula,
                                     label: `${especialista.primerNombre} ${especialista.primerApellido}`
