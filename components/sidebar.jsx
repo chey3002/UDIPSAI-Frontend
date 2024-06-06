@@ -15,12 +15,13 @@ import {
     GlobalOutlined
 } from '@ant-design/icons';
 import Link from 'next/link';
-import logo from '@/assets/images/logo_institucion.png'
+import logo from '@/assets/images/logo_institucion.png';
 import { useUserContext } from '@/assets/useUserContext';
-import { usePathname } from 'next/navigation'
-import useTranslation from 'next-translate/useTranslation'
+import { usePathname } from 'next/navigation';
+import useTranslation from 'next-translate/useTranslation';
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { useMediaQuery } from 'react-responsive';
 
 const { Header, Sider, Content } = Layout;
 
@@ -32,9 +33,16 @@ export default function MenuWrapper({ children }) {
     const lang = t;
     const [hydrated, setHydrated] = useState(false);
 
+    // Define the media query for screen size md and smaller
+    const isMdOrSmaller = useMediaQuery({ query: '(max-width: 992px)' });
+
     useEffect(() => {
         setHydrated(true);
-    }, []);
+        // Automatically collapse the sidebar when the screen is md or smaller
+        if (isMdOrSmaller) {
+            setCollapsed(true);
+        }
+    }, [isMdOrSmaller]);
 
     const toggle = () => {
         setCollapsed(!collapsed);
@@ -81,7 +89,6 @@ export default function MenuWrapper({ children }) {
             label: <Link style={{ color: 'fff', textDecoration: 'none' }} href="/dashboard/">Crear</Link>,
         }
     ];
-
 
     const languageMenu = (
         <Menu>
@@ -136,7 +143,6 @@ export default function MenuWrapper({ children }) {
                     <Spin spinning={!hydrated}>
                         {children}
                     </Spin>
-
                 </Content>
             </Layout>
         </Layout>
