@@ -30,13 +30,9 @@ export default function IndexPaciente() {
     const [origData, setOrigData] = useState([]);
     const [searchIndex, setSearchIndex] = useState([]);
     const [loading, setLoading] = useState(true);
-    const { user } = useUserContext();
     const { t } = useTranslation('home');
     const lang = t;
 
-    useEffect(() => {
-        toIndex(user);
-    }, [user]);
 
     const handleDelete = async (id) => {
         try {

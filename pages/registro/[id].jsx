@@ -9,11 +9,7 @@ import axios from 'axios';
 import useTranslation from 'next-translate/useTranslation';
 
 export default function DetailEspecialista({ especialista }) {
-    const { user } = useUserContext();
 
-    useEffect(() => {
-        toIndex(user);
-    }, [user]);
 
     const { t } = useTranslation('home');
     const lang = t;

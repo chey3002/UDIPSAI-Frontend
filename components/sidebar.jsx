@@ -22,6 +22,7 @@ import useTranslation from 'next-translate/useTranslation';
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useMediaQuery } from 'react-responsive';
+import { toIndex } from '@/utils/toindex/toindex';
 
 const { Header, Sider, Content } = Layout;
 
@@ -35,6 +36,10 @@ export default function MenuWrapper({ children }) {
 
     // Define the media query for screen size md and smaller
     const isMdOrSmaller = useMediaQuery({ query: '(max-width: 992px)' });
+
+    useEffect(() => {
+        toIndex(user);
+    }, [user]);
 
     useEffect(() => {
         setHydrated(true);

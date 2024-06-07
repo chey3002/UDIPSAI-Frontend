@@ -7,10 +7,6 @@ import { redirect } from 'next/navigation';
 import { toIndex } from '../../utils/toindex/toindex';
 
 export default function Home() {
-    const { user } = useUserContext();
 
-    useEffect(() => {
-        toIndex(user);
-    }, [user]);
     return <MenuWrapper><Dashboard /></MenuWrapper>;
 }

@@ -56,13 +56,13 @@ const Register = ({ especialista }) => {
                 segundoNombre: especialista.segundoNombre,
                 primerApellido: especialista.primerApellido,
                 segundoApellido: especialista.segundoApellido,
-                id_especialidad: { value: especialista.especialidad.id, label: especialista.especialidad.area },
+                id_especialidad: especialista.especialidad ? { value: especialista.especialidad?.id, label: especialista.especialidad?.area } : null,
                 esPasante: especialista.esPasante,
                 inicioPasantia: especialista.inicioPasantia,
                 finPasantia: especialista.finPasantia,
-                cedulaEspecialistaAsignado: {
-                    value: especialista.especialistaAsignado.cedula, label: `${especialista.especialistaAsignado.primerNombre} ${especialista.especialistaAsignado.primerApellido}`
-                },
+                cedulaEspecialistaAsignado: especialista.especialistaAsignado ? {
+                    value: especialista.especialistaAsignado?.cedula, label: `${especialista.especialistaAsignado?.primerNombre} ${especialista.especialistaAsignado?.primerApellido}`
+                } : null,
                 imagen: especialista.imagen,
             });
             setFormData({
@@ -71,11 +71,11 @@ const Register = ({ especialista }) => {
                 segundoNombre: especialista.segundoNombre,
                 primerApellido: especialista.primerApellido,
                 segundoApellido: especialista.segundoApellido,
-                id_especialidad: especialista.especialidad.id,
+                id_especialidad: especialista.especialidad?.id,
                 esPasante: especialista.esPasante,
                 inicioPasantia: especialista.inicioPasantia,
                 finPasantia: especialista.finPasantia,
-                cedulaEspecialistaAsignado: especialista.especialistaAsignado.cedula,
+                cedulaEspecialistaAsignado: especialista.especialistaAsignado?.cedula,
                 imagen: especialista.imagen,
             });
         }
@@ -84,7 +84,7 @@ const Register = ({ especialista }) => {
     const handleSubmit = async () => {
         setLoading(true);
         await delay(500);
-        const values = form.getFieldsValue();
+        const values = { ...formData };
         if (!values.esPasante) {
             values.inicioPasantia = null;
             values.finPasantia = null;
@@ -94,18 +94,18 @@ const Register = ({ especialista }) => {
             // Update
             await axios.put(process.env['BASE_URL'] + 'api/especialista/actualizar/' + values.cedula, values)
                 .then(() => {
-                    window.location.href = '/register';
+                    window.location.href = '/registro';
                 }).catch((error) => {
                     console.log(error);
                 });
         } else {
             // Create
-            const request = { ...formData, pacienteEstado: 1 };
+            const request = { ...values, pacienteEstado: 1 };
             delete request.id;
-            await axios.post(process.env['BASE_URL'] + 'api/especialista/insertar', request)
+            await axios.post(process.env['BASE_URL'] + 'api/especialista/insertar', values)
                 .then((response) => {
                     console.log(response);
-                    window.location.href = '/register';
+                    window.location.href = '/registro';
                 }).catch((error) => {
                     console.log(error);
                 });
@@ -160,11 +160,11 @@ const Register = ({ especialista }) => {
             segundoNombre: form.getFieldValue().segundoNombre,
             primerApellido: form.getFieldValue().primerApellido,
             segundoApellido: form.getFieldValue().segundoApellido,
-            id_especialidad: form.getFieldValue().id_especialidad.value,
+            id_especialidad: form.getFieldValue().id_especialidad ? form.getFieldValue().id_especialidad?.value : null,
             esPasante: form.getFieldValue().esPasante,
             inicioPasantia: form.getFieldValue().inicioPasantia,
             finPasantia: form.getFieldValue().finPasantia,
-            cedulaEspecialistaAsignado: form.getFieldValue().cedulaEspecialistaAsignado.value,
+            cedulaEspecialistaAsignado: form.getFieldValue().cedulaEspecialistaAsignado ? form.getFieldValue().cedulaEspecialistaAsignado?.value : null,
             contrasena: form.getFieldValue().contrasena,
             contrasenaConfirm: form.getFieldValue().contrasenaConfirm,
         });

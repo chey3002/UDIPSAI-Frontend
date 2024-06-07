@@ -8,11 +8,7 @@ import useTranslation from 'next-translate/useTranslation'
 import Register from '@/components/register/register';
 
 export default function EditarEspecialista({ especialista }) {
-    const { user } = useUserContext();
 
-    useEffect(() => {
-        toIndex(user);
-    }, [user]);
     const { t } = useTranslation('home');
     const lang = t;
     if (especialista === null) {
