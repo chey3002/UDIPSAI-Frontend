@@ -70,4 +70,8 @@
     "listarEspecialistas": "Listar Especialistas",
     "institucionesEducativas": "Instituciones Educativas",
     "listarInstituciones": "Listar Instituciones",
+    "nombreInstitucion": "Nombre de la Institución",
+    "direccion": "Dirección",
+    "jornada": "Jornada",
+    "tipoInstitucion": "Tipo de Institución"
 }
