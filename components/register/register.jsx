@@ -36,7 +36,7 @@ const Register = ({ especialista }) => {
     useEffect(() => {
         const fetchEspecialistas = async () => {
             try {
-                const response = await axios.get(`${process.env['BASE_URL']}api/especialistas/activos`);
+                const response = await axios.get(`${process.env['BASE_URL']}api/especialistas/activos/nopasantes`);
                 setEspecialistas(response.data);
                 console.log(response.data);
             } catch (error) {

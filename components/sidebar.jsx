@@ -10,6 +10,7 @@ import {
     MenuFoldOutlined,
     UserOutlined,
     BookOutlined,
+    HomeOutlined,
     SettingOutlined,
     LogoutOutlined,
     GlobalOutlined
@@ -69,6 +70,23 @@ export default function MenuWrapper({ children }) {
                     icon: <UserOutlined />,
                     label: <Link style={{ color: 'fff', textDecoration: 'none' }} href="/pacientes/new">{lang('nuevo')}</Link>,
                 },
+                {
+                    key: '7',
+                    icon: <HomeOutlined />,
+                    label: <span>{lang('institucionesEducativas')}</span>,
+                    children: [
+                        {
+                            key: '8',
+                            icon: <SettingOutlined />,
+                            label: <Link style={{ color: 'fff', textDecoration: 'none' }} href="/pacientes/institucionesEducativas">{lang('listarInstituciones')}</Link>,
+                        },
+                        {
+                            key: '9',
+                            icon: <SettingOutlined />,
+                            label: <Link style={{ color: 'fff', textDecoration: 'none' }} href="/pacientes/institucionesEducativas/new">{lang('nuevo')}</Link>,
+                        }
+                    ]
+                }
             ]
         },
         {
@@ -88,11 +106,6 @@ export default function MenuWrapper({ children }) {
                 },
             ]
         },
-        {
-            key: '6',
-            icon: <UserOutlined />,
-            label: <Link style={{ color: 'fff', textDecoration: 'none' }} href="/dashboard/">Crear</Link>,
-        }
     ];
 
     const languageMenu = (

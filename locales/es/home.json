@@ -65,5 +65,9 @@
     "register_button": "Registrarse",
     "register_button_loading": "Registrando...",
     "register_error": "Error al registrar usuario",
-    "register_login": "Inicia sesión"
+    "register_login": "Inicia sesión",
+    "especialistas": "Especialistas",
+    "listarEspecialistas": "Listar Especialistas",
+    "institucionesEducativas": "Instituciones Educativas",
+    "listarInstituciones": "Listar Instituciones",
 }
