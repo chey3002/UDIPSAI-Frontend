@@ -131,7 +131,7 @@ export default function MenuWrapper({ children }) {
                         <Image src={logo} width={collapsed ? 80 : 200} alt="UcacueLogo" />
                     </Link>
                 </div>
-                <Menu mode="inline" defaultSelectedKeys={['1']} items={menuItems} />
+                <Menu mode="vertical" defaultSelectedKeys={['1']} items={menuItems} />
             </Sider>
             <Layout className="site-layout" style={{ marginLeft: collapsed ? 80 : 200 }}>
                 <Header className="site-layout-background" style={{ padding: 0, background: '#fff', zIndex: 0 }}>

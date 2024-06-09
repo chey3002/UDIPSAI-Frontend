@@ -10,7 +10,7 @@ import useTranslation from 'next-translate/useTranslation';
 
 export default function DetailEspecialista({ especialista }) {
 
-
+    console.log(especialista);
     const { t } = useTranslation('home');
     const lang = t;
 
@@ -54,7 +54,7 @@ export default function DetailEspecialista({ especialista }) {
     return (
         <MenuWrapper setLang={true}>
             <Card>
-                <Card.Meta title={<h1>{lang('register_title')} {especialista.cedula}</h1>} />
+                <Card.Meta title={<h1>{lang('informacion_especialista')} {especialista.cedula}</h1>} />
                 <div>
                     <Row gutter={16}>
                         <Col span={8}>
@@ -95,7 +95,7 @@ export default function DetailEspecialista({ especialista }) {
                                 </Col>
                                 <Col span={12}>
                                     <Card title={lang('informacionDelEspecialista_profesional')}>
-                                        <p><strong>{lang('register_id_especialidad')}</strong> {especialista.id_especialidad}</p>
+                                        <p><strong>{lang('register_id_especialidad')}</strong> {especialista.especialidad.area}</p>
                                         <p><strong>{lang('register_esPasante')}</strong> {especialista.esPasante ? 'Sí' : 'No'}</p>
                                     </Card>
                                 </Col>
@@ -103,8 +103,6 @@ export default function DetailEspecialista({ especialista }) {
                                     <Card title={lang('informacionDelPasante_pasantia')}>
                                         <p><strong>{lang('informacionDelPasante_inicioPasantia')}</strong> {especialista.inicioPasantia}</p>
                                         <p><strong>{lang('informacionDelPasante_finPasantia')}</strong> {especialista.finPasantia}</p>
-                                        <p><strong>{lang('informacionDelPasante_id_especialidad')}</strong> {especialista.id_especialidad}</p>
-                                        <p><strong>{lang('informacionDelPasante_esPasante')}</strong> {especialista.esPasante ? 'Sí' : 'No'}</p>
                                         <p><strong>{lang('informacionDelPasante_cedulaEspecialistaAsignado')}</strong> {especialista.cedulaEspecialistaAsignado}</p>
                                     </Card>
                                 </Col>) : ''

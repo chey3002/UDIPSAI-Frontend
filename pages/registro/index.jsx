@@ -18,7 +18,7 @@ const fetchEspecialistas = async (searchVal) => {
         const { data } = await axios.get(process.env['BASE_URL'] + 'api/especialistas/activos').catch((error) => {
             console.log(error);
         });
-
+        console.log(data);
         return { data };
     } catch (error) {
         console.log(error);
@@ -34,7 +34,7 @@ export default function IndexEspecialistas() {
     const { t } = useTranslation('home');
     const lang = t;
 
- 
+
 
     const handleDelete = async (id) => {
         try {
@@ -96,7 +96,7 @@ export default function IndexEspecialistas() {
             <Card>
                 <Row style={{ marginTop: '10px' }} justify="space-between">
                     <Col xs={6} md="auto">
-                        <h1>{lang('listarPacientes')}</h1>
+                        <h1>{lang('listarEspecialistas')}</h1>
                     </Col>
                     <Col>
                         <Link href='/registro/new/'>
@@ -123,19 +123,29 @@ export default function IndexEspecialistas() {
                     dataSource={filteredData}
                     columns={[
                         {
-                            title: lang('numeroDeFicha'),
+                            title: lang('cedula'),
                             dataIndex: 'cedula',
                             key: 'cedula',
                         },
                         {
-                            title: lang('informacionDelPaciente_nombre'),
+                            title: lang('primerNombre'),
                             dataIndex: 'primerNombre',
                             key: 'primerNombre',
                         },
                         {
-                            title: lang('informacionDelPaciente_nombre'),
+                            title: lang('primerApellido'),
                             dataIndex: 'primerApellido',
                             key: 'primerApellido',
+                        },
+                        {
+                            title: lang('especialidad'),
+                            dataIndex: 'especialidad',
+                            key: 'especialidad',
+                            render: (text) => (
+                                <span>
+                                    {text.area}
+                                </span>
+                            )
                         },
                         {
                             title: lang('acciones'),

@@ -52,8 +52,8 @@ export default function DetailInstitucion({ institucion }) {
             <Card>
                 <Card.Meta title={<h1>{lang('detallesInstitucion')} {institucion.nombreInstitucion}</h1>} />
                 <div>
-                    <Row gutter={16}>
-                        <Col span={8}>
+                    <Row >
+                        <Col >
                             <div style={{ marginTop: '10px' }}>
                                 <Link href={`/pacientes/institucionesEducativas/edit/${institucion.id}`}>
                                     <Button type="primary" style={{ marginRight: '5px' }}>
@@ -69,19 +69,14 @@ export default function DetailInstitucion({ institucion }) {
                                 </Button>
                             </div>
                         </Col>
-                        <Col span={16}>
-                            <Row gutter={16}>
-                                <Col span={12}>
+                        <Col >
+                            <Row >
+                                <Col >
                                     <Card title={lang('informacionGeneral')}>
                                         <p><strong>{lang('nombreInstitucion')}</strong> {institucion.nombreInstitucion}</p>
                                         <p><strong>{lang('direccion')}</strong> {institucion.direccion}</p>
                                         <p><strong>{lang('jornada')}</strong> {institucion.jornada}</p>
                                         <p><strong>{lang('tipoInstitucion')}</strong> {institucion.tipoInstitucion}</p>
-                                    </Card>
-                                </Col>
-                                <Col span={12}>
-                                    <Card title={lang('estadoInstitucion')}>
-                                        <p><strong>{lang('institucionEstado')}</strong> {institucion.institucionEstado === 1 ? 'Activa' : 'Inactiva'}</p>
                                     </Card>
                                 </Col>
                             </Row>

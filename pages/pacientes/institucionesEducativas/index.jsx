@@ -130,11 +130,17 @@ export default function IndexInstituciones() {
                             title: lang('jornada'),
                             dataIndex: 'jornada',
                             key: 'jornada',
+                            render: (text) => (
+                                <span>{text == 1 ? 'Matutina' : text == 2 ? 'Vespertina' : 'Otro'}</span>
+                            )
                         },
                         {
                             title: lang('tipoInstitucion'),
                             dataIndex: 'tipoInstitucion',
                             key: 'tipoInstitucion',
+                            render: (text) => (
+                                <span>{text == 1 ? 'Fiscal' : text == 2 ? 'Fiscomisional' : text == 3 ? 'Particular' : 'Otro'}</span>
+                            )
                         },
                         {
                             title: lang('acciones'),

@@ -73,7 +73,7 @@ const FormInstitucion = ({ institucion }) => {
 
     return (
         <Card className='p-3'>
-            <Card title={lang('informacionDeInstitucion_title') + ": " + formState.id}>
+            <Card title={lang('informacionDeInstitucion_title')}>
                 <Form layout="vertical" onFinish={handleSubmit}>
                     <Card className='my-3' title={lang('informacionDeInstitucion_datosInstitucion')}>
                         <Row gutter={16}>
