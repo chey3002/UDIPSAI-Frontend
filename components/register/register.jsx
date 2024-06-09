@@ -92,7 +92,7 @@ const Register = ({ especialista }) => {
         }
         if (especialista) {
             // Update
-            await axios.put(process.env['BASE_URL'] + 'api/especialista/actualizar/' + values.cedula, values)
+            await axios.put(process.env['BASE_URL'] + 'api/especialistas/actualizar/' + values.cedula, values)
                 .then(() => {
                     window.location.href = '/registro';
                 }).catch((error) => {
@@ -100,9 +100,8 @@ const Register = ({ especialista }) => {
                 });
         } else {
             // Create
-            const request = { ...values, pacienteEstado: 1 };
-            delete request.id;
-            await axios.post(process.env['BASE_URL'] + 'api/especialista/insertar', values)
+            const request = { ...values, especialistaEstado: 1 };
+            await axios.post(process.env['BASE_URL'] + 'api/especialistas/insertar', request)
                 .then((response) => {
                     console.log(response);
                     window.location.href = '/registro';

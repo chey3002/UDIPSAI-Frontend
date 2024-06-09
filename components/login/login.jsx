@@ -7,6 +7,7 @@ import Router from 'next/router'
 import styles from "./login.module.css";
 import useTranslation from 'next-translate/useTranslation'
 import Image from "next/image";
+import axios from "axios";
 
 const { Password } = Input;
 
@@ -31,14 +32,30 @@ const Login = () => {
 
     const handleSubmit = async (event) => {
         setLoading(true);
-        await delay(500);
-        console.log(`Username: ${formData.username}, Password: ${formData.password}`);
-        if (formData.username === "admin" && formData.password === "admin") {
-            setUser({
-                ...formData,
-                username: formData.username,
-            });
+        const values = {
+            cedula: formData.username,
+            contrasena: formData.password
         }
+        console.log(`Username: ${formData.username}, Password: ${formData.password}`);
+        await axios.post(process.env['BASE_URL'] + 'api/especialistas/login', values)
+            .then((response) => {
+                console.log(response);
+                const usuario = { ...response.data };
+                setUser({
+                    ...usuario,
+                    username: usuario.primerNombre + " " + usuario.primerApellido,
+                });
+            }).catch((error) => {
+                console.log(error);
+                setShow(true);
+                setLoading(false);
+            });
+        // if (formData.username === "admin" && formData.password === "admin") {
+        //     setUser({
+        //         ...formData,
+        //         username: formData.username,
+        //     });
+        // }
         // const response = await axios.get(process.env['BASE_URL'] + 'api/pacientes/listar/')
         setLoading(false);
     };

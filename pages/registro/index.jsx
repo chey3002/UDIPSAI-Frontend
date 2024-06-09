@@ -143,7 +143,7 @@ export default function IndexEspecialistas() {
                             key: 'especialidad',
                             render: (text) => (
                                 <span>
-                                    {text.area}
+                                    {text?.area}
                                 </span>
                             )
                         },
