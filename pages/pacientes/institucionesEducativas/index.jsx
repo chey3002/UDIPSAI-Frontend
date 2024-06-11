@@ -112,11 +112,6 @@ export default function IndexInstituciones() {
                     dataSource={filteredData}
                     columns={[
                         {
-                            title: lang('id'),
-                            dataIndex: 'id',
-                            key: 'id',
-                        },
-                        {
                             title: lang('nombreInstitucion'),
                             dataIndex: 'nombreInstitucion',
                             key: 'nombreInstitucion',

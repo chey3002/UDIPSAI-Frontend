@@ -21,7 +21,7 @@ const FormPaciente = ({ paciente }) => {
         cedula: '',
         domicilio: '',
         telefono: '',
-        institucionEducativa: '',
+        institucionEducativa: null,
         tipoInstitucion: 1, // Replace with default value of
         jornada: 1, // Replace with default value of 
         anioEducacion: '',
@@ -35,23 +35,51 @@ const FormPaciente = ({ paciente }) => {
         celular: '',
         diagnostico: ''
     });
+    const [initialValues, setInitialValues] = useState({});
     useEffect(() => {
         if (paciente) {
             console.log(paciente);
+            setInitialValues({
+                ...formState,
+                ...paciente,
+                tipoInstitucion: paciente.tipoInstitucion?.toString() || 1,
+                jornada: paciente.jornada?.toString() || 1,
+                tieneDiscapacidad: paciente.tieneDiscapacidad?.toString() || 'no',
+                institucionEducativa: paciente.institucionEducativa ? { value: paciente.institucionEducativa.id, label: paciente.institucionEducativa.nombreInstitucion } : null,
+            });
             setFormState({
                 ...formState,
                 ...paciente,
-                tipoInstitucion: paciente.tipoInstitucion?.toString() || '1',
-                jornada: paciente.jornada?.toString() || '1',
-                tieneDiscapacidad: paciente.tieneDiscapacidad?.toString() || 'no'
+                tipoInstitucion: paciente.tipoInstitucion?.toString() || 1,
+                jornada: paciente.jornada?.toString() || 1,
+                tieneDiscapacidad: paciente.tieneDiscapacidad?.toString() || 'no',
+                institucionEducativa: paciente.institucionEducativa ? paciente.institucionEducativa.id : null,
+
             });
         }
+    }, []);
+    const [institucionesEducativas, setInstitucionesEducativas] = useState([]);
+
+    useEffect(() => {
+        const fetchInstituciones = async () => {
+            try {
+                const response = await axios.get(`${process.env['BASE_URL']}api/instituciones/listar`);
+                setInstitucionesEducativas(response.data);
+                console.log(response.data);
+            } catch (error) {
+                console.error('Error fetching instituciones educativas:', error);
+            }
+        };
+
+        fetchInstituciones();
     }, []);
 
     const { t } = useTranslation('home');
     const lang = t;
 
     const handleChange = (event) => {
+        console.log(event);
+        console.log(formState);
         setFormState({
             ...formState,
             [event.target.name]: event.target.value
@@ -59,6 +87,7 @@ const FormPaciente = ({ paciente }) => {
     };
 
     const handleChangeCheck = (event) => {
+
         setFormState({
             ...formState,
             [event.target.name]: event.target.checked
@@ -123,7 +152,7 @@ const FormPaciente = ({ paciente }) => {
     return (
         <Card className='p-3'>
             <Card title={lang('informacionDelPaciente_title') + ": " + formState.id}>
-                <Form layout="vertical" onFinish={handleSubmit}>
+                <Form layout="vertical" onFinish={handleSubmit} >
                     <Card className='my-3' title={lang('informacionDelPaciente_personal')}>
                         <Row gutter={16}>
                             <Col>
@@ -226,29 +255,42 @@ const FormPaciente = ({ paciente }) => {
                     <Card className='my-3' title={lang('informacionDelPaciente_title_educativa')}>
                         <Row gutter={16}>
                             <Col span={12}>
-                                <Form.Item label={lang('informacionDelPaciente_institucionEducativa')}>
-                                    <Input type="text" name="institucionEducativa" value={formState.institucionEducativa} onChange={handleChange} />
-                                </Form.Item>
-                            </Col>
-                            <Col span={12}>
-                                <Form.Item label={lang('informacionDelPaciente_direccionInstitucion')}>
-                                    <Input type="text" name="direccionInstitucion" value={formState.direccionInstitucion} onChange={handleChange} />
-                                </Form.Item>
-                            </Col>
-                            <Col span={12}>
-                                <Form.Item label={lang('informacionDelPaciente_jornada')}>
-                                    <Select name="jornada" value={formState.jornada} onChange={(value) => setFormState({ ...formState, jornada: value })}>
-                                        <Select.Option value={'1'}>Matutina</Select.Option>
-                                        <Select.Option value={'2'}>Despertina</Select.Option>
+                                <Form.Item
+                                    label={lang('informacionDelPaciente_institucionEducativa')}
+
+                                >
+                                    <Select
+                                        showSearch
+                                        name="institucionEducativa"
+
+                                        placeholder={lang('informacionDelPaciente_institucionEducativa')}
+                                        optionFilterProp="children"
+                                        filterOption={(input, option) =>
+                                            (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                                        }
+                                        onChange={(value) => setFormState({ ...formState, institucionEducativa: value })}
+                                        value={formState.institucionEducativa}
+
+                                    >
+                                        {institucionesEducativas.map(institucion => (
+                                            <Select.Option key={institucion.id} value={institucion.id}>
+                                                {institucion.nombreInstitucion}
+                                            </Select.Option>
+                                        ))}
+
                                     </Select>
                                 </Form.Item>
                             </Col>
+                            {formState.institucionEducativa ? <Col span={12}>
+                                <p><b>{lang('informacionDelPaciente_direccion')}:</b> {institucionesEducativas.find(institucion => institucion.id === formState.institucionEducativa)?.direccion}</p>
+                                <p><b>{lang('informacionDelPaciente_tipoInstitucion')}:</b> {institucionesEducativas.find(institucion => institucion.id == formState.institucionEducativa)?.tipoInstitucion == 1 ? 'Fiscal' : institucionesEducativas.find(institucion => institucion.id == formState.institucionEducativa)?.tipoInstitucion == 2 ? 'Fiscomisional' : institucionesEducativas.find(institucion => institucion.id == formState.institucionEducativa)?.tipoInstitucion == 3 ? 'Particular' : 'Otro'}</p>
+
+                            </Col> : <Col span={12}></Col>}
                             <Col span={12}>
-                                <Form.Item label={lang('informacionDelPaciente_tipoInstitucion')}>
-                                    <Select name="tipoInstitucion" value={formState.tipoInstitucion} onChange={(value) => setFormState({ ...formState, tipoInstitucion: value })}>
-                                        <Select.Option value={'1'}>Fiscal</Select.Option>
-                                        <Select.Option value={'2'}>Fiscomisional</Select.Option>
-                                        <Select.Option value={'3'}>Particular</Select.Option>
+                                <Form.Item label={lang('informacionDelPaciente_jornada')}>
+                                    <Select name="jornada" value={formState.jornada} onChange={(value) => setFormState({ ...formState, jornada: value })}>
+                                        <Select.Option value={1}>Matutina</Select.Option>
+                                        <Select.Option value={2}>Despertina</Select.Option>
                                     </Select>
                                 </Form.Item>
                             </Col>
