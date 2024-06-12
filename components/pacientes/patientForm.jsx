@@ -11,29 +11,31 @@ const { TextArea } = Input;
 const FormPaciente = ({ paciente }) => {
     const [formState, setFormState] = useState({
         id: 'Nueva Ficha',
-        fechaApertura: '',
-        proyecto: '',
-        imagen: null,
-        nombresApellidos: '',
-        ciudad: '',
-        fechaNacimiento: '',
-        edad: '',
-        cedula: '',
-        domicilio: '',
-        telefono: '',
-        institucionEducativa: null,
-        tipoInstitucion: 1, // Replace with default value of
-        jornada: 1, // Replace with default value of 
-        anioEducacion: '',
-        direccionInstitucion: '',
-        paralelo: '',
-        tieneDiscapacidad: 'no', // Replace with default value of 
-        portadorCarnet: false, // Replace with default value of 
-        motivoConsulta: '',
-        observaciones: '',
-        perteneceInclusion: '',
-        celular: '',
-        diagnostico: ''
+        "fechaApertura": "",
+        "pacienteEstado": 1,
+        "nombresApellidos": "",
+        "ciudad": "",
+        "fechaNacimiento": "",
+        "edad": "",
+        "cedula": "",
+        "domicilio": "",
+        "imagen": null,
+        "telefono": "",
+        "celular": "",
+        "institucionEducativa": null,
+        "proyecto": "",
+        "jornada": 1,
+        "anioEducacion": "",
+        "paralelo": "",
+        "perteneceInclusion": "",
+        "tieneDiscapacidad": "",
+        "portadorCarnet": false,
+        "diagnostico": "",
+        "motivoConsulta": "",
+        "observaciones": "",
+        "tipoDiscapacidad": "",
+        "detalleDiscapacidad": "",
+        "porcentajeDiscapacidad": 0
     });
     const [initialValues, setInitialValues] = useState({});
     useEffect(() => {
