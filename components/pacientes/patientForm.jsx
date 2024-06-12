@@ -246,6 +246,23 @@ const FormPaciente = ({ paciente }) => {
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
+                                <Form.Item label={lang('informacionDelPaciente_tipoDiscapacidad')}>
+                                    <Input type="text" name="tipoDiscapacidad" value={formState.tipoDiscapacidad} onChange={handleChange} />
+                                </Form.Item>
+
+                            </Col>
+                            <Col span={12}>
+                                <Form.Item label={lang('informacionDelPaciente_detalleDiscapacidad')}>
+                                    <Input type="text" name="detalleDiscapacidad" value={formState.detalleDiscapacidad} onChange={handleChange} />
+                                </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                                <Form.Item label={lang('informacionDelPaciente_porcentajeDiscapacidad')}>
+                                    <Input type="number" name="porcentajeDiscapacidad" value={formState.porcentajeDiscapacidad} onChange={handleChange} />
+                                </Form.Item>
+                            </Col>
+
+                            <Col span={12}>
                                 <Form.Item>
                                     <Checkbox name="portadorCarnet" checked={formState.portadorCarnet} onChange={handleChangeCheck}>
                                         {lang('informacionDelPaciente_portadorCarnet')}
