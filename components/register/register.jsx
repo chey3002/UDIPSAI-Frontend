@@ -83,8 +83,9 @@ const Register = ({ especialista }) => {
 
     const handleSubmit = async () => {
         setLoading(true);
-        await delay(500);
-        const values = { ...formData, especialistaEstado: 1 };
+        const values = {
+            ...form.getFieldValue(), especialistaEstado: 1
+        };
         if (!values.esPasante) {
             values.inicioPasantia = null;
             values.finPasantia = null;
@@ -94,8 +95,16 @@ const Register = ({ especialista }) => {
             // Update
             console.log('Updating:', values);
             await axios.put(process.env['BASE_URL'] + 'api/especialistas/actualizar/' + values.cedula, values)
-                .then(() => {
-                    window.location.href = '/registro';
+                .then((res) => {
+                    console.log(res);
+                    if (res.status === 200) {
+                        // window.location.href = '/registro';
+
+                    } else {
+                        console.log('Error updating especialista'
+
+                        );
+                    }
                 }).catch((error) => {
                     console.log(error);
                 });
@@ -160,11 +169,11 @@ const Register = ({ especialista }) => {
             segundoNombre: form.getFieldValue().segundoNombre,
             primerApellido: form.getFieldValue().primerApellido,
             segundoApellido: form.getFieldValue().segundoApellido,
-            especialidad: form.getFieldValue().especialidad ? form.getFieldValue().especialidad['value'] : null,
+            especialidad: form.getFieldValue().especialidad ? form.getFieldValue().especialidad.value : null,
             esPasante: form.getFieldValue().esPasante,
             inicioPasantia: form.getFieldValue().inicioPasantia,
             finPasantia: form.getFieldValue().finPasantia,
-            especialistaAsignado: form.getFieldValue().especialistaAsignado ? form.getFieldValue().especialistaAsignado : null,
+            especialistaAsignado: form.getFieldValue().especialistaAsignado ? form.getFieldValue().especialistaAsignado.value : null,
             contrasena: form.getFieldValue().contrasena,
             contrasenaConfirm: form.getFieldValue().contrasenaConfirm,
         });
@@ -269,14 +278,15 @@ const Register = ({ especialista }) => {
                                 filterOption={(input, option) =>
                                     (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
                                 }
+                                onChange={onChange}
                                 options={[
-                                    { value: '1', label: 'Coordinación' },
-                                    { value: '2', label: 'Secretaría' },
-                                    { value: '3', label: 'Psicología Educativa' },
-                                    { value: '4', label: 'Psicología Clínica' },
-                                    { value: '5', label: 'Terapia de Lenguaje y Fonoaudiología' },
-                                    { value: '6', label: 'Estimulación Temprana' },
-                                    { value: '7', label: 'Recuperación Pedagógica' },
+                                    { value: 1, label: 'Coordinación' },
+                                    { value: 2, label: 'Secretaría' },
+                                    { value: 3, label: 'Psicología Educativa' },
+                                    { value: 4, label: 'Psicología Clínica' },
+                                    { value: 5, label: 'Terapia de Lenguaje y Fonoaudiología' },
+                                    { value: 6, label: 'Estimulación Temprana' },
+                                    { value: 7, label: 'Recuperación Pedagógica' },
                                 ]}
                             />
                         </Form.Item>
