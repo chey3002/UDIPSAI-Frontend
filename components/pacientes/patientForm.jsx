@@ -123,7 +123,10 @@ const FormPaciente = ({ paciente }) => {
     const handleSubmit = async () => {
         if (paciente) {
             // Update
-            await axios.put(process.env['BASE_URL'] + 'api/pacientes/actualizar/' + formState.id, formState)
+            const request = { ...formState, pacienteEstado: 1 ,porcentajeDiscapacidad:parseInt(formState.porcentajeDiscapacidad)};
+            delete request.id
+
+            await axios.put(process.env['BASE_URL'] + 'api/pacientes/actualizar/' + formState.id, request)
                 .then(() => {
                     window.location.href = '/pacientes';
                 }).catch((error) => {
@@ -258,7 +261,7 @@ const FormPaciente = ({ paciente }) => {
                             </Col>
                             <Col span={12}>
                                 <Form.Item label={lang('informacionDelPaciente_porcentajeDiscapacidad')}>
-                                    <Input type="number" name="porcentajeDiscapacidad" value={formState.porcentajeDiscapacidad} onChange={handleChange} />
+                                    <Input type="number" name="porcentajeDiscapacidad" value={`${formState.porcentajeDiscapacidad}`} onChange={handleChange} />
                                 </Form.Item>
                             </Col>
 
