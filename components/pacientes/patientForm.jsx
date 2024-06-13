@@ -22,7 +22,7 @@ const FormPaciente = ({ paciente }) => {
         "imagen": null,
         "telefono": "",
         "celular": "",
-        "institucionEducativa": null,
+        "institucionEducativa": 1,
         "proyecto": "",
         "jornada": 1,
         "anioEducacion": "",
