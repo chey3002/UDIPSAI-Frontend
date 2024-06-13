@@ -12,7 +12,6 @@ const FormInstitucion = ({ institucion }) => {
         id: 'Nueva Institución',
         nombreInstitucion: '',
         direccion: '',
-        jornada: '1', // Matutina por defecto
         tipoInstitucion: '1', // Fiscal por defecto
     });
 
@@ -85,14 +84,6 @@ const FormInstitucion = ({ institucion }) => {
                             <Col span={12}>
                                 <Form.Item label={lang('informacionDeInstitucion_direccion')}>
                                     <Input type="text" name="direccion" value={formState.direccion} onChange={handleChange} />
-                                </Form.Item>
-                            </Col>
-                            <Col span={12}>
-                                <Form.Item label={lang('informacionDeInstitucion_jornada')}>
-                                    <Select name="jornada" value={formState.jornada} onChange={(value) => handleSelectChange('jornada', value)}>
-                                        <Select.Option value="1">Matutina</Select.Option>
-                                        <Select.Option value="2">Vespertina</Select.Option>
-                                    </Select>
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
