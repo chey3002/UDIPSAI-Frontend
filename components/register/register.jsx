@@ -91,6 +91,7 @@ const Register = ({ especialista }) => {
             values.finPasantia = null;
             values.especialistaAsignado = null;
         }
+        delete values.contrasenaConfirm;
         if (especialista) {
             // Update
             console.log('Updating:', values);
@@ -111,6 +112,7 @@ const Register = ({ especialista }) => {
         } else {
             // Create
             const request = { ...values, especialistaEstado: 1 };
+            delete request.cedula
             await axios.post(process.env['BASE_URL'] + 'api/especialistas/insertar', request)
                 .then((response) => {
                     console.log(response);
