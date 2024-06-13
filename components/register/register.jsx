@@ -99,7 +99,7 @@ const Register = ({ especialista }) => {
                 .then((res) => {
                     console.log(res);
                     if (res.status === 200) {
-                        // window.location.href = '/registro';
+                        window.location.href = '/registro';
 
                     } else {
                         console.log('Error updating especialista'
