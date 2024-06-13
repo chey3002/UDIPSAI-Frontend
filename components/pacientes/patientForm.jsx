@@ -45,7 +45,7 @@ const FormPaciente = ({ paciente }) => {
                 ...formState,
                 ...paciente,
                 tipoInstitucion: paciente.tipoInstitucion?.toString() || 1,
-                jornada: paciente.jornada?.toString() || 1,
+                jornada: paciente.jornada?.id || 1,
                 tieneDiscapacidad: paciente.tieneDiscapacidad?.toString() || 'no',
                 institucionEducativa: paciente.institucionEducativa ? { value: paciente.institucionEducativa.id, label: paciente.institucionEducativa.nombreInstitucion } : null,
             });
