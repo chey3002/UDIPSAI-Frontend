@@ -56,13 +56,11 @@ const Register = ({ especialista }) => {
                 segundoNombre: especialista.segundoNombre,
                 primerApellido: especialista.primerApellido,
                 segundoApellido: especialista.segundoApellido,
-                especialidad: especialista.especialidad ? { value: especialista.especialidad?.id, label: especialista.especialidad?.area } : null,
+                especialidad: especialista.especialidad ? especialista.especialidad?.id : null,
                 esPasante: especialista.esPasante,
                 inicioPasantia: especialista.inicioPasantia,
                 finPasantia: especialista.finPasantia,
-                especialistaAsignado: especialista.especialistaAsignado ? {
-                    value: especialista.especialistaAsignado?.cedula, label: `${especialista.especialistaAsignado?.primerNombre} ${especialista.especialistaAsignado?.primerApellido}`
-                } : null,
+                especialistaAsignado: especialista.especialistaAsignado?.cedula,
                 imagen: especialista.imagen,
             });
             setFormData({
@@ -71,7 +69,7 @@ const Register = ({ especialista }) => {
                 segundoNombre: especialista.segundoNombre,
                 primerApellido: especialista.primerApellido,
                 segundoApellido: especialista.segundoApellido,
-                especialidad: especialista.especialidad?.id,
+                especialidad: especialista.especialidad ? especialista.especialidad?.id : null,
                 esPasante: especialista.esPasante,
                 inicioPasantia: especialista.inicioPasantia,
                 finPasantia: especialista.finPasantia,
@@ -123,10 +121,6 @@ const Register = ({ especialista }) => {
         setLoading(false);
     };
 
-    function delay(ms) {
-        return new Promise((resolve) => setTimeout(resolve, ms));
-    }
-
     const handleFileChange = (info) => {
         const file = info.fileList[0]?.originFileObj;
         if (!file) {
@@ -163,8 +157,8 @@ const Register = ({ especialista }) => {
     };
 
     const onChange = () => {
-        console.log(form.getFieldValue());
         setFormData({
+            ...formData,
             cedula: form.getFieldsValue().cedula,
             primerNombre: form.getFieldsValue().primerNombre,
             segundoNombre: form.getFieldValue().segundoNombre,
@@ -177,6 +171,7 @@ const Register = ({ especialista }) => {
             especialistaAsignado: form.getFieldValue().especialistaAsignado ? form.getFieldValue().especialistaAsignado.value : null,
             contrasena: form.getFieldValue().contrasena,
             contrasenaConfirm: form.getFieldValue().contrasenaConfirm,
+
         });
     };
 

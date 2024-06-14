@@ -53,9 +53,9 @@ const FormPaciente = ({ paciente }) => {
                 ...formState,
                 ...paciente,
                 tipoInstitucion: paciente.tipoInstitucion?.toString() || 1,
-                jornada: paciente.jornada?.toString() || 1,
+                jornada: paciente.jornada?.id || 1,
                 tieneDiscapacidad: paciente.tieneDiscapacidad?.toString() || 'no',
-                institucionEducativa: paciente.institucionEducativa ? paciente.institucionEducativa.id : null,
+                institucionEducativa: paciente.institucionEducativa ? paciente.institucionEducativa.id : 1,
 
             });
         }
@@ -123,7 +123,7 @@ const FormPaciente = ({ paciente }) => {
     const handleSubmit = async () => {
         if (paciente) {
             // Update
-            const request = { ...formState, pacienteEstado: 1 ,porcentajeDiscapacidad:parseInt(formState.porcentajeDiscapacidad)};
+            const request = { ...formState, pacienteEstado: 1, porcentajeDiscapacidad: parseInt(formState.porcentajeDiscapacidad) };
             delete request.id
 
             await axios.put(process.env['BASE_URL'] + 'api/pacientes/actualizar/' + formState.id, request)
