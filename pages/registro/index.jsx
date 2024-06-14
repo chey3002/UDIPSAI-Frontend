@@ -38,11 +38,11 @@ export default function IndexEspecialistas() {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(process.env['BASE_URL'] + `api/especialistas/eliminar/${id}`);
-            message.success(lang('pacienteEliminado'));
+            await axios.delete(process.env['BASE_URL'] + `api/especialistas/${id}`);
+            message.success(lang('especialistaEliminado'));
             window.location.href = '/registro';
         } catch (error) {
-            message.error(lang('errorEliminarPaciente'));
+            message.error(lang('errorEliminarEspecialista'));
             console.error(error);
         }
     };
@@ -50,7 +50,7 @@ export default function IndexEspecialistas() {
     const showDeleteConfirm = (id) => {
         Modal.confirm({
             title: lang('confirmarEliminacion'),
-            content: lang('seguroEliminar'),
+            content: lang('seguroEliminarEspecialista'),
             okText: lang('si'),
             okType: 'danger',
             cancelText: lang('no'),
