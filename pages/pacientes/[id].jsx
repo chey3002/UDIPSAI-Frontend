@@ -9,7 +9,7 @@ import axios from 'axios';
 import useTranslation from 'next-translate/useTranslation';
 
 export default function DetailPaciente({ paciente }) {
-
+    console.log(paciente);
 
     const { t } = useTranslation('home');
     const lang = t;
@@ -31,7 +31,6 @@ export default function DetailPaciente({ paciente }) {
         try {
             await axios.delete(process.env['BASE_URL'] + `api/pacientes/eliminar/${id}`);
             message.success(lang('pacienteEliminado'));
-            // Refetch or update data after deletion
             window.location.href = '/pacientes';
         } catch (error) {
             message.error(lang('errorEliminarPaciente'));
@@ -101,22 +100,22 @@ export default function DetailPaciente({ paciente }) {
                                 </Col>
                                 <Col span={12}>
                                     <Card title={lang('informacionDelPaciente_title_educativa')}>
-                                        <p><strong>{lang('informacionDelPaciente_institucionEducativa')}</strong> {paciente.institucionEducativa}</p>
-                                        <p><strong>{lang('informacionDelPaciente_tipoInstitucion')}</strong> {paciente.tipoInstitucion}</p>
-                                        <p><strong>{lang('informacionDelPaciente_jornada')}</strong> {paciente.jornada}</p>
+                                        <p><strong>{lang('informacionDelPaciente_institucionEducativa')}</strong> {paciente.institucionEducativa.nombreInstitucion}</p>
+                                        <p><strong>{lang('informacionDelPaciente_tipoInstitucion')}</strong> {paciente.institucionEducativa.tipoInstitucion}</p>
+                                        <p><strong>{lang('informacionDelPaciente_jornada')}</strong> {paciente.jornada.nombreJornada}</p>
                                         <p><strong>{lang('informacionDelPaciente_anioEducacion')}</strong> {paciente.anioEducacion}</p>
-                                        <p><strong>{lang('informacionDelPaciente_direccionInstitucion')}</strong> {paciente.direccionInstitucion}</p>
+                                        <p><strong>{lang('informacionDelPaciente_direccionInstitucion')}</strong> {paciente.institucionEducativa.direccion}</p>
                                         <p><strong>{lang('informacionDelPaciente_paralelo')}</strong> {paciente.paralelo}</p>
                                         <p><strong>{lang('informacionDelPaciente_presentaDiscapacidad')}</strong> {paciente.tieneDiscapacidad}</p>
-                                        <p><strong>{lang('informacionDelPaciente_diagnostico')}</strong> {paciente.portadorCarnet ? 'Sí' : 'No'}</p>
-                                        <p><strong>{lang('informacionDelPaciente_title_adicional')}</strong> {paciente.diagnostico}</p>
+                                        <p><strong>{lang('informacionDelPaciente_portadorCarnet')}</strong> {paciente.portadorCarnet ? 'Sí' : 'No'}</p>
+                                        <p><strong>{lang('informacionDelPaciente_diagnostico')}</strong> {paciente.diagnostico}</p>
                                         <p><strong>{lang('informacionDelPaciente_perteneceInclusion')}</strong> {paciente.perteneceInclusion}</p>
                                     </Card>
                                 </Col>
                                 <Col span={24}>
                                     <Card title={lang('informacionDelPaciente_motivoConsulta')}>
-                                        <p><strong>{lang('informacionDelPaciente_observaciones')}</strong> {paciente.motivoConsulta}</p>
-                                        <p><strong>{lang('informacionDelPaciente_perteneceInclusion')}</strong> {paciente.observaciones}</p>
+                                        <p><strong>{lang('informacionDelPaciente_motivoConsulta')}</strong> {paciente.motivoConsulta}</p>
+                                        <p><strong>{lang('informacionDelPaciente_observaciones')}</strong> {paciente.observaciones}</p>
                                     </Card>
                                 </Col>
                             </Row>
