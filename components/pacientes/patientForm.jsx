@@ -244,34 +244,39 @@ const FormPaciente = ({ paciente }) => {
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
-                                <Form.Item label={lang('informacionDelPaciente_diagnostico')}>
-                                    <Input type="text" name="diagnostico" value={formState.diagnostico} onChange={handleChange} />
-                                </Form.Item>
-                            </Col>
-                            <Col span={12}>
-                                <Form.Item label={lang('informacionDelPaciente_tipoDiscapacidad')}>
-                                    <Input type="text" name="tipoDiscapacidad" value={formState.tipoDiscapacidad} onChange={handleChange} />
-                                </Form.Item>
-
-                            </Col>
-                            <Col span={12}>
-                                <Form.Item label={lang('informacionDelPaciente_detalleDiscapacidad')}>
-                                    <Input type="text" name="detalleDiscapacidad" value={formState.detalleDiscapacidad} onChange={handleChange} />
-                                </Form.Item>
-                            </Col>
-                            <Col span={12}>
-                                <Form.Item label={lang('informacionDelPaciente_porcentajeDiscapacidad')}>
-                                    <Input type="number" name="porcentajeDiscapacidad" value={`${formState.porcentajeDiscapacidad}`} onChange={handleChange} />
-                                </Form.Item>
-                            </Col>
-
-                            <Col span={12}>
                                 <Form.Item>
                                     <Checkbox name="portadorCarnet" checked={formState.portadorCarnet} onChange={handleChangeCheck}>
                                         {lang('informacionDelPaciente_portadorCarnet')}
                                     </Checkbox>
                                 </Form.Item>
                             </Col>
+                            {formState.portadorCarnet ? <>
+                                <Col span={12}>
+                                    <Form.Item label={lang('informacionDelPaciente_tipoDiscapacidad')}>
+                                        <Select name="tipoDiscapacidad" value={formState.tipoDiscapacidad} onChange={(value) => setFormState({ ...formState, tipoDiscapacidad: value })}>
+                                            <Select.Option value="Intelectual">Intelectual</Select.Option>
+                                            <Select.Option value="Física">Física</Select.Option>
+                                            <Select.Option value="Auditiva">Auditiva</Select.Option>
+                                            <Select.Option value="Visual">Visual</Select.Option>
+                                            <Select.Option value="Psicosocial">Psicosocial</Select.Option>
+                                            <Select.Option value="Lenguaje">Lenguaje</Select.Option>
+                                            <Select.Option value="Múltiple">Múltiple</Select.Option>
+                                        </Select>
+                                    </Form.Item>
+                                </Col>
+
+                                <Col span={12}>
+                                    <Form.Item label={lang('informacionDelPaciente_detalleDiscapacidad')}>
+                                        <Input type="text" name="detalleDiscapacidad" value={formState.detalleDiscapacidad} onChange={handleChange} />
+                                    </Form.Item>
+                                </Col>
+                                <Col span={12}>
+                                    <Form.Item label={lang('informacionDelPaciente_porcentajeDiscapacidad')}>
+                                        <Input type="number" name="porcentajeDiscapacidad" value={`${formState.porcentajeDiscapacidad}`} onChange={handleChange} />
+                                    </Form.Item>
+                                </Col> </> : <Col span={12}></Col>}
+
+
                         </Row>
                     </Card>
                     <Card className='my-3' title={lang('informacionDelPaciente_title_educativa')}>
@@ -304,7 +309,7 @@ const FormPaciente = ({ paciente }) => {
                                 </Form.Item>
                             </Col>
                             {formState.institucionEducativa ? <Col span={12}>
-                                <p><b>{lang('informacionDelPaciente_direccion')}:</b> {institucionesEducativas.find(institucion => institucion.id === formState.institucionEducativa)?.direccion}</p>
+                                <p><b>{lang('informacionDelPaciente_direccionInstitucion')}:</b> {institucionesEducativas.find(institucion => institucion.id === formState.institucionEducativa)?.direccion}</p>
                                 <p><b>{lang('informacionDelPaciente_tipoInstitucion')}:</b> {institucionesEducativas.find(institucion => institucion.id == formState.institucionEducativa)?.tipoInstitucion == 1 ? 'Fiscal' : institucionesEducativas.find(institucion => institucion.id == formState.institucionEducativa)?.tipoInstitucion == 2 ? 'Fiscomisional' : institucionesEducativas.find(institucion => institucion.id == formState.institucionEducativa)?.tipoInstitucion == 3 ? 'Particular' : 'Otro'}</p>
 
                             </Col> : <Col span={12}></Col>}
