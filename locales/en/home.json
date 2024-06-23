@@ -103,5 +103,19 @@
     "register_cedulaEspecialistaAsignado": "Assigned Specialist",
     "register_selectEspecialista": "Select a specialist",
     "register_selectEspecialidad": "Select a specialty",
-    "register_subirImagen": "Upload Image"
+    "register_subirImagen": "Upload Image",
+    "cedulaEspecialista": "Specialist ID",
+    "nombreEspecialista": "Specialist Name",
+    "listarSeguimientos": "List Follow-ups",
+    "nuevoSeguimiento": "New Follow-up",
+    "editarSeguimiento": "Edit Follow-up",
+    "seguimientoCreado": "Follow-up successfully created",
+    "seguimientoActualizado": "Follow-up successfully updated",
+    "errorGuardarSeguimiento": "Error saving the follow-up",
+    "seguimientoEliminado": "Follow-up successfully deleted",
+    "errorEliminarSeguimiento": "Error deleting the follow-up",
+    "observacion": "Observation",
+    "observacionRequerida": "Observation is required",
+    "seguroEliminarSeguimiento": "Are you sure you want to delete this follow-up?",
+    "irASeguimientos": "Go to Follow-ups "
 }

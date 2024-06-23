@@ -1,9 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 import { useUserContext } from '@/assets/useUserContext';
 import MenuWrapper from '@/components/sidebar';
-import { toIndex } from '@/utils/toindex/toindex';
 import Link from 'next/link';
-import React, { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import React from 'react';
 import { Button, Card, Row, Col, Modal, message } from 'antd';
 import axios from 'axios';
 import useTranslation from 'next-translate/useTranslation';
@@ -13,6 +13,7 @@ export default function DetailPaciente({ paciente }) {
 
     const { t } = useTranslation('home');
     const lang = t;
+    const router = useRouter();
 
     if (paciente === null) {
         return (
@@ -51,6 +52,10 @@ export default function DetailPaciente({ paciente }) {
         });
     };
 
+    const goToSeguimientos = () => {
+        router.push(`/pacientes/seguimientos/${paciente.id}`);
+    };
+
     return (
         <MenuWrapper setLang={true}>
             <Card>
@@ -76,9 +81,13 @@ export default function DetailPaciente({ paciente }) {
                                 <Button
                                     type="danger"
                                     onClick={() => showDeleteConfirm(paciente.id)}
-                                    style={{ marginRight: '5px' }}
+                                    style={{ marginRight: '5px', color: "#fff", backgroundColor: "#dc3545" }}
                                 >
                                     <i className="bi bi-trash"></i> {lang('eliminar')}
+                                </Button>
+
+                                <Button type="default" onClick={goToSeguimientos} style={{ marginTop: '10px', color: "#fff", backgroundColor: "#edb100" }}>
+                                    {lang('irASeguimientos')} <i className='bi bi-arrow-right'></i>
                                 </Button>
                             </div>
                         </Col>
