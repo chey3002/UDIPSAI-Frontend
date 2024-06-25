@@ -9,8 +9,6 @@ import axios from 'axios';
 import useTranslation from 'next-translate/useTranslation';
 
 export default function DetailPaciente({ paciente }) {
-    console.log(paciente);
-
     const { t } = useTranslation('home');
     const lang = t;
     const router = useRouter();
@@ -56,6 +54,10 @@ export default function DetailPaciente({ paciente }) {
         router.push(`/pacientes/seguimientos/${paciente.id}`);
     };
 
+    const goToTests = () => {
+        router.push(`/pacientes/tests/${paciente.id}`);
+    };
+
     return (
         <MenuWrapper setLang={true}>
             <Card>
@@ -81,13 +83,15 @@ export default function DetailPaciente({ paciente }) {
                                 <Button
                                     type="danger"
                                     onClick={() => showDeleteConfirm(paciente.id)}
-                                    style={{ marginRight: '5px', color: "#fff", backgroundColor: "#dc3545" }}
+                                    style={{ marginRight: '5px', color: '#fff', backgroundColor: '#dc3545' }}
                                 >
                                     <i className="bi bi-trash"></i> {lang('eliminar')}
                                 </Button>
-
-                                <Button type="default" onClick={goToSeguimientos} style={{ marginTop: '10px', color: "#fff", backgroundColor: "#edb100" }}>
+                                <Button type="default" onClick={goToSeguimientos} style={{ marginTop: '10px', color: '#fff', backgroundColor: '#edb100' }}>
                                     {lang('irASeguimientos')} <i className='bi bi-arrow-right'></i>
+                                </Button>
+                                <Button type="default" onClick={goToTests} style={{ marginTop: '10px', color: '#fff', backgroundColor: '#28a745' }}>
+                                    {lang('irATests')} <i className='bi bi-arrow-right'></i>
                                 </Button>
                             </div>
                         </Col>
@@ -96,7 +100,7 @@ export default function DetailPaciente({ paciente }) {
                                 <Col span={12}>
                                     <Card title={lang('informacionDelPaciente_personal')}>
                                         <p><strong>{lang('informacionDelPaciente_fechaApertura')}</strong> {paciente.fechaApertura}</p>
-                                        <p><strong>{lang('informacionDelPaciente_proyecto')}</strong> {paciente.proyecto}</p>
+                                        <p><strong>{lang('informacionDelPaciente_proyecto')}</strong> {paciente.proyecto.nombre}</p>
                                         <p><strong>{lang('informacionDelPaciente_nombre')}</strong> {paciente.nombresApellidos}</p>
                                         <p><strong>{lang('informacionDelPaciente_ciudad')}</strong> {paciente.ciudad}</p>
                                         <p><strong>{lang('informacionDelPaciente_fechaNacimiento')}</strong> {paciente.fechaNacimiento}</p>
