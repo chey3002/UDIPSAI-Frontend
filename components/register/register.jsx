@@ -62,6 +62,8 @@ const Register = ({ especialista }) => {
                 finPasantia: especialista.finPasantia,
                 especialistaAsignado: especialista.especialistaAsignado?.cedula,
                 imagen: especialista.imagen,
+                contrasena: especialista.contrasena,
+                contrasenaConfirm: especialista.contrasena,
             });
             setFormData({
                 cedula: especialista.cedula,
@@ -75,6 +77,8 @@ const Register = ({ especialista }) => {
                 finPasantia: especialista.finPasantia,
                 especialistaAsignado: especialista.especialistaAsignado?.cedula,
                 imagen: especialista.imagen,
+                contrasena: especialista.contrasena,
+                contrasenaConfirm: especialista.contrasena,
             });
         }
     }, [especialista]);
