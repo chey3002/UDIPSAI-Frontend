@@ -16,8 +16,10 @@ export default function PacienteTests({ pacienteId }) {
     const { user } = useUserContext();
     const [tests, setTests] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [isClient, setIsClient] = useState(false);
 
     useEffect(() => {
+        setIsClient(true);
         fetchTests();
     }, []);
 
@@ -151,7 +153,7 @@ export default function PacienteTests({ pacienteId }) {
                     <Button type="primary" onClick={() => downloadDocument(record.documentoId, record.nombreArchivo)} style={{ color: "#fff", backgroundColor: "#007bff", marginLeft: 5 }}>
                         {lang('descargar')}
                     </Button>
-                    {user.cedula === record.especialista.cedula && (
+                    {isClient && user?.cedula === record.especialista?.cedula && (
                         <Button type="danger" onClick={() => showDeleteConfirm(record.id)} style={{ color: "#fff", backgroundColor: "#dc3545", marginLeft: 5 }}>
                             {lang('eliminar')}
                         </Button>
