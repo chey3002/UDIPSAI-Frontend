@@ -135,7 +135,7 @@ export default function PacienteTests({ pacienteId }) {
             title: lang('especialista'),
             dataIndex: 'especialista',
             key: 'especialista',
-            render: (especialista) => `${especialista.primerNombre + " " + especialista.primerApellido} (${especialista.especialidad.area})`,
+            render: (especialista) => `${especialista?.primerNombre + " " + especialista?.primerApellido} (${especialista?.especialidad?.area})`,
         },
         {
             title: lang('fecha'),
