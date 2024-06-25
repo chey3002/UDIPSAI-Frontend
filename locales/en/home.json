@@ -135,5 +135,6 @@
     "irATests": "Go to Tests",
     "arrastrarSubir": "Drag files here to upload",
     "errorAbrirDocumento": "Error opening document",
-    "errorDescargarDocumento": "Error downloading document"
+    "errorDescargarDocumento": "Error downloading document",
+    "informacionDelPaciente_perteneceAProyecto":"Belongs to project?"
 }

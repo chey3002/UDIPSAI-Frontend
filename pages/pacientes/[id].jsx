@@ -134,7 +134,10 @@ const DetailPaciente = ({ paciente }) => {
                                 <Col span={12}>
                                     <Card title={lang('informacionDelPaciente_personal')}>
                                         <p><strong>{lang('informacionDelPaciente_fechaApertura')}</strong> {paciente.fechaApertura}</p>
-                                        <p><strong>{lang('informacionDelPaciente_proyecto')}</strong> {paciente.proyecto.nombre}</p>
+                                        {paciente.perteneceAProyecto?<>
+                                            <p><strong>{lang('informacionDelPaciente_proyecto')}</strong> {paciente.proyecto}</p>
+                                            </>:<></>}
+                                        
                                         <p><strong>{lang('informacionDelPaciente_nombre')}</strong> {paciente.nombresApellidos}</p>
                                         <p><strong>{lang('informacionDelPaciente_ciudad')}</strong> {paciente.ciudad}</p>
                                         <p><strong>{lang('informacionDelPaciente_fechaNacimiento')}</strong> {paciente.fechaNacimiento}</p>

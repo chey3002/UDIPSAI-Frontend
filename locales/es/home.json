@@ -135,5 +135,6 @@
     "irATests": "Ir a Tests",
     "arrastrarSubir": "Arrastre archivos aquí para subir",
     "errorAbrirDocumento": "Error al abrir el documento",
-    "errorDescargarDocumento": "Error al descargar el documento"
+    "errorDescargarDocumento": "Error al descargar el documento",
+    "informacionDelPaciente_perteneceAProyecto":"¿Pertenece a proyecto?"
 }

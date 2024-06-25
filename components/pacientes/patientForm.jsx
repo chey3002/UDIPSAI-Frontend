@@ -35,7 +35,8 @@ const FormPaciente = ({ paciente }) => {
         "observaciones": "",
         "tipoDiscapacidad": "",
         "detalleDiscapacidad": "",
-        "porcentajeDiscapacidad": 0
+        "porcentajeDiscapacidad": 0,
+        "perteneceAProyecto":false,
     });
     const [initialValues, setInitialValues] = useState({});
     useEffect(() => {
@@ -173,9 +174,15 @@ const FormPaciente = ({ paciente }) => {
                                 <Form.Item label={lang('informacionDelPaciente_fechaApertura')}>
                                     <Input type="date" name="fechaApertura" value={formState.fechaApertura} onChange={handleChange} />
                                 </Form.Item>
-                                <Form.Item label={lang('informacionDelPaciente_proyecto')}>
-                                    <Input type="text" name="proyecto" value={formState.proyecto} onChange={handleChange} />
+                                <Form.Item>
+                                    <Checkbox name="perteneceAProyecto" checked={formState.perteneceAProyecto} onChange={handleChangeCheck}>
+                                        {lang('informacionDelPaciente_perteneceAProyecto')}
+                                    </Checkbox>
                                 </Form.Item>
+                                {formState.perteneceAProyecto?<>
+                                    <Form.Item label={lang('informacionDelPaciente_proyecto')}>
+                                    <Input type="text" name="proyecto" value={formState.proyecto} onChange={handleChange} />
+                                </Form.Item></>:<></>}
                                 <Form.Item label={lang('informacionDelPaciente_subirImagen')}>
                                     <Upload
                                         accept='image/*'
