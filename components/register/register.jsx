@@ -197,7 +197,7 @@ const Register = ({ especialista }) => {
                 )}
                 <Col style={{ marginTop: '16px', textAlign: 'center' }}>
                     <img
-                        src={formData.imagen ? `data:image/jpeg;base64,${formData.imagen}` : 'https://as1.ftcdn.net/v2/jpg/01/28/56/34/1000_F_128563441_kn96kL8fUOtfZlBRBV4kATepeGXuiLzI.jpg'}
+                        src={formData.imagen ? `data:image/jpeg;base64,${formData.imagen}` : 'https://www.shareicon.net/data/128x128/2016/06/25/786525_people_512x512.png'}
                         alt="avatar"
                         style={{ objectFit: 'cover', borderRadius: '15px', border: '3px solid #00ff00' }}
                         width="160"

@@ -60,7 +60,7 @@ export default function DetailEspecialista({ especialista }) {
                         <Col span={8}>
                             <div className="flex justify-content-center align-content-center">
                                 <img
-                                    src={especialista.imagen ? `data:image/jpeg;base64, ${especialista.imagen}` : 'https://as1.ftcdn.net/v2/jpg/01/28/56/34/1000_F_128563441_kn96kL8fUOtfZlBRBV4kATepeGXuiLzI.jpg'}
+                                    src={especialista.imagen ? `data:image/jpeg;base64, ${especialista.imagen}` : 'https://www.shareicon.net/data/128x128/2016/06/25/786525_people_512x512.png'}
                                     style={{ objectFit: 'cover', borderRadius: '15px', border: '3px solid #0044ff', marginLeft: 'auto' }}
                                     alt="avatar"
                                     width="240"

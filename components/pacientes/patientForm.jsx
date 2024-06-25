@@ -163,7 +163,7 @@ const FormPaciente = ({ paciente }) => {
                         <Row gutter={16}>
                             <Col>
                                 <img
-                                    src={formState.imagen ? `data:image/jpeg;base64, ${formState.imagen}` : 'https://as1.ftcdn.net/v2/jpg/01/28/56/34/1000_F_128563441_kn96kL8fUOtfZlBRBV4kATepeGXuiLzI.jpg'}
+                                    src={formState.imagen ? `data:image/jpeg;base64, ${formState.imagen}` : 'https://www.shareicon.net/data/128x128/2016/06/25/786525_people_512x512.png'}
                                     style={{ objectFit: 'cover', borderRadius: '15px', border: '3px solid #0044ff' }}
                                     alt="avatar"
                                     width="160"
