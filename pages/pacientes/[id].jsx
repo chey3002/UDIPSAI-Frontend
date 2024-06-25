@@ -5,10 +5,58 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { Button, Card, Row, Col, Modal, message } from 'antd';
+import { EditOutlined, DeleteOutlined, RightOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import useTranslation from 'next-translate/useTranslation';
 
-export default function DetailPaciente({ paciente }) {
+const buttonStyle = {
+    marginRight: '10px',
+    marginBottom: '10px',
+    color: '#fff',
+};
+
+const EditButton = ({ pacienteId, lang }) => (
+    <Link href={`/pacientes/edit/${pacienteId}`}>
+        <Button type="primary" icon={<EditOutlined />} style={buttonStyle}>
+            {lang('editar')}
+        </Button>
+    </Link>
+);
+
+const DeleteButton = ({ onDelete, lang }) => (
+    <Button
+        type="danger"
+        icon={<DeleteOutlined />}
+        onClick={onDelete}
+        style={{ ...buttonStyle, backgroundColor: '#dc3545' }}
+    >
+        {lang('eliminar')}
+    </Button>
+);
+
+const SeguimientosButton = ({ onClick, lang }) => (
+    <Button
+        type="default"
+        icon={<RightOutlined />}
+        onClick={onClick}
+        style={{ ...buttonStyle, backgroundColor: '#edb100' }}
+    >
+        {lang('irASeguimientos')}
+    </Button>
+);
+
+const TestsButton = ({ onClick, lang }) => (
+    <Button
+        type="default"
+        icon={<RightOutlined />}
+        onClick={onClick}
+        style={{ ...buttonStyle, backgroundColor: '#28a745' }}
+    >
+        {lang('irATests')}
+    </Button>
+);
+
+const DetailPaciente = ({ paciente }) => {
     const { t } = useTranslation('home');
     const lang = t;
     const router = useRouter();
@@ -74,25 +122,11 @@ export default function DetailPaciente({ paciente }) {
                                     height="300"
                                 />
                             </div>
-                            <div style={{ marginTop: '10px' }}>
-                                <Link href={`/pacientes/edit/${paciente.id}`}>
-                                    <Button type="primary" style={{ marginRight: '5px' }}>
-                                        {lang('editar')}
-                                    </Button>
-                                </Link>
-                                <Button
-                                    type="danger"
-                                    onClick={() => showDeleteConfirm(paciente.id)}
-                                    style={{ marginRight: '5px', color: '#fff', backgroundColor: '#dc3545' }}
-                                >
-                                    <i className="bi bi-trash"></i> {lang('eliminar')}
-                                </Button>
-                                <Button type="default" onClick={goToSeguimientos} style={{ marginTop: '10px', color: '#fff', backgroundColor: '#edb100' }}>
-                                    {lang('irASeguimientos')} <i className='bi bi-arrow-right'></i>
-                                </Button>
-                                <Button type="default" onClick={goToTests} style={{ marginTop: '10px', color: '#fff', backgroundColor: '#28a745' }}>
-                                    {lang('irATests')} <i className='bi bi-arrow-right'></i>
-                                </Button>
+                            <div style={{ marginTop: '10px', display: 'flex', flexWrap: 'wrap' }}>
+                                <EditButton pacienteId={paciente.id} lang={lang} />
+                                <DeleteButton onDelete={() => showDeleteConfirm(paciente.id)} lang={lang} />
+                                <SeguimientosButton onClick={goToSeguimientos} lang={lang} />
+                                <TestsButton onClick={goToTests} lang={lang} />
                             </div>
                         </Col>
                         <Col span={16}>
@@ -155,3 +189,5 @@ export const getServerSideProps = async (context) => {
         },
     };
 };
+
+export default DetailPaciente;
