@@ -8,6 +8,7 @@ import axios from 'axios';
 import useTranslation from 'next-translate/useTranslation';
 import FileUploadButton from '@/components/fileUploadButton';
 import DownloadTemplateButton from '@/components/downloadTemplateButton';
+import { useTableSearch } from '@/utils/useTableSearch';
 
 const fetchEspecialistas = async (searchVal) => {
     try {
@@ -27,10 +28,8 @@ const fetchEspecialistas = async (searchVal) => {
 
 export default function IndexEspecialistas() {
     const [searchVal, setSearchVal] = useState('');
-    const [filteredData, setFilteredData] = useState([]);
     const [origData, setOrigData] = useState([]);
     const [searchIndex, setSearchIndex] = useState([]);
-    const [loading, setLoading] = useState(true);
     const { t } = useTranslation('home');
     const lang = t;
 
@@ -46,6 +45,10 @@ export default function IndexEspecialistas() {
             console.error(error);
         }
     };
+    const { filteredData, loading } = useTableSearch({
+        searchVal,
+        retrieve: fetchEspecialistas
+    });
 
     const showDeleteConfirm = (id) => {
         Modal.confirm({
@@ -72,22 +75,18 @@ export default function IndexEspecialistas() {
     const fetchData = async () => {
         const { data: users } = await fetchEspecialistas(searchVal);
         setOrigData(users);
-        setFilteredData(users);
         const searchInd = users.map(user => {
             const allValues = crawl(user);
             return { allValues: allValues.toString() };
         });
         setSearchIndex(searchInd);
-        if (users) setLoading(false);
     };
 
     const onSearch = () => {
-        setLoading(true);
         fetchData();
     };
 
     useEffect(() => {
-        setLoading(true);
         fetchData();
     }, []);
 
@@ -112,11 +111,6 @@ export default function IndexEspecialistas() {
                             onChange={e => setSearchVal(e.target.value)}
                             placeholder={lang('buscar')}
                         />
-                    </Col>
-                    <Col xs={24} sm={12}>
-                        <Button onClick={onSearch} type="primary" icon={<i className="bi bi-search"></i>}>
-                            {lang('buscar')}
-                        </Button>
                     </Col>
                 </Row>
                 <Table
