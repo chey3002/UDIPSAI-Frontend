@@ -134,10 +134,10 @@ const DetailPaciente = ({ paciente }) => {
                                 <Col span={12}>
                                     <Card title={lang('informacionDelPaciente_personal')}>
                                         <p><strong>{lang('informacionDelPaciente_fechaApertura')}</strong> {paciente.fechaApertura}</p>
-                                        {paciente.perteneceAProyecto?<>
+                                        {paciente.perteneceAProyecto ? <>
                                             <p><strong>{lang('informacionDelPaciente_proyecto')}</strong> {paciente.proyecto}</p>
-                                            </>:<></>}
-                                        
+                                        </> : <></>}
+
                                         <p><strong>{lang('informacionDelPaciente_nombre')}</strong> {paciente.nombresApellidos}</p>
                                         <p><strong>{lang('informacionDelPaciente_ciudad')}</strong> {paciente.ciudad}</p>
                                         <p><strong>{lang('informacionDelPaciente_fechaNacimiento')}</strong> {paciente.fechaNacimiento}</p>
@@ -150,11 +150,11 @@ const DetailPaciente = ({ paciente }) => {
                                 </Col>
                                 <Col span={12}>
                                     <Card title={lang('informacionDelPaciente_title_educativa')}>
-                                        <p><strong>{lang('informacionDelPaciente_institucionEducativa')}</strong> {paciente.institucionEducativa.nombreInstitucion}</p>
-                                        <p><strong>{lang('informacionDelPaciente_tipoInstitucion')}</strong> {paciente.institucionEducativa.tipoInstitucion}</p>
-                                        <p><strong>{lang('informacionDelPaciente_jornada')}</strong> {paciente.jornada.nombreJornada}</p>
+                                        <p><strong>{lang('informacionDelPaciente_institucionEducativa')}</strong> {paciente.institucionEducativa?.nombreInstitucion}</p>
+                                        <p><strong>{lang('informacionDelPaciente_tipoInstitucion')}</strong> {paciente.institucionEducativa?.tipoInstitucion}</p>
+                                        <p><strong>{lang('informacionDelPaciente_jornada')}</strong> {paciente.jornada?.nombreJornada}</p>
                                         <p><strong>{lang('informacionDelPaciente_anioEducacion')}</strong> {paciente.anioEducacion}</p>
-                                        <p><strong>{lang('informacionDelPaciente_direccionInstitucion')}</strong> {paciente.institucionEducativa.direccion}</p>
+                                        <p><strong>{lang('informacionDelPaciente_direccionInstitucion')}</strong> {paciente.institucionEducativa?.direccion}</p>
                                         <p><strong>{lang('informacionDelPaciente_paralelo')}</strong> {paciente.paralelo}</p>
                                         <p><strong>{lang('informacionDelPaciente_presentaDiscapacidad')}</strong> {paciente.tieneDiscapacidad}</p>
                                         <p><strong>{lang('informacionDelPaciente_portadorCarnet')}</strong> {paciente.portadorCarnet ? 'Sí' : 'No'}</p>
@@ -179,6 +179,7 @@ const DetailPaciente = ({ paciente }) => {
 
 export const getServerSideProps = async (context) => {
     const res = await axios.get(process.env['HOST'] + 'api/pacientes/listar/' + context.query.id);
+    console.log(res.data);
     if (res.data === null) {
         return {
             props: {

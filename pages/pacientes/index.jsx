@@ -87,6 +87,7 @@ export default function IndexPaciente() {
     useEffect(() => {
         setLoading(true);
         fetchData();
+        console.log(origData)
     }, []);
 
     return (

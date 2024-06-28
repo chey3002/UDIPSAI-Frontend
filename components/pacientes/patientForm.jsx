@@ -36,7 +36,7 @@ const FormPaciente = ({ paciente }) => {
         "tipoDiscapacidad": "",
         "detalleDiscapacidad": "",
         "porcentajeDiscapacidad": 0,
-        "perteneceAProyecto":false,
+        "perteneceAProyecto": false,
     });
     const [initialValues, setInitialValues] = useState({});
     useEffect(() => {
@@ -45,6 +45,7 @@ const FormPaciente = ({ paciente }) => {
             setInitialValues({
                 ...formState,
                 ...paciente,
+                id: paciente.id,
                 tipoInstitucion: paciente.tipoInstitucion?.toString() || 1,
                 jornada: paciente.jornada?.id || 1,
                 tieneDiscapacidad: paciente.tieneDiscapacidad?.toString() || 'no',
@@ -53,6 +54,7 @@ const FormPaciente = ({ paciente }) => {
             setFormState({
                 ...formState,
                 ...paciente,
+                id: paciente.id,
                 tipoInstitucion: paciente.tipoInstitucion?.toString() || 1,
                 jornada: paciente.jornada?.id || 1,
                 tieneDiscapacidad: paciente.tieneDiscapacidad?.toString() || 'no',
@@ -179,10 +181,10 @@ const FormPaciente = ({ paciente }) => {
                                         {lang('informacionDelPaciente_perteneceAProyecto')}
                                     </Checkbox>
                                 </Form.Item>
-                                {formState.perteneceAProyecto?<>
+                                {formState.perteneceAProyecto ? <>
                                     <Form.Item label={lang('informacionDelPaciente_proyecto')}>
-                                    <Input type="text" name="proyecto" value={formState.proyecto} onChange={handleChange} />
-                                </Form.Item></>:<></>}
+                                        <Input type="text" name="proyecto" value={formState.proyecto} onChange={handleChange} />
+                                    </Form.Item></> : <></>}
                                 <Form.Item label={lang('informacionDelPaciente_subirImagen')}>
                                     <Upload
                                         accept='image/*'
