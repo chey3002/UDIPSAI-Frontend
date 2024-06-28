@@ -87,6 +87,7 @@ export default function IndexSeguimientos({ paciente, seguimientos }) {
             const fechaActual = new Date().toISOString().split('T')[0];
             values.paciente = { id: paciente.id };
             values.fecha = fechaActual;
+            values.estado = '1'
             values.especialista = { cedula: user.cedula };
             if (currentSeguimiento) {
                 await axios.put(`${process.env['BASE_URL']}api/seguimientos/${currentSeguimiento.id}`, values);

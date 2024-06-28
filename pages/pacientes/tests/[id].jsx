@@ -7,6 +7,7 @@ import axios from 'axios';
 import { UploadOutlined } from '@ant-design/icons';
 import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
+import { act } from 'react';
 
 const { Dragger } = Upload;
 
@@ -59,10 +60,12 @@ export default function PacienteTests({ pacienteId }) {
                     const newTest = {
                         paciente: { id: pacienteId },
                         especialista: { cedula: user.cedula },
+                        activo: '1',
                         nombreArchivo: file.name,
                         fecha: new Date().toISOString().split('T')[0],
                         contenido: base64Content,
                     };
+
 
                     await axios.post(process.env['BASE_URL'] + 'api/tests', newTest);
                     message.success(lang('testSubido'));
