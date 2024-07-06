@@ -34,6 +34,7 @@ export default function MenuWrapper({ children }) {
     const { t } = useTranslation('home');
     const lang = t;
     const [hydrated, setHydrated] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     // Define the media query for screen size md and smaller
     const isMdOrSmaller = useMediaQuery({ query: '(max-width: 992px)' });
@@ -48,6 +49,7 @@ export default function MenuWrapper({ children }) {
         if (isMdOrSmaller) {
             setCollapsed(true);
         }
+        setLoading(false); // Simulate content load completion
     }, [isMdOrSmaller]);
 
     const toggle = () => {
@@ -123,6 +125,14 @@ export default function MenuWrapper({ children }) {
         </Menu>
     );
 
+    if (loading) {
+        return (
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                <Spin size="large" />
+            </div>
+        );
+    }
+
     return (
         <Layout style={{ height: '100vh' }}>
             <Sider trigger={null} collapsible collapsed={collapsed} style={{ padding: 0, background: '#fff', position: 'fixed', left: 0, zIndex: 1, minHeight: '100vh' }}>
@@ -158,9 +168,7 @@ export default function MenuWrapper({ children }) {
                     </div>
                 </Header>
                 <Content style={{ margin: '24px 16px', padding: 24, background: '#fff', minHeight: 280, zIndex: 0, height: '100%', overflow: 'auto' }}>
-                    <Spin spinning={!hydrated}>
-                        {children}
-                    </Spin>
+                    {children}
                 </Content>
             </Layout>
         </Layout>

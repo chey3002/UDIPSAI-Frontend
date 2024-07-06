@@ -3,9 +3,9 @@ import { useUserContext } from '@/assets/useUserContext';
 import MenuWrapper from '@/components/sidebar';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React from 'react';
-import { Button, Card, Row, Col, Modal, message } from 'antd';
-import { EditOutlined, DeleteOutlined, RightOutlined } from '@ant-design/icons';
+import React, { useState } from 'react';
+import { Button, Card, Row, Col, Modal, message, Upload } from 'antd';
+import { EditOutlined, DeleteOutlined, RightOutlined, UploadOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import useTranslation from 'next-translate/useTranslation';
 
@@ -60,6 +60,7 @@ const DetailPaciente = ({ paciente }) => {
     const { t } = useTranslation('home');
     const lang = t;
     const router = useRouter();
+    const [uploading, setUploading] = useState(false);
 
     if (paciente === null) {
         return (
@@ -104,6 +105,82 @@ const DetailPaciente = ({ paciente }) => {
 
     const goToTests = () => {
         router.push(`/pacientes/tests/${paciente.id}`);
+    };
+
+    const handleUpload = async (file) => {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+            setUploading(true);
+            await axios.post(process.env['BASE_URL'] + `api/pacientes/${paciente.id}/documento`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            message.success(lang('archivoSubido'));
+        } catch (error) {
+            message.error(lang('errorSubirArchivo'));
+        } finally {
+            setUploading(false);
+        }
+    };
+
+    const openDocument = async (documentoId, nombreArchivo) => {
+        try {
+            const response = await axios.get(process.env['BASE_URL'] + `api/documentos/${documentoId}`);
+            const { contenido } = response.data;
+            const blob = new Blob([Uint8Array.from(atob(contenido), c => c.charCodeAt(0))], { type: 'application/pdf' });
+            const url = URL.createObjectURL(blob);
+            window.open(url, '_blank');
+        } catch (error) {
+            message.error(lang('errorAbrirDocumento'));
+        }
+    };
+
+    const downloadDocument = async (documentoId, nombreArchivo) => {
+        try {
+            const response = await axios.get(process.env['BASE_URL'] + `api/documentos/${documentoId}`);
+            const { contenido } = response.data;
+            const blob = new Blob([Uint8Array.from(atob(contenido), c => c.charCodeAt(0))], { type: 'application/pdf' });
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${paciente.nombresApellidos}.pdf`;
+            a.click();
+        } catch (error) {
+            message.error(lang('errorDescargarDocumento'));
+        }
+    };
+
+    const handleDeleteDocument = async () => {
+        try {
+            await axios.delete(process.env['BASE_URL'] + `api/pacientes/documentos/${paciente.id}`);
+            message.success(lang('documentoEliminado'));
+        } catch (error) {
+            message.error(lang('errorEliminarDocumento'));
+        }
+    };
+
+    const showDeleteDocumentConfirm = () => {
+        Modal.confirm({
+            title: lang('confirmarEliminacionDocumento'),
+            content: lang('seguroEliminarDocumento'),
+            okText: lang('si'),
+            okType: 'danger',
+            cancelText: lang('no'),
+            onOk() {
+                handleDeleteDocument();
+            },
+        });
+    };
+
+    const uploadProps = {
+        name: 'file',
+        accept: 'application/pdf',
+        customRequest: ({ file }) => handleUpload(file),
+        showUploadList: false,
     };
 
     return (
@@ -166,6 +243,29 @@ const DetailPaciente = ({ paciente }) => {
                                     <Card title={lang('informacionDelPaciente_motivoConsulta')}>
                                         <p><strong>{lang('informacionDelPaciente_motivoConsulta')}</strong> {paciente.motivoConsulta}</p>
                                         <p><strong>{lang('informacionDelPaciente_observaciones')}</strong> {paciente.observaciones}</p>
+                                    </Card>
+                                </Col>
+                                <Col span={24}>
+                                    <Card title="Ficha diagnostica">
+                                        <p>Documento de diagnóstico proveniente de la institución educativa del paciente</p>
+                                        <Upload {...uploadProps}>
+                                            <Button icon={<UploadOutlined />} loading={uploading} disabled={uploading}>
+                                                {lang('subirArchivo')}
+                                            </Button>
+                                        </Upload>
+                                        {paciente.fichaDiagnosticaId && (
+                                            <>
+                                                <Button type="link" onClick={() => openDocument(paciente.fichaDiagnosticaId, `${paciente.nombresApellidos}.pdf`)} style={{ color: "#17a2b8" }}>
+                                                    {lang('abrir')}
+                                                </Button>
+                                                <Button type="primary" onClick={() => downloadDocument(paciente.fichaDiagnosticaId, `${paciente.nombresApellidos}.pdf`)} style={{ color: "#fff", backgroundColor: "#007bff", marginLeft: 5 }}>
+                                                    {lang('descargar')}
+                                                </Button>
+                                                <Button type="danger" onClick={showDeleteDocumentConfirm} style={{ color: "#fff", backgroundColor: "#dc3545", marginLeft: 5 }}>
+                                                    {lang('eliminar')}
+                                                </Button>
+                                            </>
+                                        )}
                                     </Card>
                                 </Col>
                             </Row>
