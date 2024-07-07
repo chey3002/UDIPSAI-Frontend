@@ -113,12 +113,17 @@ const DetailPaciente = ({ paciente }) => {
 
         try {
             setUploading(true);
-            await axios.post(process.env['BASE_URL'] + `api/pacientes/${paciente.id}/documento`, formData, {
+            const resp = await axios.post(process.env['BASE_URL'] + `api/pacientes/${paciente.id}/documento`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
             message.success(lang('archivoSubido'));
+            //response: "Documento subido exitosamente con ID: "+id
+            paciente.fichaDiagnostica = {
+                id: resp.data.split(' ')[5],
+
+            };
         } catch (error) {
             message.error(lang('errorSubirArchivo'));
         } finally {
@@ -158,6 +163,7 @@ const DetailPaciente = ({ paciente }) => {
         try {
             await axios.delete(process.env['BASE_URL'] + `api/pacientes/documentos/${paciente.id}`);
             message.success(lang('documentoEliminado'));
+            window.location.reload();
         } catch (error) {
             message.error(lang('errorEliminarDocumento'));
         }
@@ -253,12 +259,12 @@ const DetailPaciente = ({ paciente }) => {
                                                 {lang('subirArchivo')}
                                             </Button>
                                         </Upload>
-                                        {paciente.fichaDiagnosticaId && (
+                                        {paciente.fichaDiagnostica && (
                                             <>
-                                                <Button type="link" onClick={() => openDocument(paciente.fichaDiagnosticaId, `${paciente.nombresApellidos}.pdf`)} style={{ color: "#17a2b8" }}>
+                                                <Button type="link" onClick={() => openDocument(paciente.fichaDiagnostica.id, `${paciente.nombresApellidos}.pdf`)} style={{ color: "#17a2b8" }}>
                                                     {lang('abrir')}
                                                 </Button>
-                                                <Button type="primary" onClick={() => downloadDocument(paciente.fichaDiagnosticaId, `${paciente.nombresApellidos}.pdf`)} style={{ color: "#fff", backgroundColor: "#007bff", marginLeft: 5 }}>
+                                                <Button type="primary" onClick={() => downloadDocument(paciente.fichaDiagnostica.id, `${paciente.nombresApellidos}.pdf`)} style={{ color: "#fff", backgroundColor: "#007bff", marginLeft: 5 }}>
                                                     {lang('descargar')}
                                                 </Button>
                                                 <Button type="danger" onClick={showDeleteDocumentConfirm} style={{ color: "#fff", backgroundColor: "#dc3545", marginLeft: 5 }}>
