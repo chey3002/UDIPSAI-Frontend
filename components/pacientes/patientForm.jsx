@@ -37,6 +37,7 @@ const FormPaciente = ({ paciente }) => {
         "detalleDiscapacidad": "",
         "porcentajeDiscapacidad": 0,
         "perteneceAProyecto": false,
+        "sede": "Cuenca"
     });
     const [initialValues, setInitialValues] = useState({});
     useEffect(() => {
@@ -194,6 +195,12 @@ const FormPaciente = ({ paciente }) => {
                                     >
                                         <Button icon={<UploadOutlined />}>{lang('informacionDelPaciente_subirImagen')}</Button>
                                     </Upload>
+                                </Form.Item>
+                                <Form.Item label={lang('informacionDelPaciente_sede')}>
+                                    <Select name="sede" value={formState.sede} onChange={(value) => setFormState({ ...formState, sede: value })}>
+                                        <Select.Option value="Cuenca">Cuenca</Select.Option>
+                                        <Select.Option value="Azogues">Azogues</Select.Option>
+                                    </Select>
                                 </Form.Item>
                             </Col>
                         </Row>

@@ -229,6 +229,7 @@ const DetailPaciente = ({ paciente }) => {
                                         <p><strong>{lang('informacionDelPaciente_domicilio')}</strong> {paciente.domicilio}</p>
                                         <p><strong>{lang('informacionDelPaciente_telefono')}</strong> {paciente.telefono}</p>
                                         <p><strong>{lang('informacionDelPaciente_celular')}</strong> {paciente.celular}</p>
+                                        <p><strong>{lang('informacionDelPaciente_sede')}</strong> {paciente.sede}</p>
                                     </Card>
                                 </Col>
                                 <Col span={12}>

@@ -152,9 +152,9 @@ export default function IndexPaciente() {
                             key: 'telefono',
                         },
                         {
-                            title: lang('informacionDelPaciente_celular'),
-                            dataIndex: 'celular',
-                            key: 'celular',
+                            title: lang('informacionDelPaciente_sede'),
+                            dataIndex: 'sede',
+                            key: 'sede',
                         },
                         {
                             title: lang('acciones'),
