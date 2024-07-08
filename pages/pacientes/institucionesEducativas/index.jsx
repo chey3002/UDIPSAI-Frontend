@@ -7,6 +7,7 @@ import useTranslation from 'next-translate/useTranslation';
 
 const fetchInstituciones = async (searchVal) => {
     try {
+        formData.append('sede', '');
         const { data } = await axios.get(process.env['BASE_URL'] + 'api/instituciones/listar').catch((error) => {
             console.log(error);
         });

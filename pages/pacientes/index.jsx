@@ -1,5 +1,5 @@
 import MenuWrapper from '@/components/sidebar';
-import { Input, Table, Modal, message, Button, Card, Row, Col } from 'antd';
+import { Input, Table, Modal, message, Button, Card, Row, Col, Select, Form } from 'antd';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useUserContext } from '@/assets/useUserContext';
@@ -9,11 +9,11 @@ import useTranslation from 'next-translate/useTranslation';
 import FileUploadButton from '@/components/fileUploadButton';
 import DownloadTemplateButton from '@/components/downloadTemplateButton';
 
-const fetchPacientes = async (searchVal) => {
+const fetchPacientes = async (searchVal, sede) => {
     try {
         const formData = new FormData();
         formData.append('search', searchVal);
-
+        formData.append('sede', sede);
         const { data } = await axios.post(process.env['BASE_URL'] + 'api/pacientes/buscar', formData).catch((error) => {
             console.log(error);
         });
@@ -30,6 +30,7 @@ export default function IndexPaciente() {
     const [origData, setOrigData] = useState([]);
     const [searchIndex, setSearchIndex] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [sede, setSede] = useState('');
     const { t } = useTranslation('home');
     const lang = t;
 
@@ -68,7 +69,7 @@ export default function IndexPaciente() {
     };
 
     const fetchData = async () => {
-        const { data: users } = await fetchPacientes(searchVal);
+        const { data: users } = await fetchPacientes(searchVal, sede);
         setOrigData(users);
         setFilteredData(users);
         const searchInd = users.map(user => {
@@ -87,7 +88,6 @@ export default function IndexPaciente() {
     useEffect(() => {
         setLoading(true);
         fetchData();
-        console.log(origData)
     }, []);
 
     return (
@@ -127,6 +127,20 @@ export default function IndexPaciente() {
                             {lang('buscar')}
                         </Button>
                     </Col>
+
+                </Row>
+                <Row>
+                    <Col >
+                        <Form.Item label={lang('informacionDelPaciente_sede')}>
+
+                            <Select name="sede" value={sede} onChange={(value) => setSede(value)} style={{ width: '200px' }}>
+                                <Select.Option value="">Todos</Select.Option>
+                                <Select.Option value="Cuenca">Cuenca</Select.Option>
+                                <Select.Option value="Azogues">Azogues</Select.Option>
+                            </Select>
+                        </Form.Item>
+                    </Col>
+
                 </Row>
                 <Table
                     dataSource={filteredData}
