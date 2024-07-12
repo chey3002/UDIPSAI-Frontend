@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from 'antd';
 import { DownloadOutlined } from '@ant-design/icons';
+import useTranslation from 'next-translate/useTranslation';
 
 const DownloadTemplateButton = () => {
     const handleDownload = () => {
@@ -11,7 +12,8 @@ const DownloadTemplateButton = () => {
         link.click();
         document.body.removeChild(link);
     };
-
+    const { t } = useTranslation('home');
+    const lang = t;
     return (
         <Button
             type="primary"
@@ -20,7 +22,7 @@ const DownloadTemplateButton = () => {
             className=""
             style={{ backgroundColor: '#1D9A6C', borderColor: '#1D9A6C' }}
         >
-            Descargar Plantilla
+            {lang('descargarPlantilla')}
         </Button>
     );
 };

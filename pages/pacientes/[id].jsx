@@ -253,11 +253,11 @@ const DetailPaciente = ({ paciente }) => {
                                     </Card>
                                 </Col>
                                 <Col span={24}>
-                                    <Card title="Ficha diagnostica">
-                                        <p>Documento de diagnóstico proveniente de la institución educativa del paciente</p>
+                                    <Card title={lang('fichaDiagnostica')}>
+                                        <p>{lang('descripcionFichaDiagnostica')}</p>
                                         <Upload {...uploadProps}>
                                             <Button icon={<UploadOutlined />} loading={uploading} disabled={uploading}>
-                                                {lang('subirArchivo')}
+                                                {lang('Subir_Archivo')}
                                             </Button>
                                         </Upload>
                                         {paciente.fichaDiagnostica && (

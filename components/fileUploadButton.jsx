@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Upload, Button, message, Row, Col } from 'antd';
 import { UploadOutlined, FileExcelOutlined, UploadOutlined as UploadIcon } from '@ant-design/icons';
+import useTranslation from 'next-translate/useTranslation';
 
 const FileUploadButton = () => {
     const [fileList, setFileList] = useState([]);
@@ -25,7 +26,8 @@ const FileUploadButton = () => {
             message.error('Error al subir el archivo: ' + error.message);
         }
     };
-
+    const { t } = useTranslation('home');
+    const lang = t;
     const props = {
         onRemove: file => {
             setFileList(prevFileList => {
@@ -53,7 +55,7 @@ const FileUploadButton = () => {
             <Row gutter={16}>
                 <Col>
                     <Upload {...props}>
-                        <Button icon={<FileExcelOutlined />}>Seleccionar Archivo</Button>
+                        <Button icon={<FileExcelOutlined />}>{lang('Seleccionar_Archivo')}</Button>
                     </Upload>
                 </Col>
                 <Col>
@@ -62,7 +64,7 @@ const FileUploadButton = () => {
                         onClick={handleUpload}
                         disabled={fileList.length === 0}
                     >
-                        <UploadIcon /> Subir Archivo
+                        <UploadIcon /> {lang('Subir_Archivo')}
                     </Button>
                 </Col>
             </Row>
