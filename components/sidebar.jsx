@@ -135,7 +135,22 @@ export default function MenuWrapper({ children }) {
 
     return (
         <Layout style={{ height: '100vh' }}>
-            <Sider trigger={null} collapsible collapsed={collapsed} style={{ padding: 0, background: '#fff', position: 'fixed', left: 0, zIndex: 1, minHeight: '100vh' }}>
+            <Sider
+                trigger={null}
+                collapsible
+                collapsed={collapsed}
+                collapsedWidth={isMdOrSmaller ? 0 : 80} // Hide sidebar completely on md and smaller screens
+                style={{
+                    padding: 0,
+                    background: '#fff',
+                    position: 'fixed',
+                    left: 0,
+                    zIndex: 1,
+                    minHeight: '100vh',
+                    width: isMdOrSmaller && collapsed ? 0 : 200, // Hide sidebar completely on md and smaller screens
+                    transition: 'width 0.2s'
+                }}
+            >
                 <div style={{ display: 'grid', justifyContent: 'center', margin: '16px 0' }}>
                     <Link href="/dashboard/">
                         <Image src={logo} width={collapsed ? 80 : 200} alt="UcacueLogo" />
@@ -143,7 +158,7 @@ export default function MenuWrapper({ children }) {
                 </div>
                 <Menu mode="vertical" defaultSelectedKeys={['1']} items={menuItems} />
             </Sider>
-            <Layout className="site-layout" style={{ marginLeft: collapsed ? 80 : 200 }}>
+            <Layout className="site-layout" style={{ marginLeft: isMdOrSmaller && collapsed ? 0 : (collapsed ? 80 : 200) }}>
                 <Header className="site-layout-background" style={{ padding: 0, background: '#fff', zIndex: 0 }}>
                     {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
                         className: 'trigger',

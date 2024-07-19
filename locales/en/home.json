@@ -148,5 +148,61 @@
     "listarSeguimientos": "List Follow-ups",
     "nuevoSeguimiento": "New Follow-up",
     "seguimientoCreado": "Follow-up created successfully",
-    "seguimientoEliminado": "Follow-up deleted successfully"
+    "seguimientoEliminado": "Follow-up deleted successfully",
+    "udipsai_title": "Diagnostic, Psychopedagogical Research and Inclusion Support Unit (UDIPSAI)",
+    "mision_title": "Mission",
+    "mision_text": "We are a Diagnostic, Psychopedagogical Research and Inclusion Support Unit that provides specialized educational services in psychopedagogical evaluation for students with special educational needs, associated or not with disabilities, in initial education, basic education, high school, and higher education, to promote the development of their potential, facilitating inclusion and adaptation to the educational system.",
+    "vision_title": "Vision",
+    "vision_text": "To be a reference Unit for psychodiagnosis and inclusion support in Zone 6, recognized nationally and internationally, composed of a transdisciplinary team of professionals committed to the principles of equity and inclusion to foster attention to diversity and education for all.",
+    "objetivos_title": "Objectives",
+    "dataObjetivos": [
+        "Psychopedagogical Evaluation.",
+        "Psychological evaluation and treatment.",
+        "Speech therapy evaluation and treatment.",
+        "Pedagogical recovery in basic skills.",
+        "Early stimulation.",
+        "Support for the inclusion of students with special educational needs, associated or not with disabilities, in the levels of initial, basic, high school, and university education.",
+        "Psychopedagogical counseling for teachers and parents.",
+        "Coverage in Zone 6 and areas of influence of the Catholic University of Cuenca."
+    ],
+    "valores_title": "Values",
+    "dataValores": [
+        "Respect: for the individual differences of all human beings, especially students, considering their right to independence.",
+        "Commitment to the needs of our users and dedication to supporting and helping students in their learning process.",
+        "Responsibility: Individualized attention to students until their leveling and adaptation to learning facilitates the successful achievement of their goals.",
+        "High ethical principles that guarantee the effectiveness of the therapeutic relationship, considering good judgment, professional competence, and effectiveness.",
+        "Great respect for human dignity and value.",
+        "Honesty with our users.",
+        "We are aware of the human potential to grow, change, and develop."
+    ],
+    "areas_cuenca_title": "Areas of Attention Cuenca",
+    "dataAreasCuenca": [
+        "Educational Psychology",
+        "Clinical Psychology",
+        "Speech Therapy",
+        "Pedagogical Recovery",
+        "Early Stimulation",
+        "Dentistry",
+        "Social Work"
+    ],
+    "areas_azogues_title": "Areas of Attention Azogues",
+    "dataAreasAzogues": [
+        "Educational Psychology",
+        "Clinical Psychology",
+        "Speech Therapy",
+        "Pedagogical Recovery",
+        "Teaching and Interpretation in Sign Language",
+        "Physical Activity and Sports Pedagogy",
+        "Social Work"
+    ],
+    "beneficiarios_title": "Beneficiaries",
+    "beneficiarios_directos_title": "Direct",
+    "beneficiarios_directos_text": "In Cuenca, there are 4156 and in Azogues 350 students with special educational needs, associated or not with disabilities, in the levels of initial, basic, high school, and higher education of Zone 6 and areas of influence of the Catholic University of Cuenca.",
+    "beneficiarios_indirectos_title": "Indirect",
+    "dataBeneficiariosIndirectos": [
+        "Parents or legal guardians",
+        "Teachers of the educational institutions.",
+        "Students performing their pre-professional practices and Community Engagement from different careers of the Catholic University of Cuenca and other universities.",
+        "Tutor teachers of the different careers of the Catholic University of Cuenca and other universities."
+    ]
 }

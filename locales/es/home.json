@@ -150,5 +150,61 @@
     "listarSeguimientos": "Listar Seguimientos",
     "nuevoSeguimiento": "Nuevo Seguimiento",
     "seguimientoCreado": "Seguimiento creado correctamente",
-    "seguimientoEliminado": "Seguimiento eliminado correctamente"
+    "seguimientoEliminado": "Seguimiento eliminado correctamente",
+    "udipsai_title": "Unidad de Diagnóstico, Investigación Psicopedagógica y Apoyo a la Inclusión (UDIPSAI)",
+    "mision_title": "Misión",
+    "mision_text": "Somos una Unidad de Diagnóstico, Investigación Psicopedagógica y Apoyo a la Inclusión que brinda un servicio educativo especializado de evaluación psicopedagógica a estudiantes que presentan necesidades educativas especiales asociadas o no a la discapacidad de educación inicial, básica, bachillerato y superior, para promover el desarrollo de sus potencialidades facilitando la inclusión y la adaptación al sistema educativo.",
+    "vision_title": "Visión",
+    "vision_text": "Ser una Unidad de psicodiagnóstico y apoyo a la inclusión referente de la Zona 6, reconocida a nivel nacional e internacional conformada por un equipo transdisciplinario de profesionales comprometidos con los principios de equidad e inclusión para fomentar la atención a la diversidad y educación para todos.",
+    "objetivos_title": "Objetivos",
+    "dataObjetivos": [
+        "Evaluación Psicopedagógica.",
+        "Evaluación y tratamiento psicológico.",
+        "Evaluación y tratamiento fonoaudiológico.",
+        "Recuperación pedagógica en destrezas básicas.",
+        "Estimulación temprana.",
+        "Apoyo a la inclusión a estudiantes con necesidades educativas especiales asociadas o no a discapacidad de los niveles de educación inicial, básico bachillerato y universitario.",
+        "Asesoramiento psicopedagógico a docentes y padres de familia.",
+        "Cobertura Zona 6 y áreas de influencia de la Universidad Católica de Cuenca."
+    ],
+    "valores_title": "Valores",
+    "dataValores": [
+        "Respeto: por las diferencias individuales de todos los seres humanos, especialmente de los estudiantes, considerando su derecho a la independencia.",
+        "Compromiso con las necesidades de nuestros usuarios y dedicación para apoyar y ayudar a los estudiantes en su proceso de aprendizaje.",
+        "Responsabilidad: Atención individualizada de los estudiantes, hasta lograr que su nivelación y adaptación al aprendizaje, le facilite alcanzar exitosamente sus metas.",
+        "Elevados principios éticos que garantizan la eficacia de la relación terapéutica, considerando el buen juicio, la competencia y efectividad profesional.",
+        "Gran respeto por el valor y la dignidad humana.",
+        "Honestidad con nuestros usuarios.",
+        "Somos conscientes del potencial del ser humano para crecer, cambiar y desarrollarse."
+    ],
+    "areas_cuenca_title": "Áreas de Atención Cuenca",
+    "dataAreasCuenca": [
+        "Psicología Educativa",
+        "Psicología Clínica",
+        "Terapia del Lenguaje",
+        "Recuperación Pedagógica",
+        "Estimulación Temprana",
+        "Odontología",
+        "Trabajo Social"
+    ],
+    "areas_azogues_title": "Áreas de Atención Azogues",
+    "dataAreasAzogues": [
+        "Psicología Educativa",
+        "Psicología Clínica",
+        "Terapia del Lenguaje",
+        "Recuperación Pedagógica",
+        "Enseñanza e Interpretación en lenguaje de señas",
+        "Pedagogía de la Actividad Física y del Deporte",
+        "Trabajo Social"
+    ],
+    "beneficiarios_title": "Beneficiarios",
+    "beneficiarios_directos_title": "Directos",
+    "beneficiarios_directos_text": "En Cuenca existen 4156 y en Azogues 350 estudiantes que presentan necesidades educativas especiales asociadas o no la discapacidad de los niveles de educación inicial, básica, bachillerato y superior de la Zona 6 y áreas de influencia de la Universidad Católica de Cuenca.",
+    "beneficiarios_indirectos_title": "Indirectos",
+    "dataBeneficiariosIndirectos": [
+        "Padres de familia o representantes legales",
+        "Docentes de las Instituciones educativas.",
+        "Estudiantes que realizan sus prácticas pre profesionales y Vinculación con la Sociedad de las diferentes carreras de la Universidad Católica de Cuenca y otras universidades.",
+        "Docentes tutores de las diferentes carreras de la Universidad Católica de Cuenca y otras universidades."
+    ]
 }
