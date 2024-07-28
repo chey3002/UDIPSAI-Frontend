@@ -8,6 +8,7 @@ import { Button, Card, Row, Col, Modal, message, Upload } from 'antd';
 import { EditOutlined, DeleteOutlined, RightOutlined, UploadOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import useTranslation from 'next-translate/useTranslation';
+import BreadCrumbPacientes from '@/components/commons/breadCrumPaciente';
 
 const buttonStyle = {
     marginRight: '10px',
@@ -191,8 +192,14 @@ const DetailPaciente = ({ paciente }) => {
 
     return (
         <MenuWrapper setLang={true}>
+            <BreadCrumbPacientes idPaciente={paciente.id} page={lang('VerPaciente')} />
+
             <Card>
-                <Card.Meta title={<h1>{lang('informacionDelPaciente_title')} {paciente.id}</h1>} />
+
+                <Card.Meta title={<div style={{ display: "flex", justifyContent: "space-between" }}>
+                    <h1>{lang('informacionDelPaciente_title')} {paciente.id}</h1><div style={{ marginTop: '10px', display: 'flex', flexWrap: 'wrap' }}>
+                        <DeleteButton onDelete={() => showDeleteConfirm(paciente.id)} lang={lang} />
+                    </div></div>} />
                 <div>
                     <Row gutter={16}>
                         <Col span={8}>
@@ -205,12 +212,7 @@ const DetailPaciente = ({ paciente }) => {
                                     height="300"
                                 />
                             </div>
-                            <div style={{ marginTop: '10px', display: 'flex', flexWrap: 'wrap' }}>
-                                <EditButton pacienteId={paciente.id} lang={lang} />
-                                <DeleteButton onDelete={() => showDeleteConfirm(paciente.id)} lang={lang} />
-                                <SeguimientosButton onClick={goToSeguimientos} lang={lang} />
-                                <TestsButton onClick={goToTests} lang={lang} />
-                            </div>
+
                         </Col>
                         <Col span={16}>
                             <Row gutter={16}>

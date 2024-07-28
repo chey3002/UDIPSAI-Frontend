@@ -204,5 +204,12 @@
         "Teachers of the educational institutions.",
         "Students performing their pre-professional practices and Community Engagement from different careers of the Catholic University of Cuenca and other universities.",
         "Tutor teachers of the different careers of the Catholic University of Cuenca and other universities."
-    ]
+    ],
+    "TestPacientes": "Tests",
+    "NuevoPaciente": "New",
+    "SeguimientosPacientes": "Follow-ups",
+    "EditarPaciente": "Edit",
+    "VerPaciente": "View",
+    "Dashboard": "Dashboard",
+    "Pacientes": "Patients"
 }

@@ -206,5 +206,12 @@
         "Docentes de las Instituciones educativas.",
         "Estudiantes que realizan sus prácticas pre profesionales y Vinculación con la Sociedad de las diferentes carreras de la Universidad Católica de Cuenca y otras universidades.",
         "Docentes tutores de las diferentes carreras de la Universidad Católica de Cuenca y otras universidades."
-    ]
+    ],
+    "TestPacientes": "Examenes",
+    "NuevoPaciente": "Nuevo",
+    "SeguimientosPacientes": "Seguimientos",
+    "EditarPaciente": "Editar",
+    "VerPaciente": "Ver",
+    "Dashboard": "Inicio",
+    "Pacientes": "Pacientes"
 }

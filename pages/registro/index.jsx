@@ -2,12 +2,8 @@ import MenuWrapper from '@/components/sidebar';
 import { Input, Table, Modal, message, Button, Card, Row, Col } from 'antd';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useUserContext } from '@/assets/useUserContext';
-import { toIndex } from '@/utils/toindex/toindex';
 import axios from 'axios';
 import useTranslation from 'next-translate/useTranslation';
-import FileUploadButton from '@/components/fileUploadButton';
-import DownloadTemplateButton from '@/components/downloadTemplateButton';
 import { useTableSearch } from '@/utils/useTableSearch';
 
 const fetchEspecialistas = async (searchVal) => {
@@ -28,8 +24,6 @@ const fetchEspecialistas = async (searchVal) => {
 
 export default function IndexEspecialistas() {
     const [searchVal, setSearchVal] = useState('');
-    const [origData, setOrigData] = useState([]);
-    const [searchIndex, setSearchIndex] = useState([]);
     const { t } = useTranslation('home');
     const lang = t;
 

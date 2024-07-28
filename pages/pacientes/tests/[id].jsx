@@ -8,6 +8,7 @@ import { UploadOutlined } from '@ant-design/icons';
 import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 import { act } from 'react';
+import BreadCrumbPacientes from '@/components/commons/breadCrumPaciente';
 
 const { Dragger } = Upload;
 
@@ -168,6 +169,8 @@ export default function PacienteTests({ pacienteId }) {
 
     return (
         <MenuWrapper setLang={true}>
+            <BreadCrumbPacientes idPaciente={pacienteId} page={lang('TestPacientes')} />
+
             <Card>
                 <Card.Meta title={<h1>{lang('testsDelPaciente')} {pacienteId}</h1>} />
                 <div style={{ marginBottom: '20px' }}>

@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react'
 import { Card } from 'react-bootstrap';
 import axios from 'axios';
 import useTranslation from 'next-translate/useTranslation'
+import BreadCrumbPacientes from '@/components/commons/breadCrumPaciente';
 
 export default function EditarPaciente({ paciente }) {
 
@@ -25,6 +26,8 @@ export default function EditarPaciente({ paciente }) {
     }
     return (
         <MenuWrapper setLang={true} >
+            <BreadCrumbPacientes idPaciente={paciente.id} page={lang('EditarPaciente')} />
+
             <FormPaciente paciente={paciente} />
         </MenuWrapper>
     )

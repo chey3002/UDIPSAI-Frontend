@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useUserContext } from '@/assets/useUserContext';
 import axios from 'axios';
 import useTranslation from 'next-translate/useTranslation';
+import BreadCrumbPacientes from '@/components/commons/breadCrumPaciente';
 
 const { TextArea } = Input;
 
@@ -175,6 +176,8 @@ export default function IndexSeguimientos({ paciente, seguimientos }) {
 
     return (
         <MenuWrapper setLang={true}>
+            <BreadCrumbPacientes idPaciente={paciente.id} page={lang('SeguimientosPacientes')} />
+
             <Card>
                 <Row style={{ marginTop: '10px' }} justify="space-between">
                     <Col>

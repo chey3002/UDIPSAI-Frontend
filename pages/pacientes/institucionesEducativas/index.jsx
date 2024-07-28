@@ -4,8 +4,9 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import axios from 'axios';
 import useTranslation from 'next-translate/useTranslation';
+import { useTableSearch } from '@/utils/useTableSearch';
 
-const fetchInstituciones = async (searchVal) => {
+const fetchInstituciones = async () => {
     try {
         const { data } = await axios.get(process.env['BASE_URL'] + 'api/instituciones/listar').catch((error) => {
             console.log(error);
@@ -18,10 +19,13 @@ const fetchInstituciones = async (searchVal) => {
 
 export default function IndexInstituciones() {
     const [searchVal, setSearchVal] = useState('');
-    const [filteredData, setFilteredData] = useState([]);
+
     const [origData, setOrigData] = useState([]);
     const [searchIndex, setSearchIndex] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const { filteredData, loading } = useTableSearch({
+        searchVal,
+        retrieve: fetchInstituciones
+    });
     const { t } = useTranslation('home');
     const lang = t;
 
@@ -61,22 +65,17 @@ export default function IndexInstituciones() {
     const fetchData = async () => {
         const { data: instituciones } = await fetchInstituciones(searchVal);
         setOrigData(instituciones);
-        setFilteredData(instituciones);
         const searchInd = instituciones.map(institucion => {
             const allValues = crawl(institucion);
             return { allValues: allValues.toString() };
         });
         setSearchIndex(searchInd);
-        if (instituciones) setLoading(false);
+
     };
 
-    const onSearch = () => {
-        setLoading(true);
-        fetchData();
-    };
+
 
     useEffect(() => {
-        setLoading(true);
         fetchData();
     }, []);
 
@@ -102,13 +101,9 @@ export default function IndexInstituciones() {
                             placeholder={lang('buscar')}
                         />
                     </Col>
-                    <Col xs={24} sm={12}>
-                        <Button onClick={onSearch} type="primary" icon={<i className="bi bi-search"></i>}>
-                            {lang('buscar')}
-                        </Button>
-                    </Col>
                 </Row>
                 <Table
+
                     dataSource={filteredData}
                     columns={[
                         {
