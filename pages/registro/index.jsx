@@ -24,6 +24,8 @@ const fetchEspecialistas = async (searchVal) => {
 
 export default function IndexEspecialistas() {
     const [searchVal, setSearchVal] = useState('');
+    const [origData, setOrigData] = useState([]);
+    const [searchIndex, setSearchIndex] = useState([]);
     const { t } = useTranslation('home');
     const lang = t;
 

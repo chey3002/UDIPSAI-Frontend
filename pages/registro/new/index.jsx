@@ -3,6 +3,7 @@ import Register from '@/components/register/register';
 import MenuWrapper from '@/components/sidebar';
 import { useUserContext } from '@/assets/useUserContext';
 import { toIndex } from '@/utils/toindex/toindex';
+import BreadCrumbEspecialista from '@/components/commons/breadCrumbEspecialista';
 
 export default function Registro() {
 
@@ -12,6 +13,7 @@ export default function Registro() {
     toIndex(user);
   }, [user]);
   return <MenuWrapper setLang={true} >
+    <BreadCrumbEspecialista page={lang('editar')} cedula={null} />
     <Register />
   </MenuWrapper>;
 }

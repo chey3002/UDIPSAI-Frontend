@@ -213,5 +213,10 @@
     "EditarPaciente": "Editar",
     "VerPaciente": "Ver",
     "Dashboard": "Inicio",
-    "Pacientes": "Pacientes"
+    "Pacientes": "Pacientes",
+    "errorEliminarEspecialista": "Error al eliminar el especialista",
+    "especialistaEliminado": "Especialista eliminado",
+    "informacionDelPasante_inicioPasantia": "Inicio de Pasantía",
+    "informacionDelPasante_finPasantia": "Fin de Pasantía",
+    "informacionDelPasante_cedulaEspecialistaAsignado": "Cédula del Especialista Asignado"
 }

@@ -7,7 +7,13 @@ import React, { useEffect } from 'react';
 import { Button, Card, Row, Col, Modal, message } from 'antd';
 import axios from 'axios';
 import useTranslation from 'next-translate/useTranslation';
-
+import BreadCrumbEspecialista from '@/components/commons/breadCrumbEspecialista';
+import { DeleteOutlined } from '@ant-design/icons';
+const buttonStyle = {
+    marginRight: '10px',
+    marginBottom: '10px',
+    color: '#fff',
+};
 export default function DetailEspecialista({ especialista }) {
 
     console.log(especialista);
@@ -29,7 +35,7 @@ export default function DetailEspecialista({ especialista }) {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(process.env['BASE_URL'] + `api/especialistas/eliminar/${id}`);
+            await axios.delete(process.env['BASE_URL'] + `api/especialistas/${id}`);
             message.success(lang('especialistaEliminado'));
             window.location.href = '/registro';
         } catch (error) {
@@ -50,11 +56,24 @@ export default function DetailEspecialista({ especialista }) {
             },
         });
     };
-
+    const DeleteButton = ({ onDelete, lang }) => (
+        <Button
+            type="danger"
+            icon={<DeleteOutlined />}
+            onClick={onDelete}
+            style={{ ...buttonStyle, backgroundColor: '#dc3545' }}
+        >
+            {lang('eliminar')}
+        </Button>
+    );
     return (
         <MenuWrapper setLang={true}>
+            <BreadCrumbEspecialista page={lang('especialista')} cedula={especialista.cedula} />
             <Card>
-                <Card.Meta title={<h1>{lang('informacion_especialista')} {especialista.cedula}</h1>} />
+                <Card.Meta title={<div style={{ display: "flex", justifyContent: "space-between" }}>
+                    <h1>{lang('informacion_especialista')} {especialista.cedula}</h1><div style={{ marginTop: '10px', display: 'flex', flexWrap: 'wrap' }}>
+                        <DeleteButton onDelete={() => showDeleteConfirm(especialista.cedula)} lang={lang} />
+                    </div></div>} />
                 <div>
                     <Row gutter={16}>
                         <Col span={8}>
@@ -68,18 +87,7 @@ export default function DetailEspecialista({ especialista }) {
                                 />
                             </div>
                             <div style={{ marginTop: '10px' }}>
-                                <Link href={`/registro/edit/${especialista.cedula}`}>
-                                    <Button type="primary" style={{ marginRight: '5px' }}>
-                                        {lang('editar')}
-                                    </Button>
-                                </Link>
-                                <Button
-                                    type="danger"
-                                    onClick={() => showDeleteConfirm(especialista.cedula)}
-                                    style={{ marginRight: '5px' }}
-                                >
-                                    <i className="bi bi-trash"></i> {lang('eliminar')}
-                                </Button>
+
                             </div>
                         </Col>
                         <Col span={16}>
@@ -103,7 +111,7 @@ export default function DetailEspecialista({ especialista }) {
                                     <Card title={lang('informacionDelPasante_pasantia')}>
                                         <p><strong>{lang('informacionDelPasante_inicioPasantia')}</strong> {especialista.inicioPasantia}</p>
                                         <p><strong>{lang('informacionDelPasante_finPasantia')}</strong> {especialista.finPasantia}</p>
-                                        <p><strong>{lang('informacionDelPasante_cedulaEspecialistaAsignado')}</strong> {especialista.cedulaEspecialistaAsignado}</p>
+                                        <p><strong>{lang('informacionDelPasante_cedulaEspecialistaAsignado')}</strong> {especialista.especialistaAsignado}</p>
                                     </Card>
                                 </Col>) : ''
                                 }

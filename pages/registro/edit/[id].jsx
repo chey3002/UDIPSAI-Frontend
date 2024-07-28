@@ -6,6 +6,7 @@ import { Card } from 'react-bootstrap';
 import axios from 'axios';
 import useTranslation from 'next-translate/useTranslation'
 import Register from '@/components/register/register';
+import BreadCrumbEspecialista from '@/components/commons/breadCrumbEspecialista';
 
 export default function EditarEspecialista({ especialista }) {
 
@@ -25,6 +26,7 @@ export default function EditarEspecialista({ especialista }) {
     }
     return (
         <MenuWrapper setLang={true} >
+            <BreadCrumbEspecialista page={lang('editar')} cedula={especialista.cedula} />
             <Register especialista={especialista} />
         </MenuWrapper>
     )

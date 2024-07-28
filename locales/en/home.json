@@ -211,5 +211,10 @@
     "EditarPaciente": "Edit",
     "VerPaciente": "View",
     "Dashboard": "Dashboard",
-    "Pacientes": "Patients"
+    "Pacientes": "Patients",
+    "errorEliminarEspecialista": "Error deleting specialist",
+    "especialistaEliminado": "Specialist deleted",
+    "informacionDelPasante_inicioPasantia": "Internship Start",
+    "informacionDelPasante_finPasantia": "Internship End",
+    "informacionDelPasante_cedulaEspecialistaAsignado": "Assigned Specialist ID"
 }
