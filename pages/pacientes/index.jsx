@@ -10,10 +10,12 @@ import FileUploadButton from '@/components/fileUploadButton';
 import DownloadTemplateButton from '@/components/downloadTemplateButton';
 
 const fetchPacientes = async (searchVal, sede) => {
+    const formData = new FormData();
+    formData.append('search', searchVal);
+    formData.append('sedeId', sede);
+    console.log(formData.get('sede'));
     try {
-        const formData = new FormData();
-        formData.append('search', searchVal);
-        formData.append('sede', sede);
+
         const { data } = await axios.post(process.env['BASE_URL'] + 'api/pacientes/buscar', formData).catch((error) => {
             console.log(error);
         });
@@ -31,6 +33,7 @@ export default function IndexPaciente() {
     const [searchIndex, setSearchIndex] = useState([]);
     const [loading, setLoading] = useState(true);
     const [sede, setSede] = useState('');
+    const [sedes, setSedes] = useState([]);
     const { t } = useTranslation('home');
     const lang = t;
 
@@ -45,6 +48,8 @@ export default function IndexPaciente() {
             console.error(error);
         }
     };
+    const { user } = useUserContext();
+    console.log(user);
 
     const showDeleteConfirm = (id) => {
         Modal.confirm({
@@ -69,6 +74,7 @@ export default function IndexPaciente() {
     };
 
     const fetchData = async () => {
+        console.log(sede);
         const { data: users } = await fetchPacientes(searchVal, sede);
         setOrigData(users);
         setFilteredData(users);
@@ -86,6 +92,18 @@ export default function IndexPaciente() {
     };
 
     useEffect(() => {
+        const fetchSedes = async () => {
+            try {
+                const { data: sedesData } = await axios.get(process.env['BASE_URL'] + 'api/sedes/listar').catch((error) => {
+                    console.log(error);
+                });
+                console.log(sedesData);
+                setSedes(sedesData);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchSedes();
         setLoading(true);
         fetchData();
     }, []);
@@ -135,8 +153,9 @@ export default function IndexPaciente() {
 
                             <Select name="sede" value={sede} onChange={(value) => setSede(value)} style={{ width: '200px' }}>
                                 <Select.Option value="">Todos</Select.Option>
-                                <Select.Option value="Cuenca">Cuenca</Select.Option>
-                                <Select.Option value="Azogues">Azogues</Select.Option>
+                                {sedes.map((sedemap) => (
+                                    <Select.Option key={sedemap.id} value={sedemap.id}>{sedemap.nombre}</Select.Option>
+                                ))}
                             </Select>
                         </Form.Item>
                     </Col>

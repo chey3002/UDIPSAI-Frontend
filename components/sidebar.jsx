@@ -13,7 +13,8 @@ import {
     HomeOutlined,
     SettingOutlined,
     LogoutOutlined,
-    GlobalOutlined
+    GlobalOutlined,
+    ShopOutlined
 } from '@ant-design/icons';
 import Link from 'next/link';
 import logo from '@/assets/images/logo_institucion.png';
@@ -107,7 +108,11 @@ export default function MenuWrapper({ children }) {
                     label: <Link style={{ color: 'fff', textDecoration: 'none' }} href="/registro/new">{lang('nuevo')}</Link>,
                 },
             ]
-        },
+        }, {
+            key: '6',
+            icon: <ShopOutlined />,
+            label: <Link style={{ color: 'fff', textDecoration: 'none' }} href="/sedes/">{lang('sedes')}</Link>
+        }
     ];
 
     const languageMenu = (

@@ -37,8 +37,9 @@ const FormPaciente = ({ paciente }) => {
         "detalleDiscapacidad": "",
         "porcentajeDiscapacidad": 0,
         "perteneceAProyecto": false,
-        "sede": "Cuenca"
+        "sede": 1
     });
+    const [sedes, setSedes] = useState([]);
     const [initialValues, setInitialValues] = useState({});
     useEffect(() => {
         if (paciente) {
@@ -47,6 +48,7 @@ const FormPaciente = ({ paciente }) => {
                 ...formState,
                 ...paciente,
                 id: paciente.id,
+                sede: paciente.sede?.id || null,
                 tipoInstitucion: paciente.tipoInstitucion?.toString() || 1,
                 jornada: paciente.jornada?.id || 1,
                 tieneDiscapacidad: paciente.tieneDiscapacidad?.toString() || 'no',
@@ -56,6 +58,7 @@ const FormPaciente = ({ paciente }) => {
                 ...formState,
                 ...paciente,
                 id: paciente.id,
+                sede: paciente.sede?.id || null,
                 tipoInstitucion: paciente.tipoInstitucion?.toString() || 1,
                 jornada: paciente.jornada?.id || 1,
                 tieneDiscapacidad: paciente.tieneDiscapacidad?.toString() || 'no',
@@ -67,6 +70,18 @@ const FormPaciente = ({ paciente }) => {
     const [institucionesEducativas, setInstitucionesEducativas] = useState([]);
 
     useEffect(() => {
+        const fetchSedes = async () => {
+            try {
+                const { data: sedesData } = await axios.get(process.env['BASE_URL'] + 'api/sedes/listar').catch((error) => {
+                    console.log(error);
+                });
+                console.log(sedesData);
+                setSedes(sedesData);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchSedes();
         const fetchInstituciones = async () => {
             try {
                 const response = await axios.get(`${process.env['BASE_URL']}api/instituciones/listar`);
@@ -197,9 +212,10 @@ const FormPaciente = ({ paciente }) => {
                                     </Upload>
                                 </Form.Item>
                                 <Form.Item label={lang('informacionDelPaciente_sede')}>
-                                    <Select name="sede" value={formState.sede} onChange={(value) => setFormState({ ...formState, sede: value })}>
-                                        <Select.Option value="Cuenca">Cuenca</Select.Option>
-                                        <Select.Option value="Azogues">Azogues</Select.Option>
+                                    <Select name="sede" value={formState.sede} onChange={(value) => setFormState({ ...formState, sede: value })} style={{ width: '200px' }}>
+                                        {sedes.map((sedemap) => (
+                                            <Select.Option key={sedemap.id} value={sedemap.id}>{sedemap.nombre}</Select.Option>
+                                        ))}
                                     </Select>
                                 </Form.Item>
                             </Col>
