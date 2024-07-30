@@ -188,6 +188,11 @@ export default function IndexPaciente() {
                             title: lang('informacionDelPaciente_sede'),
                             dataIndex: 'sede',
                             key: 'sede',
+                            render: (text) => (
+                                <div>
+                                    {text.nombre}
+                                </div>
+                            ),
                         },
                         {
                             title: lang('acciones'),

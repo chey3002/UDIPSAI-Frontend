@@ -218,5 +218,9 @@
     "especialistaEliminado": "Especialista eliminado",
     "informacionDelPasante_inicioPasantia": "Inicio de Pasantía",
     "informacionDelPasante_finPasantia": "Fin de Pasantía",
-    "informacionDelPasante_cedulaEspecialistaAsignado": "Cédula del Especialista Asignado"
+    "informacionDelPasante_cedulaEspecialistaAsignado": "Cédula del Especialista Asignado",
+    "fiscal": "Fiscal",
+    "fiscomisional": "Fiscomisional",
+    "privada": "Privada",
+    "sedes": "Sedes"
 }

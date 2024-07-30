@@ -68,31 +68,20 @@ export default function MenuWrapper({ children }) {
                     icon: <UserOutlined />,
                     label: <Link style={{ color: 'fff', textDecoration: 'none' }} href="/pacientes/">{lang('listarPacientes')}</Link>,
                 },
-                {
+                user?.permisos["pacientes"] ? {
                     key: '2',
                     icon: <UserOutlined />,
                     label: <Link style={{ color: 'fff', textDecoration: 'none' }} href="/pacientes/new">{lang('nuevo')}</Link>,
-                },
-                {
+                } : null,
+                user?.permisos["institucionesEducativas"] ? {
                     key: '7',
                     icon: <HomeOutlined />,
-                    label: <span>{lang('institucionesEducativas')}</span>,
-                    children: [
-                        {
-                            key: '8',
-                            icon: <SettingOutlined />,
-                            label: <Link style={{ color: 'fff', textDecoration: 'none' }} href="/pacientes/institucionesEducativas">{lang('listarInstituciones')}</Link>,
-                        },
-                        {
-                            key: '9',
-                            icon: <SettingOutlined />,
-                            label: <Link style={{ color: 'fff', textDecoration: 'none' }} href="/pacientes/institucionesEducativas/new">{lang('nuevo')}</Link>,
-                        }
-                    ]
-                }
+                    label: <Link style={{ color: 'fff', textDecoration: 'none' }} href="/pacientes/institucionesEducativas">{lang('institucionesEducativas')}</Link>,
+
+                } : null
             ]
         },
-        {
+        user?.permisos["especialistas"] ? {
             key: '3',
             icon: <BookOutlined />,
             label: <span>{lang('especialistas')}</span>,
@@ -108,11 +97,12 @@ export default function MenuWrapper({ children }) {
                     label: <Link style={{ color: 'fff', textDecoration: 'none' }} href="/registro/new">{lang('nuevo')}</Link>,
                 },
             ]
-        }, {
+        } : null,
+        user?.permisos["sede"] ? {
             key: '6',
             icon: <ShopOutlined />,
             label: <Link style={{ color: 'fff', textDecoration: 'none' }} href="/sedes/">{lang('sedes')}</Link>
-        }
+        } : null
     ];
 
     const languageMenu = (
@@ -168,6 +158,7 @@ export default function MenuWrapper({ children }) {
                     {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
                         className: 'trigger',
                         onClick: toggle,
+                        style: { marginLeft: "10px" },
                     })}
                     <div style={{ float: 'right', marginRight: '16px' }}>
                         <Dropdown overlay={languageMenu}>

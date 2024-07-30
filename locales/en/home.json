@@ -216,5 +216,9 @@
     "especialistaEliminado": "Specialist deleted",
     "informacionDelPasante_inicioPasantia": "Internship Start",
     "informacionDelPasante_finPasantia": "Internship End",
-    "informacionDelPasante_cedulaEspecialistaAsignado": "Assigned Specialist ID"
+    "informacionDelPasante_cedulaEspecialistaAsignado": "Assigned Specialist ID",
+    "fiscal": "Public",
+    "fiscomisional": "Fiscomisional",
+    "privada": "Private",
+    "sedes": "Locations"
 }

@@ -1,39 +1,102 @@
 import MenuWrapper from '@/components/sidebar';
-import { Input, Table, Modal, message, Button, Card, Row, Col } from 'antd';
+import { Input, Table, Modal, message, Button, Card, Row, Col, Form, Select } from 'antd';
 import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
 import axios from 'axios';
 import useTranslation from 'next-translate/useTranslation';
-import { useTableSearch } from '@/utils/useTableSearch';
+
+const { TextArea } = Input;
+const { Option } = Select;
 
 const fetchInstituciones = async () => {
     try {
-        const { data } = await axios.get(process.env['BASE_URL'] + 'api/instituciones/listar').catch((error) => {
-            console.log(error);
-        });
+        const { data } = await axios.get(`${process.env['BASE_URL']}api/instituciones/listar`);
         return { data };
     } catch (error) {
         console.log(error);
+        return { data: [] };
     }
 };
 
-export default function IndexInstituciones() {
-    const [searchVal, setSearchVal] = useState('');
+const fetchInstitucion = async (id) => {
+    try {
+        const { data } = await axios.get(`${process.env['BASE_URL']}api/instituciones/listar/${id}`);
+        return { data };
+    } catch (error) {
+        console.log(error);
+        return { data: null };
+    }
+};
 
-    const [origData, setOrigData] = useState([]);
-    const [searchIndex, setSearchIndex] = useState([]);
-    const { filteredData, loading } = useTableSearch({
-        searchVal,
-        retrieve: fetchInstituciones
-    });
+export const getServerSideProps = async (context) => {
+    const institucionData = await fetchInstituciones();
+
+    return {
+        props: {
+            instituciones: institucionData.data,
+        },
+    };
+};
+
+export default function IndexInstituciones({ instituciones }) {
+    const [institucionesState, setInstituciones] = useState(instituciones);
+    const [loading, setLoading] = useState(false);
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [currentInstitucion, setCurrentInstitucion] = useState(null);
     const { t } = useTranslation('home');
+    const [form] = Form.useForm();
     const lang = t;
+
+    const fetchData = async () => {
+        setLoading(true);
+        const { data: institucionesData } = await fetchInstituciones();
+        setInstituciones(institucionesData);
+        setLoading(false);
+    };
+
+    const showModal = (institucion = null) => {
+        setCurrentInstitucion(institucion);
+        setIsModalVisible(true);
+        if (institucion) {
+            form.setFieldsValue({
+                ...institucion,
+                nombreInstitucion: institucion.nombreInstitucion,
+                direccion: institucion.direccion,
+                tipoInstitucion: institucion.tipoInstitucion,
+                institucionEstado: institucion.institucionEstado,
+            });
+        } else {
+            form.resetFields();
+        }
+    };
+
+    const handleOk = async () => {
+        try {
+            const values = await form.validateFields();
+            values.institucionEstado = 1;
+            if (currentInstitucion) {
+                await axios.put(`${process.env['BASE_URL']}api/instituciones/actualizar/${currentInstitucion.id}`, values);
+                message.success(lang('institucionActualizada'));
+            } else {
+                await axios.post(`${process.env['BASE_URL']}api/instituciones/insertar`, values);
+                message.success(lang('institucionCreada'));
+            }
+            setIsModalVisible(false);
+            fetchData();
+        } catch (error) {
+            message.error(lang('errorGuardarInstitucion'));
+            console.error(error);
+        }
+    };
+
+    const handleCancel = () => {
+        setIsModalVisible(false);
+    };
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(process.env['BASE_URL'] + `api/instituciones/eliminar/${id}`);
+            await axios.delete(`${process.env['BASE_URL']}api/instituciones/eliminar/${id}`);
             message.success(lang('institucionEliminada'));
-            window.location.href = '/pacientes/institucionesEducativas';
+            fetchData();
         } catch (error) {
             message.error(lang('errorEliminarInstitucion'));
             console.error(error);
@@ -43,7 +106,7 @@ export default function IndexInstituciones() {
     const showDeleteConfirm = (id) => {
         Modal.confirm({
             title: lang('confirmarEliminacion'),
-            content: lang('seguroEliminar'),
+            content: lang('seguroEliminarInstitucion'),
             okText: lang('si'),
             okType: 'danger',
             cancelText: lang('no'),
@@ -53,112 +116,75 @@ export default function IndexInstituciones() {
         });
     };
 
-    const crawl = (institucion, allValues) => {
-        if (!allValues) allValues = [];
-        for (var key in institucion) {
-            if (typeof institucion[key] === "object") crawl(institucion[key], allValues);
-            else allValues.push(institucion[key] + " ");
-        }
-        return allValues;
-    };
-
-    const fetchData = async () => {
-        const { data: instituciones } = await fetchInstituciones(searchVal);
-        setOrigData(instituciones);
-        const searchInd = instituciones.map(institucion => {
-            const allValues = crawl(institucion);
-            return { allValues: allValues.toString() };
-        });
-        setSearchIndex(searchInd);
-
-    };
-
-
-
-    useEffect(() => {
-        fetchData();
-    }, []);
+    const columns = [
+        {
+            title: lang('nombreInstitucion'),
+            dataIndex: 'nombreInstitucion',
+            key: 'nombreInstitucion',
+        },
+        {
+            title: lang('direccion'),
+            dataIndex: 'direccion',
+            key: 'direccion',
+        },
+        {
+            title: lang('tipoInstitucion'),
+            dataIndex: 'tipoInstitucion',
+            key: 'tipoInstitucion',
+        },
+        {
+            title: lang('acciones'),
+            key: 'actions',
+            render: (text, record) => (
+                <div>
+                    <Button onClick={() => showModal(record)} icon={<i className="bi bi-pencil-square"></i>} style={{ marginRight: 5, color: "#fff", backgroundColor: "#28a745" }}>
+                        {lang('editar')}
+                    </Button>
+                    <Button onClick={() => showDeleteConfirm(record.id)} icon={<i className="bi bi-trash"></i>} style={{ marginRight: 5, color: "#fff", backgroundColor: "#dc3545" }}>
+                        {lang('eliminar')}
+                    </Button>
+                </div>
+            ),
+        },
+    ];
 
     return (
         <MenuWrapper setLang={true}>
             <Card>
                 <Row style={{ marginTop: '10px' }} justify="space-between">
-                    <Col xs={6} md="auto">
+                    <Col>
                         <h1>{lang('listarInstituciones')}</h1>
                     </Col>
                     <Col>
-                        <Link href='/pacientes/institucionesEducativas/new/'>
-                            <Button type="primary" icon={<i className="bi bi-plus-lg"></i>}>
-                                {lang('nuevo')}
-                            </Button>
-                        </Link>
-                    </Col>
-                </Row>
-                <Row gutter={[16, 16]}>
-                    <Col xs={24} sm={12}>
-                        <Input
-                            onChange={e => setSearchVal(e.target.value)}
-                            placeholder={lang('buscar')}
-                        />
+                        <Button type="primary" icon={<i className="bi bi-plus-lg"></i>} onClick={() => showModal()}>
+                            {lang('nuevo')}
+                        </Button>
                     </Col>
                 </Row>
                 <Table
-
-                    dataSource={filteredData}
-                    columns={[
-                        {
-                            title: lang('nombreInstitucion'),
-                            dataIndex: 'nombreInstitucion',
-                            key: 'nombreInstitucion',
-                        },
-                        {
-                            title: lang('direccion'),
-                            dataIndex: 'direccion',
-                            key: 'direccion',
-                        },
-                        {
-                            title: lang('jornada'),
-                            dataIndex: 'jornada',
-                            key: 'jornada',
-                            render: (text) => (
-                                <span>{text == 1 ? 'Matutina' : text == 2 ? 'Vespertina' : 'Otro'}</span>
-                            )
-                        },
-                        {
-                            title: lang('tipoInstitucion'),
-                            dataIndex: 'tipoInstitucion',
-                            key: 'tipoInstitucion',
-                            render: (text) => (
-                                <span>{text == 1 ? 'Fiscal' : text == 2 ? 'Fiscomisional' : text == 3 ? 'Particular' : 'Otro'}</span>
-                            )
-                        },
-                        {
-                            title: lang('acciones'),
-                            key: 'actions',
-                            dataIndex: 'id',
-                            render: (text) => (
-                                <div>
-                                    <Link href={`/pacientes/institucionesEducativas/${text}`}>
-                                        <Button type="info" icon={<i className="bi bi-person-badge-fill"></i>} style={{ marginRight: 5, color: "#fff", backgroundColor: "#17a2b8" }}>
-                                            {lang('masInformacion')}
-                                        </Button>
-                                    </Link>
-                                    <Link href={`/pacientes/institucionesEducativas/edit/${text}`}>
-                                        <Button type="success" icon={<i className="bi bi-pencil-square"></i>} style={{ marginRight: 5, color: "#fff", backgroundColor: "#28a745" }}>
-                                            {lang('modificar')}
-                                        </Button>
-                                    </Link>
-                                    <Button onClick={() => showDeleteConfirm(text)} type="danger" icon={<i className="bi bi-trash"></i>} style={{ marginRight: 5, color: "#fff", backgroundColor: "#dc3545" }}>
-                                        {lang('eliminar')}
-                                    </Button>
-                                </div>
-                            ),
-                        },
-                    ]}
+                    dataSource={institucionesState}
+                    columns={columns}
                     loading={loading}
-                    pagination={{ defaultPageSize: 10, showSizeChanger: true, pageSizeOptions: ['10', '25', '50', '100'], showQuickJumper: true }}
+                    rowKey="id"
                 />
             </Card>
+            <Modal title={currentInstitucion ? lang('editarInstitucion') : lang('nuevaInstitucion')} visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+                <Form form={form} layout="vertical">
+                    <Form.Item name="nombreInstitucion" label={lang('nombreInstitucion')} rules={[{ required: true, message: lang('nombreInstitucionRequerido') }]}>
+                        <TextArea rows={1} />
+                    </Form.Item>
+                    <Form.Item name="direccion" label={lang('direccion')} rules={[{ required: true, message: lang('direccionRequerida') }]}>
+                        <TextArea rows={1} />
+                    </Form.Item>
+                    <Form.Item name="tipoInstitucion" label={lang('tipoInstitucion')} rules={[{ required: true, message: lang('tipoInstitucionRequerido') }]}>
+                        <Select placeholder={lang('seleccionarTipoInstitucion')}>
+                            <Option value="Fiscal">{lang('fiscal')}</Option>
+                            <Option value="Fiscomisional">{lang('fiscomisional')}</Option>
+                            <Option value="Privada">{lang('privada')}</Option>
+                        </Select>
+                    </Form.Item>
+                </Form>
+            </Modal>
         </MenuWrapper>
     );
 }

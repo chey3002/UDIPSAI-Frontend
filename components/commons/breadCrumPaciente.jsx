@@ -1,8 +1,10 @@
+import { useUserContext } from "@/assets/useUserContext";
 import { Breadcrumb, } from "antd";
 import useTranslation from 'next-translate/useTranslation';
 
 export default function BreadCrumbPacientes({ idPaciente, page }) {
     const { t } = useTranslation('home');
+    const { user } = useUserContext();
 
     if (idPaciente) {
         var items = [
@@ -18,27 +20,27 @@ export default function BreadCrumbPacientes({ idPaciente, page }) {
                                 </a>
                             ),
                         },
-                        {
+                        user?.permisos["pacientes"] ? {
                             label: (
                                 <a rel="noopener noreferrer" href={`/pacientes/edit/${idPaciente}`}>
                                     {t('EditarPaciente')}
                                 </a>
                             ),
-                        },
-                        {
+                        } : null,
+                        user?.permisos["pacientes"] ? {
                             label: (
                                 <a rel="noopener noreferrer" href={`/pacientes/seguimientos/${idPaciente}`}>
                                     {t('SeguimientosPacientes')}
                                 </a>
                             ),
-                        },
-                        {
+                        } : null,
+                        user?.permisos["pacientes"] ? {
                             label: (
                                 <a rel="noopener noreferrer" href={`/pacientes/tests/${idPaciente}`}>
                                     {t('TestPacientes')}
                                 </a>
                             ),
-                        },
+                        } : null,
                     ]
                 }
             }
@@ -48,7 +50,7 @@ export default function BreadCrumbPacientes({ idPaciente, page }) {
         var items = [
             { title: 'Dashboard', href: '/dashboard' },
             { title: 'Pacientes', href: `/pacientes/` },
-            {
+            user.permisos["pacientes"] ? {
                 title: page, menu: {
                     items: [
                         {
@@ -60,7 +62,7 @@ export default function BreadCrumbPacientes({ idPaciente, page }) {
                         }
                     ]
                 }
-            }
+            } : { title: page }
 
         ]
     }

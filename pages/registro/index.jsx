@@ -5,6 +5,7 @@ import Link from 'next/link';
 import axios from 'axios';
 import useTranslation from 'next-translate/useTranslation';
 import { useTableSearch } from '@/utils/useTableSearch';
+import { useUserContext } from '@/assets/useUserContext';
 
 const fetchEspecialistas = async (searchVal) => {
     try {
@@ -27,6 +28,8 @@ export default function IndexEspecialistas() {
     const [origData, setOrigData] = useState([]);
     const [searchIndex, setSearchIndex] = useState([]);
     const { t } = useTranslation('home');
+    const { user } = useUserContext();
+
     const lang = t;
 
 
@@ -148,14 +151,14 @@ export default function IndexEspecialistas() {
                                             {lang('masInformacion')}
                                         </Button>
                                     </Link>
-                                    <Link href={`/registro/edit/${text}`}>
+                                    {user?.permisos["pacientes"] ? <Link href={`/registro/edit/${text}`}>
                                         <Button type="success" icon={<i className="bi bi-pencil-square"></i>} style={{ marginRight: 5, color: "#fff", backgroundColor: "#28a745" }}>
                                             {lang('modificar')}
                                         </Button>
-                                    </Link>
-                                    <Button onClick={() => showDeleteConfirm(text)} type="danger" icon={<i className="bi bi-trash"></i>} style={{ marginRight: 5, color: "#fff", backgroundColor: "#dc3545" }}>
+                                    </Link> : null}
+                                    {user?.permisos["pacientes"] ? <Button onClick={() => showDeleteConfirm(text)} type="danger" icon={<i className="bi bi-trash"></i>} style={{ marginRight: 5, color: "#fff", backgroundColor: "#dc3545" }}>
                                         {lang('eliminar')}
-                                    </Button>
+                                    </Button> : null}
                                 </div>
                             ),
                         },
