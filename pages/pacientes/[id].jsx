@@ -242,10 +242,20 @@ const DetailPaciente = ({ paciente }) => {
                                         <p><strong>{lang('informacionDelPaciente_anioEducacion')}</strong> {paciente.anioEducacion}</p>
                                         <p><strong>{lang('informacionDelPaciente_direccionInstitucion')}</strong> {paciente.institucionEducativa?.direccion}</p>
                                         <p><strong>{lang('informacionDelPaciente_paralelo')}</strong> {paciente.paralelo}</p>
-                                        <p><strong>{lang('informacionDelPaciente_presentaDiscapacidad')}</strong> {paciente.tieneDiscapacidad}</p>
-                                        <p><strong>{lang('informacionDelPaciente_portadorCarnet')}</strong> {paciente.portadorCarnet ? 'Sí' : 'No'}</p>
-                                        <p><strong>{lang('informacionDelPaciente_diagnostico')}</strong> {paciente.diagnostico}</p>
+
                                         <p><strong>{lang('informacionDelPaciente_perteneceInclusion')}</strong> {paciente.perteneceInclusion}</p>
+
+
+
+                                        <p><strong>{lang('informacionDelPaciente_presentaDiscapacidad')}</strong> {paciente.tieneDiscapacidad}</p>
+                                        {paciente.tieneDiscapacidad === 'si' ? <>
+                                            <p><strong>{lang('informacionDelPaciente_portadorCarnet')}</strong> {paciente.portadorCarnet ? 'Sí' : 'No'}</p>
+                                            {paciente.portadorCarnet ? <>
+                                                <p><strong>{lang('informacionDelPaciente_tipoDiscapacidad')}</strong> {paciente.tipoDiscapacidad}</p>
+                                                <p><strong>{lang('informacionDelPaciente_porcentajeDiscapacidad')}</strong> {paciente.porcentajeDiscapacidad}</p>
+                                                <p><strong>{lang('informacionDelPaciente_detalleDiscapacidad')}</strong> {paciente.detalleDiscapacidad}</p></> : <></>}
+                                        </> : <></>}
+
                                     </Card>
                                 </Col>
                                 <Col span={24}>
