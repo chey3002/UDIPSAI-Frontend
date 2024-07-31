@@ -20,27 +20,27 @@ export default function BreadCrumbPacientes({ idPaciente, page }) {
                                 </a>
                             ),
                         },
-                        user?.permisos["pacientes"] ? {
+                        {
                             label: (
                                 <a rel="noopener noreferrer" href={`/pacientes/edit/${idPaciente}`}>
                                     {t('EditarPaciente')}
                                 </a>
                             ),
-                        } : null,
-                        user?.permisos["pacientes"] ? {
+                        },
+                        {
                             label: (
                                 <a rel="noopener noreferrer" href={`/pacientes/seguimientos/${idPaciente}`}>
                                     {t('SeguimientosPacientes')}
                                 </a>
                             ),
-                        } : null,
-                        user?.permisos["pacientes"] ? {
+                        },
+                        {
                             label: (
                                 <a rel="noopener noreferrer" href={`/pacientes/tests/${idPaciente}`}>
                                     {t('TestPacientes')}
                                 </a>
                             ),
-                        } : null,
+                        },
                     ]
                 }
             }

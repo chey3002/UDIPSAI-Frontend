@@ -17,7 +17,8 @@ const fetchEspecialistas = async (searchVal) => {
         const { data } = await axios.get(process.env['BASE_URL'] + 'api/especialistas/activos').catch((error) => {
             console.log(error);
         });
-        console.log(data);
+
+
         return { data };
     } catch (error) {
         console.log(error);
@@ -99,9 +100,9 @@ export default function IndexEspecialistas() {
                     </Col>
                     <Col>
                         <Link href='/registro/new/'>
-                            <Button type="primary" icon={<i className="bi bi-plus-lg"></i>}>
+                            {user?.permisos["pacientes"] ? <Button type="primary" icon={<i className="bi bi-plus-lg"></i>}>
                                 {lang('nuevo')}
-                            </Button>
+                            </Button> : null}
                         </Link>
                     </Col>
                 </Row>
@@ -152,14 +153,14 @@ export default function IndexEspecialistas() {
                                             {lang('masInformacion')}
                                         </Button>
                                     </Link>
-                                    {user?.permisos["pacientes"] ? <Link href={`/registro/edit/${text}`}>
+                                    <Link href={`/registro/edit/${text}`}>
                                         <Button type="success" icon={<i className="bi bi-pencil-square"></i>} style={{ marginRight: 5, color: "#fff", backgroundColor: "#28a745" }}>
                                             {lang('modificar')}
                                         </Button>
-                                    </Link> : null}
-                                    {user?.permisos["pacientes"] ? <Button onClick={() => showDeleteConfirm(text)} type="danger" icon={<i className="bi bi-trash"></i>} style={{ marginRight: 5, color: "#fff", backgroundColor: "#dc3545" }}>
+                                    </Link>
+                                    <Button onClick={() => showDeleteConfirm(text)} type="danger" icon={<i className="bi bi-trash"></i>} style={{ marginRight: 5, color: "#fff", backgroundColor: "#dc3545" }}>
                                         {lang('eliminar')}
-                                    </Button> : null}
+                                    </Button>
                                 </div>
                             ),
                         },

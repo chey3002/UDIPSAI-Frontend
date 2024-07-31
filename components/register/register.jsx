@@ -17,16 +17,17 @@ const Register = ({ especialista }) => {
         segundoNombre: "",
         primerApellido: "",
         segundoApellido: "",
-        especialidad: "",
+        especialidadId: 1,
         esPasante: false,
         contrasena: "",
         contrasenaConfirm: "",
         imagen: null,
         inicioPasantia: null,
         finPasantia: null,
-        especialistaAsignado: ""
+        especialistaAsignado: "",
+        "sede": 1
     });
-
+    const [sedes, setSedes] = useState([]);
     const [form] = Form.useForm();
     const { t } = useTranslation('home');
     const lang = t;
@@ -49,6 +50,18 @@ const Register = ({ especialista }) => {
     }, []);
 
     useEffect(() => {
+        const fetchSedes = async () => {
+            try {
+                const { data: sedesData } = await axios.get(process.env['BASE_URL'] + 'api/sedes/listar').catch((error) => {
+                    console.log(error);
+                });
+                console.log(sedesData);
+                setSedes(sedesData);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchSedes();
         console.log(especialista);
         if (especialista) {
             form.setFieldsValue({
@@ -57,7 +70,7 @@ const Register = ({ especialista }) => {
                 segundoNombre: especialista.segundoNombre,
                 primerApellido: especialista.primerApellido,
                 segundoApellido: especialista.segundoApellido,
-                especialidad: especialista.especialidad ? especialista.especialidad?.id : null,
+                especialidadId: especialista.especialidad ? especialista.especialidad?.id : null,
                 esPasante: especialista.esPasante,
                 inicioPasantia: especialista.inicioPasantia,
                 finPasantia: especialista.finPasantia,
@@ -65,6 +78,7 @@ const Register = ({ especialista }) => {
                 imagen: especialista.imagen,
                 contrasena: especialista.contrasena,
                 contrasenaConfirm: especialista.contrasena,
+                sede: especialista.sede?.id || null,
             });
             setFormData({
                 cedula: especialista.cedula,
@@ -72,7 +86,7 @@ const Register = ({ especialista }) => {
                 segundoNombre: especialista.segundoNombre,
                 primerApellido: especialista.primerApellido,
                 segundoApellido: especialista.segundoApellido,
-                especialidad: especialista.especialidad ? especialista.especialidad?.id : null,
+                especialidadId: especialista.especialidad ? especialista.especialidad?.id : null,
                 esPasante: especialista.esPasante,
                 inicioPasantia: especialista.inicioPasantia,
                 finPasantia: especialista.finPasantia,
@@ -80,6 +94,7 @@ const Register = ({ especialista }) => {
                 imagen: especialista.imagen,
                 contrasena: especialista.contrasena,
                 contrasenaConfirm: especialista.contrasena,
+                sede: especialista.sede?.id || null,
             });
         }
     }, [especialista]);
@@ -162,6 +177,7 @@ const Register = ({ especialista }) => {
     };
 
     const onChange = () => {
+        console.log(form.getFieldsValue());
         setFormData({
             ...formData,
             cedula: form.getFieldsValue().cedula,
@@ -169,13 +185,14 @@ const Register = ({ especialista }) => {
             segundoNombre: form.getFieldValue().segundoNombre,
             primerApellido: form.getFieldValue().primerApellido,
             segundoApellido: form.getFieldValue().segundoApellido,
-            especialidad: form.getFieldValue().especialidad ? form.getFieldValue().especialidad.value : null,
+            especialidadId: form.getFieldValue().especialidadId ? form.getFieldValue().especialidadId.value : null,
             esPasante: form.getFieldValue().esPasante,
             inicioPasantia: form.getFieldValue().inicioPasantia,
             finPasantia: form.getFieldValue().finPasantia,
             especialistaAsignado: form.getFieldValue().especialistaAsignado ? form.getFieldValue().especialistaAsignado.value : null,
             contrasena: form.getFieldValue().contrasena,
             contrasenaConfirm: form.getFieldValue().contrasenaConfirm,
+            sede: form.getFieldValue().sede ? form.getFieldValue().sede.value : null
 
         });
     };
@@ -219,6 +236,13 @@ const Register = ({ especialista }) => {
                     >
                         <Button icon={<UploadOutlined />}>{lang('register_subirImagen')}</Button>
                     </Upload>
+                </Form.Item>
+                <Form.Item name="sede" label={lang('informacionDelPaciente_sede')}>
+                    <Select name="sede" value={formData.sede} onChange={onChange} style={{ width: '200px' }}>
+                        {sedes.map((sedemap) => (
+                            <Select.Option key={sedemap.id} value={sedemap.id}>{sedemap.nombre}</Select.Option>
+                        ))}
+                    </Select>
                 </Form.Item>
                 <Form.Item
                     label={lang('register_cedula')}
@@ -269,7 +293,7 @@ const Register = ({ especialista }) => {
                     <Col span={12}>
                         <Form.Item
                             label={lang('register_especialidad')}
-                            name="especialidad"
+                            name="especialidadId"
                             rules={[{ required: true, message: lang('register_especialidad') }]}
                         >
                             <Select

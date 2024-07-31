@@ -104,6 +104,7 @@ export default function DetailEspecialista({ especialista }) {
                                 <Col span={12}>
                                     <Card title={lang('informacionDelEspecialista_profesional')}>
                                         <p><strong>{lang('register_id_especialidad')}</strong> {especialista.especialidad?.area}</p>
+                                        <p><strong>{lang('informacionDelPaciente_sede')}</strong> {especialista.sede?.nombre}</p>
                                         <p><strong>{lang('register_esPasante')}</strong> {especialista.esPasante ? 'Sí' : 'No'}</p>
                                     </Card>
                                 </Col>
@@ -112,6 +113,7 @@ export default function DetailEspecialista({ especialista }) {
                                         <p><strong>{lang('informacionDelPasante_inicioPasantia')}</strong> {especialista.inicioPasantia}</p>
                                         <p><strong>{lang('informacionDelPasante_finPasantia')}</strong> {especialista.finPasantia}</p>
                                         <p><strong>{lang('informacionDelPasante_cedulaEspecialistaAsignado')}</strong> {especialista.especialistaAsignado}</p>
+
                                     </Card>
                                 </Col>) : ''
                                 }

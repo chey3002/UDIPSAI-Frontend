@@ -33,8 +33,10 @@ export default function IndexPaciente() {
     const [origData, setOrigData] = useState([]);
     const [searchIndex, setSearchIndex] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [sede, setSede] = useState('');
+    const { user } = useUserContext();
+    const [sede, setSede] = useState(user?.sede.id);
     const [sedes, setSedes] = useState([]);
+
     const { t } = useTranslation('home');
     const lang = t;
 
@@ -49,8 +51,7 @@ export default function IndexPaciente() {
             console.error(error);
         }
     };
-    const { user } = useUserContext();
-    console.log(user);
+
 
     const showDeleteConfirm = (id) => {
         Modal.confirm({
