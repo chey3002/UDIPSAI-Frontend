@@ -4,11 +4,13 @@ import MenuWrapper from '@/components/sidebar';
 import { useUserContext } from '@/assets/useUserContext';
 import { toIndex } from '@/utils/toindex/toindex';
 import BreadCrumbEspecialista from '@/components/commons/breadCrumbEspecialista';
+import { useTranslation } from 'next-translate';
 
 export default function Registro() {
 
   const { user } = useUserContext();
-
+  const { t } = useTranslation('home');
+  const lang = t;
   useEffect(() => {
     toIndex(user);
   }, [user]);
