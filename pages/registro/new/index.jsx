@@ -4,7 +4,7 @@ import MenuWrapper from '@/components/sidebar';
 import { useUserContext } from '@/assets/useUserContext';
 import { toIndex } from '@/utils/toindex/toindex';
 import BreadCrumbEspecialista from '@/components/commons/breadCrumbEspecialista';
-import { useTranslation } from 'next-translate';
+import useTranslation from 'next-translate/useTranslation';
 
 export default function Registro() {
 

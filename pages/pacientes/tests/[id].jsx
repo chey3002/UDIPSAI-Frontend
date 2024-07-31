@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @next/next/no-img-element */
 import { useUserContext } from '@/assets/useUserContext';
 import MenuWrapper from '@/components/sidebar';
