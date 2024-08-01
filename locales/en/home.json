@@ -220,5 +220,6 @@
     "fiscal": "Public",
     "fiscomisional": "Fiscomisional",
     "privada": "Private",
-    "sedes": "Locations"
+    "sedes": "Locations",
+    "cambios": "Changes"
 }
