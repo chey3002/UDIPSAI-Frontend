@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Upload, Button, message, Row, Col } from 'antd';
-import { UploadOutlined, FileExcelOutlined, UploadOutlined as UploadIcon } from '@ant-design/icons';
+import { FileExcelOutlined, UploadOutlined as UploadIcon } from '@ant-design/icons';
 import useTranslation from 'next-translate/useTranslation';
 
 const FileUploadButton = () => {
     const [fileList, setFileList] = useState([]);
 
     const handleUpload = async () => {
+        if (fileList.length === 0) {
+            message.error('No hay archivo para subir');
+            return;
+        }
+
         const formData = new FormData();
-        fileList.forEach(file => {
-            formData.append('file', file);
-        });
+        formData.append('file', fileList[0]);
 
         try {
             const response = await axios.post(process.env['BASE_URL'] + "api/pacientes/upload", formData, {
@@ -26,26 +29,25 @@ const FileUploadButton = () => {
             message.error('Error al subir el archivo: ' + error.message);
         }
     };
+
     const { t } = useTranslation('home');
     const lang = t;
+
     const props = {
-        onRemove: file => {
-            setFileList(prevFileList => {
-                const index = prevFileList.indexOf(file);
-                const newFileList = prevFileList.slice();
-                newFileList.splice(index, 1);
-                return newFileList;
-            });
+        onRemove: () => {
+            setFileList([]);
         },
         beforeUpload: file => {
             const isExcel = file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || file.type === 'application/vnd.ms-excel';
             if (!isExcel) {
                 message.error(`${file.name} no es un archivo Excel válido`);
-            } else {
-                setFileList(prevFileList => [...prevFileList, file]);
+                return Upload.LIST_IGNORE;
             }
-            return false;
+
+            setFileList([file]); // Replace the existing file with the new one
+            return false; // Prevent automatic upload
         },
+        multiple: false,
         fileList,
         accept: '.xls,.xlsx', // Limita los tipos de archivos aceptados a Excel
     };

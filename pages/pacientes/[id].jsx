@@ -1,10 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
-import { useUserContext } from '@/assets/useUserContext';
 import MenuWrapper from '@/components/sidebar';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
-import { Button, Card, Row, Col, Modal, message, Upload } from 'antd';
+import { Button, Card, Row, Col, Modal, message, Upload, Image } from 'antd';
 import { EditOutlined, DeleteOutlined, RightOutlined, UploadOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import useTranslation from 'next-translate/useTranslation';
@@ -13,63 +12,31 @@ import BreadCrumbPacientes from '@/components/commons/breadCrumPaciente';
 const buttonStyle = {
     marginRight: '10px',
     marginBottom: '10px',
-    color: '#fff',
 };
-
-const EditButton = ({ pacienteId, lang }) => (
-    <Link href={`/pacientes/edit/${pacienteId}`}>
-        <Button type="primary" icon={<EditOutlined />} style={buttonStyle}>
-            {lang('editar')}
-        </Button>
-    </Link>
-);
 
 const DeleteButton = ({ onDelete, lang }) => (
     <Button
-        type="danger"
+        type="default"
         icon={<DeleteOutlined />}
         onClick={onDelete}
-        style={{ ...buttonStyle, backgroundColor: '#dc3545' }}
+        style={{ ...buttonStyle, backgroundColor: '#ff4d4f', color: '#fff', border: 'none' }}
     >
         {lang('eliminar')}
-    </Button>
-);
-
-const SeguimientosButton = ({ onClick, lang }) => (
-    <Button
-        type="default"
-        icon={<RightOutlined />}
-        onClick={onClick}
-        style={{ ...buttonStyle, backgroundColor: '#edb100' }}
-    >
-        {lang('irASeguimientos')}
-    </Button>
-);
-
-const TestsButton = ({ onClick, lang }) => (
-    <Button
-        type="default"
-        icon={<RightOutlined />}
-        onClick={onClick}
-        style={{ ...buttonStyle, backgroundColor: '#28a745' }}
-    >
-        {lang('irATests')}
     </Button>
 );
 
 const DetailPaciente = ({ paciente }) => {
     const { t } = useTranslation('home');
     const lang = t;
-    const router = useRouter();
     const [uploading, setUploading] = useState(false);
 
     if (paciente === null) {
         return (
             <MenuWrapper setLang={true}>
                 <Card>
-                    <Card.Meta title={<h1>Detalle del Paciente</h1>} />
+                    <Card.Meta title={<h1>{lang('detallePaciente')}</h1>} />
                     <div>
-                        <h3>No se encontró el paciente</h3>
+                        <h3>{lang('noSeEncontroPaciente')}</h3>
                     </div>
                 </Card>
             </MenuWrapper>
@@ -100,14 +67,6 @@ const DetailPaciente = ({ paciente }) => {
         });
     };
 
-    const goToSeguimientos = () => {
-        router.push(`/pacientes/seguimientos/${paciente.id}`);
-    };
-
-    const goToTests = () => {
-        router.push(`/pacientes/tests/${paciente.id}`);
-    };
-
     const handleUpload = async (file) => {
         const formData = new FormData();
         formData.append('file', file);
@@ -120,10 +79,8 @@ const DetailPaciente = ({ paciente }) => {
                 },
             });
             message.success(lang('archivoSubido'));
-            //response: "Documento subido exitosamente con ID: "+id
             paciente.fichaDiagnostica = {
                 id: resp.data.split(' ')[5],
-
             };
         } catch (error) {
             message.error(lang('errorSubirArchivo'));
@@ -132,7 +89,7 @@ const DetailPaciente = ({ paciente }) => {
         }
     };
 
-    const openDocument = async (documentoId, nombreArchivo) => {
+    const openDocument = async (documentoId) => {
         try {
             const response = await axios.get(process.env['BASE_URL'] + `api/documentos/${documentoId}`);
             const { contenido } = response.data;
@@ -144,7 +101,7 @@ const DetailPaciente = ({ paciente }) => {
         }
     };
 
-    const downloadDocument = async (documentoId, nombreArchivo) => {
+    const downloadDocument = async (documentoId) => {
         try {
             const response = await axios.get(process.env['BASE_URL'] + `api/documentos/${documentoId}`);
             const { contenido } = response.data;
@@ -153,7 +110,7 @@ const DetailPaciente = ({ paciente }) => {
 
             const a = document.createElement('a');
             a.href = url;
-            a.download = `${paciente.nombresApellidos}.pdf`;
+            a.download = `${paciente.id}-${paciente.nombresApellidos}-${paciente.cedula}.pdf`;
             a.click();
         } catch (error) {
             message.error(lang('errorDescargarDocumento'));
@@ -194,111 +151,133 @@ const DetailPaciente = ({ paciente }) => {
         <MenuWrapper setLang={true}>
             <BreadCrumbPacientes idPaciente={paciente.id} page={lang('VerPaciente')} />
 
-            <Card>
-
-                <Card.Meta title={<div style={{ display: "flex", justifyContent: "space-between" }}>
-                    <h1>{lang('informacionDelPaciente_title')} {paciente.id}</h1><div style={{ marginTop: '10px', display: 'flex', flexWrap: 'wrap' }}>
-                        <DeleteButton onDelete={() => showDeleteConfirm(paciente.id)} lang={lang} />
-                    </div></div>} />
-                <div>
-                    <Row gutter={16}>
-                        <Col span={8}>
-                            <div className="flex justify-content-center align-content-center">
-                                <img
-                                    src={paciente.imagen ? `data:image/jpeg;base64, ${paciente.imagen}` : 'https://www.shareicon.net/data/128x128/2016/06/25/786525_people_512x512.png'}
-                                    style={{ objectFit: 'cover', borderRadius: '15px', border: '3px solid #0044ff', marginLeft: 'auto' }}
-                                    alt="avatar"
-                                    width="240"
-                                    height="300"
-                                />
+            <Card
+                style={{
+                    margin: '20px',
+                    borderRadius: '12px',
+                    boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
+                    padding: '20px',
+                    backgroundColor: '#f9f9f9',
+                }}
+            >
+                <Card.Meta
+                    title={
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <h1 style={{ fontSize: '24px', color: '#003a8c' }}>{lang('informacionDelPaciente_title')} {paciente.id}</h1>
+                            <div>
+                                <DeleteButton onDelete={() => showDeleteConfirm(paciente.id)} lang={lang} />
                             </div>
+                        </div>
+                    }
+                />
 
-                        </Col>
-                        <Col span={16}>
-                            <Row gutter={16}>
-                                <Col span={12}>
-                                    <Card title={lang('informacionDelPaciente_personal')}>
-                                        <p><strong>{lang('informacionDelPaciente_fechaApertura')}</strong> {paciente.fechaApertura}</p>
-                                        {paciente.perteneceAProyecto ? <>
-                                            <p><strong>{lang('informacionDelPaciente_proyecto')}</strong> {paciente.proyecto}</p>
-                                        </> : <></>}
+                <Row gutter={16} style={{ marginBottom: '20px' }}>
+                    <Col span={24} md={12} style={{ textAlign: 'center' }}>
+                        <Image
+                            src={paciente.imagen ? `data:image/jpeg;base64, ${paciente.imagen}` : 'https://www.shareicon.net/data/128x128/2016/06/25/786525_people_512x512.png'}
+                            style={{
+                                objectFit: 'cover',
+                                borderRadius: '12px',
+                                border: '3px solid #0044ff',
+                                width: '100%',
+                                maxWidth: '250px',
+                            }}
+                            preview={false}
+                            width={250}
+                            alt="avatar"
+                        />
+                    </Col>
+                    <Col span={24} md={12}>
+                        <h3 style={{ color: '#003a8c' }}>{lang('informacionDelPaciente_personal')}</h3>
+                        <p><strong>{lang('informacionDelPaciente_fechaApertura')}:</strong> {paciente.fechaApertura}</p>
+                        {paciente.perteneceAProyecto && <p><strong>{lang('informacionDelPaciente_proyecto')}:</strong> {paciente.proyecto}</p>}
+                        <p><strong>{lang('informacionDelPaciente_nombre')}:</strong> {paciente.nombresApellidos}</p>
+                        <p><strong>{lang('informacionDelPaciente_ciudad')}:</strong> {paciente.ciudad}</p>
+                        <p><strong>{lang('informacionDelPaciente_fechaNacimiento')}:</strong> {paciente.fechaNacimiento}</p>
+                        <p><strong>{lang('informacionDelPaciente_edad')}:</strong> {paciente.edad}</p>
+                        <p><strong>{lang('informacionDelPaciente_cedula')}:</strong> {paciente.cedula}</p>
+                        <p><strong>{lang('informacionDelPaciente_domicilio')}:</strong> {paciente.domicilio}</p>
+                        <p><strong>{lang('informacionDelPaciente_telefono')}:</strong> {paciente.telefono}</p>
+                        <p><strong>{lang('informacionDelPaciente_celular')}:</strong> {paciente.celular}</p>
+                        <p><strong>{lang('informacionDelPaciente_sede')}:</strong> {paciente.sede?.nombre}</p>
+                    </Col>
+                </Row>
 
-                                        <p><strong>{lang('informacionDelPaciente_nombre')}</strong> {paciente.nombresApellidos}</p>
-                                        <p><strong>{lang('informacionDelPaciente_ciudad')}</strong> {paciente.ciudad}</p>
-                                        <p><strong>{lang('informacionDelPaciente_fechaNacimiento')}</strong> {paciente.fechaNacimiento}</p>
-                                        <p><strong>{lang('informacionDelPaciente_edad')}</strong> {paciente.edad}</p>
-                                        <p><strong>{lang('informacionDelPaciente_cedula')}</strong> {paciente.cedula}</p>
-                                        <p><strong>{lang('informacionDelPaciente_domicilio')}</strong> {paciente.domicilio}</p>
-                                        <p><strong>{lang('informacionDelPaciente_telefono')}</strong> {paciente.telefono}</p>
-                                        <p><strong>{lang('informacionDelPaciente_celular')}</strong> {paciente.celular}</p>
-                                        <p><strong>{lang('informacionDelPaciente_sede')}</strong> {paciente.sede?.nombre}</p>
-                                    </Card>
-                                </Col>
-                                <Col span={12}>
-                                    <Card title={lang('informacionDelPaciente_title_educativa')}>
-                                        <p><strong>{lang('informacionDelPaciente_institucionEducativa')}</strong> {paciente.institucionEducativa?.nombreInstitucion}</p>
-                                        <p><strong>{lang('informacionDelPaciente_tipoInstitucion')}</strong> {paciente.institucionEducativa?.tipoInstitucion}</p>
-                                        <p><strong>{lang('informacionDelPaciente_jornada')}</strong> {paciente.jornada?.nombreJornada}</p>
-                                        <p><strong>{lang('informacionDelPaciente_anioEducacion')}</strong> {paciente.anioEducacion}</p>
-                                        <p><strong>{lang('informacionDelPaciente_direccionInstitucion')}</strong> {paciente.institucionEducativa?.direccion}</p>
-                                        <p><strong>{lang('informacionDelPaciente_paralelo')}</strong> {paciente.paralelo}</p>
+                <Row gutter={16} style={{ marginBottom: '20px' }}>
+                    <Col span={24} md={12}>
+                        <h3 style={{ color: '#003a8c', marginTop: '20px' }}>{lang('informacionDelPaciente_title_educativa')}</h3>
+                        <p><strong>{lang('informacionDelPaciente_anioEducacion')}:</strong> {paciente.anioEducacion}</p>
+                        <p><strong>{lang('informacionDelPaciente_direccionInstitucion')}:</strong> {paciente.institucionEducativa?.direccion}</p>
+                        <p><strong>{lang('informacionDelPaciente_paralelo')}:</strong> {paciente.paralelo}</p>
+                        <p><strong>{lang('informacionDelPaciente_perteneceInclusion')}:</strong> {paciente.perteneceInclusion}</p>
+                        <p><strong>{lang('informacionDelPaciente_presentaDiscapacidad')}:</strong> {paciente.tieneDiscapacidad}</p>
+                        {paciente.tieneDiscapacidad === 'si' && (
+                            <>
+                                <p><strong>{lang('informacionDelPaciente_portadorCarnet')}:</strong> {paciente.portadorCarnet ? 'Sí' : 'No'}</p>
+                                {paciente.portadorCarnet && (
+                                    <>
+                                        <p><strong>{lang('informacionDelPaciente_tipoDiscapacidad')}:</strong> {paciente.tipoDiscapacidad}</p>
+                                        <p><strong>{lang('informacionDelPaciente_porcentajeDiscapacidad')}:</strong> {paciente.porcentajeDiscapacidad}</p>
+                                        <p><strong>{lang('informacionDelPaciente_detalleDiscapacidad')}:</strong> {paciente.detalleDiscapacidad}</p>
+                                    </>
+                                )}
+                            </>
+                        )}
+                    </Col>
+                    <Col span={24} md={12}>
+                        <h3 style={{ color: '#003a8c', marginTop: '20px' }}>{lang('informacionDelPaciente_motivoConsulta')}</h3>
+                        <p><strong>{lang('informacionDelPaciente_motivoConsulta')}:</strong> {paciente.motivoConsulta}</p>
+                        <p><strong>{lang('informacionDelPaciente_observaciones')}:</strong> {paciente.observaciones}</p>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span={24} md={12}>
+                        <h3 style={{ color: '#003a8c', marginTop: '20px' }}>{lang('fichaDiagnostica')}</h3>
 
-                                        <p><strong>{lang('informacionDelPaciente_perteneceInclusion')}</strong> {paciente.perteneceInclusion}</p>
+                        <p>{lang('descripcionFichaDiagnostica')}</p>
+                        <div>
+                            <Upload {...uploadProps}>
+                                <Button
+                                    icon={<UploadOutlined />}
+                                    loading={uploading}
+                                    disabled={uploading}
+                                    style={{ backgroundColor: '#40a9ff', color: '#fff', border: 'none' }}
+                                >
+                                    {lang('Subir_Archivo')}
+                                </Button>
+                            </Upload>
+                            {paciente.fichaDiagnostica && (
+                                <div style={{ marginTop: '20px' }}>
+                                    <Button
+                                        type="link"
+                                        onClick={() => openDocument(paciente.fichaDiagnostica.id)}
+                                        style={{ color: '#17a2b8', border: 'none' }}
+                                    >
+                                        {lang('abrir')}
+                                    </Button>
+                                    <Button
+                                        type="primary"
+                                        onClick={() => downloadDocument(paciente.fichaDiagnostica.id)}
+                                        style={{ marginLeft: '10px', backgroundColor: '#007bff', color: '#fff', border: 'none' }}
+                                    >
+                                        {lang('descargar')}
+                                    </Button>
+                                    <DeleteButton onDelete={showDeleteDocumentConfirm} lang={lang} />
+                                </div>
+
+                            )}</div></Col>
+                </Row>
 
 
 
-                                        <p><strong>{lang('informacionDelPaciente_presentaDiscapacidad')}</strong> {paciente.tieneDiscapacidad}</p>
-                                        {paciente.tieneDiscapacidad === 'si' ? <>
-                                            <p><strong>{lang('informacionDelPaciente_portadorCarnet')}</strong> {paciente.portadorCarnet ? 'Sí' : 'No'}</p>
-                                            {paciente.portadorCarnet ? <>
-                                                <p><strong>{lang('informacionDelPaciente_tipoDiscapacidad')}</strong> {paciente.tipoDiscapacidad}</p>
-                                                <p><strong>{lang('informacionDelPaciente_porcentajeDiscapacidad')}</strong> {paciente.porcentajeDiscapacidad}</p>
-                                                <p><strong>{lang('informacionDelPaciente_detalleDiscapacidad')}</strong> {paciente.detalleDiscapacidad}</p></> : <></>}
-                                        </> : <></>}
 
-                                    </Card>
-                                </Col>
-                                <Col span={24}>
-                                    <Card title={lang('informacionDelPaciente_motivoConsulta')}>
-                                        <p><strong>{lang('informacionDelPaciente_motivoConsulta')}</strong> {paciente.motivoConsulta}</p>
-                                        <p><strong>{lang('informacionDelPaciente_observaciones')}</strong> {paciente.observaciones}</p>
-                                    </Card>
-                                </Col>
-                                <Col span={24}>
-                                    <Card title={lang('fichaDiagnostica')}>
-                                        <p>{lang('descripcionFichaDiagnostica')}</p>
-                                        <Upload {...uploadProps}>
-                                            <Button icon={<UploadOutlined />} loading={uploading} disabled={uploading}>
-                                                {lang('Subir_Archivo')}
-                                            </Button>
-                                        </Upload>
-                                        {paciente.fichaDiagnostica && (
-                                            <>
-                                                <Button type="link" onClick={() => openDocument(paciente.fichaDiagnostica.id, `${paciente.nombresApellidos}.pdf`)} style={{ color: "#17a2b8" }}>
-                                                    {lang('abrir')}
-                                                </Button>
-                                                <Button type="primary" onClick={() => downloadDocument(paciente.fichaDiagnostica.id, `${paciente.nombresApellidos}.pdf`)} style={{ color: "#fff", backgroundColor: "#007bff", marginLeft: 5 }}>
-                                                    {lang('descargar')}
-                                                </Button>
-                                                <Button type="danger" onClick={showDeleteDocumentConfirm} style={{ color: "#fff", backgroundColor: "#dc3545", marginLeft: 5 }}>
-                                                    {lang('eliminar')}
-                                                </Button>
-                                            </>
-                                        )}
-                                    </Card>
-                                </Col>
-                            </Row>
-                        </Col>
-                    </Row>
-                </div>
             </Card>
         </MenuWrapper>
     );
-}
+};
 
 export const getServerSideProps = async (context) => {
-    const res = await axios.get(process.env['HOST'] + 'api/pacientes/listar/' + context.query.id);
-    console.log(res.data);
+    const res = await axios.get(process.env['BASE_URL'] + 'api/pacientes/listar/' + context.query.id);
     if (res.data === null) {
         return {
             props: {

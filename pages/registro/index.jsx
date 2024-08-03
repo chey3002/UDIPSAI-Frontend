@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import MenuWrapper from '@/components/sidebar';
-import { Input, Table, Modal, message, Button, Card, Row, Col } from 'antd';
+import { Input, Table, Modal, message, Button, Card, Row, Col, Typography } from 'antd';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import axios from 'axios';
@@ -8,16 +8,16 @@ import useTranslation from 'next-translate/useTranslation';
 import { useTableSearch } from '@/utils/useTableSearch';
 import { useUserContext } from '@/assets/useUserContext';
 
+const { Title } = Typography;
+
 const fetchEspecialistas = async (searchVal) => {
     try {
         const formData = new FormData();
         formData.append('search', searchVal);
 
-        // const { data } = await axios.post(process.env['BASE_URL'] + 'api/especialistas/listar', formData).catch((error) => {
         const { data } = await axios.get(process.env['BASE_URL'] + 'api/especialistas/activos').catch((error) => {
             console.log(error);
         });
-
 
         return { data };
     } catch (error) {
@@ -34,8 +34,6 @@ export default function IndexEspecialistas() {
 
     const lang = t;
 
-
-
     const handleDelete = async (id) => {
         try {
             await axios.delete(process.env['BASE_URL'] + `api/especialistas/${id}`);
@@ -46,6 +44,7 @@ export default function IndexEspecialistas() {
             console.error(error);
         }
     };
+
     const { filteredData, loading } = useTableSearch({
         searchVal,
         retrieve: fetchEspecialistas
@@ -93,24 +92,27 @@ export default function IndexEspecialistas() {
 
     return (
         <MenuWrapper setLang={true}>
-            <Card>
-                <Row style={{ marginTop: '10px' }} justify="space-between">
-                    <Col xs={6} md="auto">
-                        <h1>{lang('listarEspecialistas')}</h1>
+            <Card style={{ margin: '20px', padding: '20px', backgroundColor: '#fafafa', borderColor: '#d9d9d9' }}>
+                <Row style={{ marginBottom: '20px' }} justify="space-between" align="middle">
+                    <Col>
+                        <Title level={2}>{lang('listarEspecialistas')}</Title>
                     </Col>
                     <Col>
                         <Link href='/registro/new/'>
-                            {user?.permisos["pacientes"] ? <Button type="primary" icon={<i className="bi bi-plus-lg"></i>}>
-                                {lang('nuevo')}
-                            </Button> : null}
+                            {user?.permisos["pacientes"] ? (
+                                <Button type="primary" icon={<i className="bi bi-plus-lg"></i>}>
+                                    {lang('nuevo')}
+                                </Button>
+                            ) : null}
                         </Link>
                     </Col>
                 </Row>
-                <Row gutter={[16, 16]}>
+                <Row gutter={[16, 16]} style={{ marginBottom: '20px' }}>
                     <Col xs={24} sm={12}>
                         <Input
                             onChange={e => setSearchVal(e.target.value)}
                             placeholder={lang('buscar')}
+                            size="large"
                         />
                     </Col>
                 </Row>
@@ -149,16 +151,16 @@ export default function IndexEspecialistas() {
                             render: (text) => (
                                 <div>
                                     <Link href={`/registro/${text}`}>
-                                        <Button type="info" icon={<i className="bi bi-person-badge-fill"></i>} style={{ marginRight: 5, color: "#fff", backgroundColor: "#17a2b8" }}>
+                                        <Button type="info" icon={<i className="bi bi-person-badge-fill"></i>} style={{ marginRight: '5px', color: "#fff", backgroundColor: "#17a2b8" }}>
                                             {lang('masInformacion')}
                                         </Button>
                                     </Link>
                                     <Link href={`/registro/edit/${text}`}>
-                                        <Button type="success" icon={<i className="bi bi-pencil-square"></i>} style={{ marginRight: 5, color: "#fff", backgroundColor: "#28a745" }}>
+                                        <Button type="success" icon={<i className="bi bi-pencil-square"></i>} style={{ marginRight: '5px', color: "#fff", backgroundColor: "#28a745" }}>
                                             {lang('modificar')}
                                         </Button>
                                     </Link>
-                                    <Button onClick={() => showDeleteConfirm(text)} type="danger" icon={<i className="bi bi-trash"></i>} style={{ marginRight: 5, color: "#fff", backgroundColor: "#dc3545" }}>
+                                    <Button onClick={() => showDeleteConfirm(text)} type="danger" icon={<i className="bi bi-trash"></i>} style={{ marginRight: '5px', color: "#fff", backgroundColor: "#dc3545" }}>
                                         {lang('eliminar')}
                                     </Button>
                                 </div>
@@ -167,6 +169,8 @@ export default function IndexEspecialistas() {
                     ]}
                     loading={loading}
                     pagination={{ defaultPageSize: 10, showSizeChanger: true, pageSizeOptions: ['10', '25', '50', '100'], showQuickJumper: true }}
+                    bordered
+                    style={{ backgroundColor: '#fff', borderColor: '#d9d9d9' }}
                 />
             </Card>
         </MenuWrapper>

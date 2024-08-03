@@ -1,11 +1,13 @@
 import MenuWrapper from '@/components/sidebar';
-import { Input, Table, Modal, message, Button, Card, Row, Col, Form, Select } from 'antd';
+import { Input, Table, Modal, message, Button, Card, Row, Col, Form, Select, Typography } from 'antd';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import useTranslation from 'next-translate/useTranslation';
+import { useTableSearch } from '@/utils/useTableSearch';
 
 const { TextArea } = Input;
 const { Option } = Select;
+const { Title } = Typography;
 
 const fetchInstituciones = async () => {
     try {
@@ -17,19 +19,9 @@ const fetchInstituciones = async () => {
     }
 };
 
-const fetchInstitucion = async (id) => {
-    try {
-        const { data } = await axios.get(`${process.env['BASE_URL']}api/instituciones/listar/${id}`);
-        return { data };
-    } catch (error) {
-        console.log(error);
-        return { data: null };
-    }
-};
 
 export const getServerSideProps = async (context) => {
     const institucionData = await fetchInstituciones();
-
     return {
         props: {
             instituciones: institucionData.data,
@@ -42,8 +34,16 @@ export default function IndexInstituciones({ instituciones }) {
     const [loading, setLoading] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [currentInstitucion, setCurrentInstitucion] = useState(null);
+    const [searchVal, setSearchVal] = useState('');
     const { t } = useTranslation('home');
     const [form] = Form.useForm();
+
+    const { filteredData, loading: searchLoading } = useTableSearch({
+        searchVal,
+        retrieve: fetchInstituciones,
+        data: institucionesState,
+    });
+
     const lang = t;
 
     const fetchData = async () => {
@@ -150,10 +150,10 @@ export default function IndexInstituciones({ instituciones }) {
 
     return (
         <MenuWrapper setLang={true}>
-            <Card>
-                <Row style={{ marginTop: '10px' }} justify="space-between">
+            <Card style={{ margin: '20px', padding: '20px', backgroundColor: '#fafafa', borderColor: '#d9d9d9' }}>
+                <Row style={{ marginBottom: '20px' }} justify="space-between" align="middle">
                     <Col>
-                        <h1>{lang('listarInstituciones')}</h1>
+                        <Title level={2}>{lang('listarInstituciones')}</Title>
                     </Col>
                     <Col>
                         <Button type="primary" icon={<i className="bi bi-plus-lg"></i>} onClick={() => showModal()}>
@@ -161,11 +161,23 @@ export default function IndexInstituciones({ instituciones }) {
                         </Button>
                     </Col>
                 </Row>
+                <Row gutter={[16, 16]} style={{ marginBottom: '20px' }}>
+                    <Col xs={24} sm={12}>
+                        <Input
+                            onChange={e => setSearchVal(e.target.value)}
+                            placeholder={lang('buscar')}
+                            size="large"
+                        />
+                    </Col>
+                </Row>
                 <Table
-                    dataSource={institucionesState}
+                    dataSource={filteredData}
                     columns={columns}
-                    loading={loading}
+                    loading={loading || searchLoading}
                     rowKey="id"
+                    pagination={{ defaultPageSize: 10, showSizeChanger: true, pageSizeOptions: ['10', '25', '50', '100'], showQuickJumper: true }}
+                    bordered
+                    style={{ backgroundColor: '#fff', borderColor: '#d9d9d9' }}
                 />
             </Card>
             <Modal title={currentInstitucion ? lang('editarInstitucion') : lang('nuevaInstitucion')} visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>

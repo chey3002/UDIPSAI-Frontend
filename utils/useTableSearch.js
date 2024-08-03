@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 
-export const useTableSearch = ({ searchVal, retrieve }) => {
+export const useTableSearch = ({ searchVal, retrieve, data }) => {
     const [filteredData, setFilteredData] = useState([]);
     const [origData, setOrigData] = useState([]);
     const [searchIndex, setSearchIndex] = useState([]);
@@ -28,7 +29,7 @@ export const useTableSearch = ({ searchVal, retrieve }) => {
             if (users) setLoading(false);
         };
         fetchData();
-    }, [retrieve]);
+    }, [data]);
 
     useEffect(() => {
         if (searchVal) {

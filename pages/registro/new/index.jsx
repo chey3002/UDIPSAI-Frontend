@@ -15,7 +15,7 @@ export default function Registro() {
     toIndex(user);
   }, [user]);
   return <MenuWrapper setLang={true} >
-    <BreadCrumbEspecialista page={lang('editar')} cedula={null} />
+    <BreadCrumbEspecialista page={lang('nuevo')} cedula={null} />
     <Register />
   </MenuWrapper>;
 }

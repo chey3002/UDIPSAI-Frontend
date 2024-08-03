@@ -96,6 +96,11 @@ export default function MenuWrapper({ children }) {
                     icon: <UserOutlined />,
                     label: <Link style={{ color: 'fff', textDecoration: 'none' }} href="/registro/new">{lang('nuevo')}</Link>,
                 },
+                {
+                    key: '8',
+                    icon: <SettingOutlined />,
+                    label: <Link style={{ color: 'fff', textDecoration: 'none' }} href="/registro/asignaciones">{lang('asignaciones')}</Link>,
+                }
             ]
         } : null,
         user?.permisos["sede"] ? {
