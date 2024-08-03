@@ -137,10 +137,10 @@ export default function IndexInstituciones({ instituciones }) {
             key: 'actions',
             render: (text, record) => (
                 <div>
-                    <Button onClick={() => showModal(record)} icon={<i className="bi bi-pencil-square"></i>} style={{ marginRight: 5, color: "#fff", backgroundColor: "#28a745" }}>
+                    <Button key={"1"} onClick={() => showModal(record)} icon={<i className="bi bi-pencil-square"></i>} style={{ marginRight: 5, color: "#fff", backgroundColor: "#28a745" }}>
                         {lang('editar')}
                     </Button>
-                    <Button onClick={() => showDeleteConfirm(record.id)} icon={<i className="bi bi-trash"></i>} style={{ marginRight: 5, color: "#fff", backgroundColor: "#dc3545" }}>
+                    <Button key={"2"} onClick={() => showDeleteConfirm(record.id)} icon={<i className="bi bi-trash"></i>} style={{ marginRight: 5, color: "#fff", backgroundColor: "#dc3545" }}>
                         {lang('eliminar')}
                     </Button>
                 </div>

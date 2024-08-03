@@ -9,6 +9,7 @@ const { Text } = Typography;
 const { Panel } = Collapse;
 
 const renderValue = (value) => {
+
     if (typeof value === 'object' && value !== null) {
         return (
             <Table
@@ -82,34 +83,34 @@ export default function HistorialCambiosTable({ cambios, paciente }) {
     }
 
     const columns = [
-        { title: 'Entidad', dataIndex: 'entidad', key: 'entidad' },
+        { title: lang('Entidad'), dataIndex: 'entidad', key: 'entidad' },
         {
-            title: 'Fecha de Cambio', dataIndex: 'fechaCambio', key: 'fechaCambio',
+            title: lang('Fecha_de_Cambio'), dataIndex: 'fechaCambio', key: 'fechaCambio',
             render: (text) => {
                 const date = new Date(text);
                 return date.toLocaleString();
             }
         },
-        { title: 'Operación', dataIndex: 'operacion', key: 'operacion' },
+        { title: lang('Operación'), dataIndex: 'operacion', key: 'operacion' },
         {
-            title: 'Valor Anterior',
+            title: lang('Valor_Anterior'),
             dataIndex: 'valorAnterior',
             key: 'valorAnterior',
             render: (text, record) => (
                 <Collapse>
-                    <Panel header="Valor Anterior" key="1">
+                    <Panel header={lang('Valor_Anterior')} key="1">
                         {renderJsonCell(record.valorAnterior, record.valorNuevo)}
                     </Panel>
                 </Collapse>
             ),
         },
         {
-            title: 'Valor Nuevo',
+            title: lang('Valor_Nuevo'),
             dataIndex: 'valorNuevo',
             key: 'valorNuevo',
             render: (text, record) => (
                 <Collapse>
-                    <Panel header="Valor Nuevo" key="1">
+                    <Panel header={lang('Valor_Nuevo')} key="1">
                         {renderJsonCell(record.valorNuevo, record.valorAnterior)}
                     </Panel>
                 </Collapse>
@@ -119,7 +120,7 @@ export default function HistorialCambiosTable({ cambios, paciente }) {
 
     return (
         <MenuWrapper setLang={true}>
-            <BreadCrumbPacientes idPaciente={paciente.id} page={lang('cambios')} />
+            <BreadCrumbPacientes idPaciente={paciente.id} page={lang('Cambios')} />
             <Table columns={columns} dataSource={cambios} rowKey="id" pagination={{ defaultPageSize: 10, showSizeChanger: true, pageSizeOptions: ['10', '25', '50', '100'], showQuickJumper: true }}
             />
         </MenuWrapper>

@@ -73,10 +73,7 @@ export default function IndexPaciente() {
         const { data: users } = await fetchPacientes(searchVal, sede);
         setOrigData(users);
         setFilteredData(users);
-        const searchInd = users.map(user => {
-            const allValues = crawl(user);
-            return { allValues: allValues.toString() };
-        });
+
         setLoading(false);
     };
 

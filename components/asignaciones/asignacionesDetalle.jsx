@@ -4,7 +4,7 @@ import { Input, Select, Table, Button, Card, message, Row, Col, Divider } from '
 import axios from 'axios';
 import { useUserContext } from '@/assets/useUserContext';
 
-const AssignmentDetails = ({ pasanteSeleccionado, handlePasanteDeselect }) => {
+const AssignmentDetails = ({ pasanteSeleccionado, handlePasanteDeselect, lang }) => {
     const { user } = useUserContext();
     const [searchVal, setSearchVal] = useState('');
     const [sede, setSede] = useState(user?.sede.id);
@@ -83,37 +83,35 @@ const AssignmentDetails = ({ pasanteSeleccionado, handlePasanteDeselect }) => {
             <Card style={{ marginBottom: '20px', backgroundColor: '#e6f7ff', borderColor: '#91d5ff' }}>
                 <Row>
                     <Col span={8}>
-                        <p><strong>Cédula:</strong> {pasanteSeleccionado.cedula}</p>
-                        <p><strong>Nombre:</strong> {pasanteSeleccionado.primerNombre} {pasanteSeleccionado.primerApellido}</p>
+                        <p><strong>{lang('Cédula')}:</strong> {pasanteSeleccionado.cedula}</p>
+                        <p><strong>{lang('nombre')}:</strong> {pasanteSeleccionado.primerNombre} {pasanteSeleccionado.primerApellido}</p>
                     </Col>
                     <Col span={8}>
-                        <p><strong>Especialidad:</strong> {pasanteSeleccionado.especialidad.area}</p>
+                        <p><strong>{lang("especialidad")}:</strong> {pasanteSeleccionado.especialidad.area}</p>
                     </Col>
                     <Col span={8}>
-                        <Button type="primary" danger onClick={handlePasanteDeselect}>Deseleccionar Pasante</Button>
+                        <Button type="primary" danger onClick={handlePasanteDeselect}>{lang("Deseleccionar_Pasante")}</Button>
                     </Col>
                 </Row>
             </Card>
 
-            <Divider orientation="left">Buscar Paciente</Divider>
+            <Divider orientation="left">{lang("Buscar_Paciente")}</Divider>
             <Row gutter={[16, 16]} style={{ marginBottom: '20px' }}>
                 <Col span={12}>
-                    <Input
+                    <Input.Search
                         value={searchVal}
                         onChange={e => setSearchVal(e.target.value)}
-                        placeholder="Buscar paciente"
+                        placeholder={lang("Buscar_Paciente")}
+                        onSearch={fetchPacientes}
                     />
                 </Col>
                 <Col span={8}>
                     <Select value={sede} onChange={value => setSede(value)} style={{ width: '100%' }}>
-                        <Select.Option value="">Todos</Select.Option>
+                        <Select.Option value="">{lang('todos')}</Select.Option>
                         {sedes.map(s => (
                             <Select.Option key={s.id} value={s.id}>{s.nombre}</Select.Option>
                         ))}
                     </Select>
-                </Col>
-                <Col span={4}>
-                    <Button type="primary" onClick={fetchPacientes}>Buscar Pacientes</Button>
                 </Col>
             </Row>
 
@@ -125,38 +123,38 @@ const AssignmentDetails = ({ pasanteSeleccionado, handlePasanteDeselect }) => {
                 pagination={{ defaultPageSize: 10, showSizeChanger: true, pageSizeOptions: ['10', '25', '50', '100'], showQuickJumper: true }}
 
             >
-                <Table.Column title="Ficha" dataIndex="id" key="id" />
-                <Table.Column title="Nombre" dataIndex="nombresApellidos" key="nombre" />
-                <Table.Column title="Ciudad" dataIndex="ciudad" key="ciudad" />
-                <Table.Column title="Sede" dataIndex={['sede', 'nombre']} key="sede" />
-                <Table.Column title="Cédula" dataIndex="cedula" key="cedula" />
-                <Table.Column title="Fecha de Nacimiento" dataIndex="fechaNacimiento" key="fechaNacimiento" />
+                <Table.Column title={lang("Ficha")} dataIndex="id" key="id" />
+                <Table.Column title={lang("nombre")} dataIndex="nombresApellidos" key="nombre" />
+                <Table.Column title={lang("Ciudad")} dataIndex="ciudad" key="ciudad" />
+                <Table.Column title={lang("Sede")} dataIndex={['sede', 'nombre']} key="sede" />
+                <Table.Column title={lang("Cédula")} dataIndex="cedula" key="cedula" />
+                <Table.Column title={lang("Fecha_de_Nacimiento")} dataIndex="fechaNacimiento" key="fechaNacimiento" />
                 <Table.Column
-                    title="Acciones"
+                    title={lang("acciones")}
                     key="acciones"
                     render={(text, record) => (
-                        <Button type="primary" onClick={() => asignarPaciente(record.id)}>Asignar</Button>
+                        <Button type="primary" onClick={() => asignarPaciente(record.id)}>{lang("Asignar")}</Button>
                     )}
                 />
             </Table>
 
-            <Divider orientation="left">Pacientes Asignados</Divider>
+            <Divider orientation="left">{lang("Pacientes_Asignados")}</Divider>
             <Table
                 dataSource={asignaciones}
                 rowKey="id"
                 bordered
             >
-                <Table.Column title="Ficha" dataIndex={['paciente', 'id']} key="id" />
-                <Table.Column title="Cédula" dataIndex={['paciente', 'cedula']} key="cedula" />
-                <Table.Column title="Nombre" dataIndex={['paciente', 'nombresApellidos']} key="nombre" />
-                <Table.Column title="Ciudad" dataIndex={['paciente', 'ciudad']} key="ciudad" />
-                <Table.Column title="Sede" dataIndex={['paciente', 'sede', 'nombre']} key="sede" />
-                <Table.Column title="Fecha de Nacimiento" dataIndex={['paciente', 'fechaNacimiento']} key="fechaNacimiento" />
+                <Table.Column title={lang("Ficha")} dataIndex={['paciente', 'id']} key="id" />
+                <Table.Column title={lang("nombre")} dataIndex={['paciente', 'cedula']} key="cedula" />
+                <Table.Column title={lang("Ciudad")} dataIndex={['paciente', 'nombresApellidos']} key="nombre" />
+                <Table.Column title={lang("Sede")} dataIndex={['paciente', 'ciudad']} key="ciudad" />
+                <Table.Column title={lang("Cédula")} dataIndex={['paciente', 'sede', 'nombre']} key="sede" />
+                <Table.Column title={lang("Fecha_de_Nacimiento")} dataIndex={['paciente', 'fechaNacimiento']} key="fechaNacimiento" />
                 <Table.Column
-                    title="Acciones"
+                    title={lang("acciones")}
                     key="acciones"
                     render={(text, record) => (
-                        <Button type="primary" danger onClick={() => eliminarAsignacion(record.id)}>Eliminar</Button>
+                        <Button type="primary" danger onClick={() => eliminarAsignacion(record.id)}>{lang("eliminar")}</Button>
                     )}
                 />
             </Table>

@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import { Form, Input, Button, Alert, Checkbox, Row, Col, Card, Upload, Image, message, Select } from "antd";
 import { UploadOutlined } from '@ant-design/icons';
-import Link from "next/link";
 import useTranslation from 'next-translate/useTranslation';
 import Logo from "@/assets/ucacue-logo.png";
 import axios from 'axios';
@@ -248,8 +247,13 @@ const Register = ({ especialista }) => {
                     label={lang('register_cedula')}
                     name="cedula"
                     rules={[{ required: true, message: lang('register_cedula') }]}
+
                 >
-                    <Input />
+                    <Input onKeyPress={(e) => {
+                        if (!/[0-9]/.test(e.key)) {
+                            e.preventDefault();
+                        }
+                    }} disabled={especialista} />
                 </Form.Item>
                 <Row gutter={16}>
                     <Col span={12}>
