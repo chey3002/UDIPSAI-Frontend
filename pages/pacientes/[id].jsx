@@ -82,13 +82,35 @@ const DetailPaciente = ({ paciente }) => {
             paciente.fichaDiagnostica = {
                 id: resp.data.split(' ')[5],
             };
+            window.location.reload();
         } catch (error) {
             message.error(lang('errorSubirArchivo'));
         } finally {
             setUploading(false);
         }
     };
+    const handleUploadFichaCompromiso = async (file) => {
+        const formData = new FormData();
+        formData.append('file', file);
 
+        try {
+            setUploading(true);
+            const resp = await axios.post(process.env['BASE_URL'] + `api/pacientes/${paciente.id}/fichaCompromiso`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            message.success(lang('archivoSubido'));
+            paciente.fichaCompromiso = {
+                id: resp.data.split(' ')[5],
+            };
+            window.location.reload();
+        } catch (error) {
+            message.error(lang('errorSubirArchivo'));
+        } finally {
+            setUploading(false);
+        }
+    };
     const openDocument = async (documentoId) => {
         try {
             const response = await axios.get(process.env['BASE_URL'] + `api/documentos/${documentoId}`);
@@ -100,6 +122,7 @@ const DetailPaciente = ({ paciente }) => {
             message.error(lang('errorAbrirDocumento'));
         }
     };
+
 
     const downloadDocument = async (documentoId) => {
         try {
@@ -126,7 +149,15 @@ const DetailPaciente = ({ paciente }) => {
             message.error(lang('errorEliminarDocumento'));
         }
     };
-
+    const handleDeleteFichaCompromiso = async () => {
+        try {
+            await axios.delete(process.env['BASE_URL'] + `api/pacientes/fichaCompromiso/${paciente.id}`);
+            message.success(lang('documentoEliminado'));
+            window.location.reload();
+        } catch (error) {
+            message.error(lang('errorEliminarDocumento'));
+        }
+    };
     const showDeleteDocumentConfirm = () => {
         Modal.confirm({
             title: lang('confirmarEliminacionDocumento'),
@@ -139,11 +170,28 @@ const DetailPaciente = ({ paciente }) => {
             },
         });
     };
-
+    const showDeleteFichaCompromisoConfirm = () => {
+        Modal.confirm({
+            title: lang('confirmarEliminacionDocumento'),
+            content: lang('seguroEliminarDocumento'),
+            okText: lang('si'),
+            okType: 'danger',
+            cancelText: lang('no'),
+            onOk() {
+                handleDeleteFichaCompromiso();
+            },
+        });
+    };
     const uploadProps = {
         name: 'file',
         accept: 'application/pdf',
         customRequest: ({ file }) => handleUpload(file),
+        showUploadList: false,
+    };
+    const uploadPropsFichaCompromiso = {
+        name: 'file',
+        accept: 'application/pdf',
+        customRequest: ({ file }) => handleUploadFichaCompromiso(file),
         showUploadList: false,
     };
 
@@ -231,7 +279,7 @@ const DetailPaciente = ({ paciente }) => {
                     </Col>
                 </Row>
                 <Row>
-                    <Col span={24} md={12}>
+                    <Col span={24} md={24}>
                         <h3 style={{ color: '#003a8c', marginTop: '20px' }}>{lang('fichaDiagnostica')}</h3>
 
                         <p>{lang('descripcionFichaDiagnostica')}</p>
@@ -265,7 +313,45 @@ const DetailPaciente = ({ paciente }) => {
                                     <DeleteButton onDelete={showDeleteDocumentConfirm} lang={lang} />
                                 </div>
 
-                            )}</div></Col>
+                            )}
+                        </div></Col>
+                    <Col span={24} md={24}>
+                        <h3 style={{ color: '#003a8c', marginTop: '20px' }}>{lang('fichaCompromiso')}</h3>
+
+                        <p>{lang('descripcionFichaCompromiso')}</p>
+                        <div>
+                            <Upload {...uploadPropsFichaCompromiso}>
+                                <Button
+                                    icon={<UploadOutlined />}
+                                    loading={uploading}
+                                    disabled={uploading}
+                                    style={{ backgroundColor: '#40a9ff', color: '#fff', border: 'none' }}
+                                >
+                                    {lang('Subir_Archivo')}
+                                </Button>
+                            </Upload>
+                            {paciente.fichaCompromiso && (
+                                <div style={{ marginTop: '20px' }}>
+                                    <Button
+                                        type="link"
+                                        onClick={() => openDocument(paciente.fichaCompromiso.id)}
+                                        style={{ color: '#17a2b8', border: 'none' }}
+                                    >
+                                        {lang('abrir')}
+                                    </Button>
+                                    <Button
+                                        type="primary"
+                                        onClick={() => downloadDocument(paciente.fichaCompromiso.id)}
+                                        style={{ marginLeft: '10px', backgroundColor: '#007bff', color: '#fff', border: 'none' }}
+                                    >
+                                        {lang('descargar')}
+                                    </Button>
+                                    <DeleteButton onDelete={showDeleteFichaCompromisoConfirm} lang={lang} />
+                                </div>
+
+                            )}
+                        </div></Col>
+
                 </Row>
 
 

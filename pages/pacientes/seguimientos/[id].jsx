@@ -1,13 +1,28 @@
 import MenuWrapper from '@/components/sidebar';
-import { Input, Table, Modal, message, Button, Card, Row, Col, Form } from 'antd';
+import { Input, Table, Modal, message, Button, Card, Row, Col, Form, Upload } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useUserContext } from '@/assets/useUserContext';
 import axios from 'axios';
 import useTranslation from 'next-translate/useTranslation';
 import BreadCrumbPacientes from '@/components/commons/breadCrumPaciente';
+import { render } from '@testing-library/react';
+import { EditOutlined, DeleteOutlined, RightOutlined, UploadOutlined } from '@ant-design/icons';
 
 const { TextArea } = Input;
-
+const buttonStyle = {
+    marginRight: '10px',
+    marginBottom: '10px',
+};
+const DeleteButton = ({ onDelete, lang }) => (
+    <Button
+        type="default"
+        icon={<DeleteOutlined />}
+        onClick={onDelete}
+        style={{ ...buttonStyle, backgroundColor: '#ff4d4f', color: '#fff', border: 'none' }}
+    >
+        {lang('eliminar')}
+    </Button>
+);
 const fetchSeguimientos = async (id) => {
     try {
         const { data } = await axios.get(`${process.env['BASE_URL']}api/seguimientos/paciente/${id}`);
@@ -56,6 +71,8 @@ export default function IndexSeguimientos({ paciente, seguimientos }) {
     const { t } = useTranslation('home');
     const { user } = useUserContext();
     const [form] = Form.useForm();
+    const [uploading, setUploading] = useState(false);
+
     const lang = t;
 
     useEffect(() => {
@@ -132,7 +149,82 @@ export default function IndexSeguimientos({ paciente, seguimientos }) {
             },
         });
     };
+    const uploadProps = {
+        name: 'file',
+        accept: 'application/pdf',
+        showUploadList: false,
+    };
+    const handleUpload = async (file, idSeguimiento) => {
+        const formData = new FormData();
+        formData.append('file', file);
 
+        try {
+            setUploading(true);
+            const resp = await axios.post(process.env['BASE_URL'] + `api/seguimientos/${idSeguimiento}/documento`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            message.success(lang('archivoSubido'));
+            paciente.fichaDiagnostica = {
+                id: resp.data.split(' ')[5],
+            };
+            fetchData();
+        } catch (error) {
+            message.error(lang('errorSubirArchivo'));
+        } finally {
+            setUploading(false);
+        }
+    };
+    const openDocument = async (documentoId) => {
+        try {
+            const response = await axios.get(process.env['BASE_URL'] + `api/documentos/${documentoId}`);
+            const { contenido } = response.data;
+            const blob = new Blob([Uint8Array.from(atob(contenido), c => c.charCodeAt(0))], { type: 'application/pdf' });
+            const url = URL.createObjectURL(blob);
+            window.open(url, '_blank');
+        } catch (error) {
+            message.error(lang('errorAbrirDocumento'));
+        }
+    };
+
+
+    const downloadDocument = async (documentoId) => {
+        try {
+            const response = await axios.get(process.env['BASE_URL'] + `api/documentos/${documentoId}`);
+            const { contenido } = response.data;
+            const blob = new Blob([Uint8Array.from(atob(contenido), c => c.charCodeAt(0))], { type: 'application/pdf' });
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${paciente.id}-${paciente.nombresApellidos}-${paciente.cedula}.pdf`;
+            a.click();
+        } catch (error) {
+            message.error(lang('errorDescargarDocumento'));
+        }
+    };
+    const handleDeleteDocument = async (id) => {
+        try {
+            await axios.delete(process.env['BASE_URL'] + `api/seguimientos/documento/${id}`);
+            message.success(lang('documentoEliminado'));
+            window.location.reload();
+        } catch (error) {
+            message.error(lang('errorEliminarDocumento'));
+        }
+    };
+    const showDeleteDocumentConfirm = (id) => {
+        Modal.confirm({
+            title: lang('confirmarEliminacionDocumento'),
+            content: lang('seguroEliminarDocumento'),
+            okText: lang('si'),
+            okType: 'danger',
+            cancelText: lang('no'),
+            onOk() {
+                handleDeleteDocument(id);
+            },
+        });
+    };
     const columns = [
         {
             title: lang('fecha'),
@@ -155,6 +247,49 @@ export default function IndexSeguimientos({ paciente, seguimientos }) {
             render: (text, record) => (
                 `${record.especialista.primerNombre} ${record.especialista.primerApellido}`
             ),
+        },
+        {
+            title: lang('documento'),
+            dataIndex: 'documento',
+            key: 'documento',
+            render: (text, record) => {
+                console.log(text)
+                return < div >
+                    <Upload {...uploadProps}
+                        customRequest={({ file }) => handleUpload(file, record.id)}
+                    >
+                        <Button
+                            icon={<UploadOutlined />}
+                            loading={uploading}
+                            disabled={uploading}
+                            style={{ backgroundColor: '#40a9ff', color: '#fff', border: 'none' }}
+                        >
+                            {lang('Subir_Archivo')}
+                        </Button>
+                    </Upload>
+                    {text && (
+                        <div style={{ marginTop: '20px' }}>
+                            <Button
+                                type="link"
+                                onClick={() => openDocument(text.id)}
+                                style={{ color: '#17a2b8', border: 'none' }}
+                            >
+                                {lang('abrir')}
+                            </Button>
+                            <Button
+                                type="primary"
+                                onClick={() => downloadDocument(text.id)}
+                                style={{ marginLeft: '10px', backgroundColor: '#007bff', color: '#fff', border: 'none' }}
+                            >
+                                {lang('descargar')}
+                            </Button>
+                            <DeleteButton onDelete={() => showDeleteDocumentConfirm(record.id)} lang={lang} />
+                        </div>
+
+                    )}
+                </div >
+            }
+
         },
         {
             title: lang('acciones'),

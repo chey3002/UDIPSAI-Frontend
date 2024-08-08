@@ -246,5 +246,7 @@
     "Ciudad": "Ciudad",
     "Ficha": "N° Ficha",
     "Asignar": "Asignar",
-    "Pacientes_Asignados": "Pacientes Asignados"
+    "Pacientes_Asignados": "Pacientes Asignados",
+    "fichaCompromiso": "Carta de Compromiso",
+    "descripcionFichaCompromiso": "Carta compromiso firmada por los padres/representantes del paciente"
 }

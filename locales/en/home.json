@@ -244,5 +244,7 @@
     "Ciudad": "City",
     "Ficha": "Record N°",
     "Asignar": "Assign",
-    "Pacientes_Asignados": "Assigned Patients"
+    "Pacientes_Asignados": "Assigned Patients",
+    "fichaCompromiso": "Commitment Record",
+    "descripcionFichaCompromiso": "Commitment letter signed by the patient's parents or legal guardians."
 }
