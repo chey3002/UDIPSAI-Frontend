@@ -255,7 +255,7 @@ export default function IndexSeguimientos({ paciente, seguimientos }) {
             render: (text, record) => {
                 console.log(text)
                 return < div >
-                    <Upload {...uploadProps}
+                    {!text && <Upload {...uploadProps}
                         customRequest={({ file }) => handleUpload(file, record.id)}
                     >
                         <Button
@@ -266,7 +266,7 @@ export default function IndexSeguimientos({ paciente, seguimientos }) {
                         >
                             {lang('Subir_Archivo')}
                         </Button>
-                    </Upload>
+                    </Upload>}
                     {text && (
                         <div style={{ marginTop: '20px' }}>
                             <Button

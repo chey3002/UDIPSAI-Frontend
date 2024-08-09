@@ -206,7 +206,7 @@ const Register = ({ especialista }) => {
                 onChange={onChange}
             >
                 <Image src={Logo.src} alt="logo" width={100} height={100} preview={false} style={{ display: 'block', margin: '0 auto 16px' }} />
-                <div className="h4 mb-2 text-center">{lang('register_title')}</div>
+                <div className="h4 mb-2 text-center">{especialista ? lang('edit_especialista_title') : lang('register_title')}</div>
                 {show && (
                     <Alert
                         message={lang('register_error')}
@@ -220,7 +220,7 @@ const Register = ({ especialista }) => {
                     <img
                         src={formData.imagen ? `data:image/jpeg;base64,${formData.imagen}` : 'https://www.shareicon.net/data/128x128/2016/06/25/786525_people_512x512.png'}
                         alt="avatar"
-                        style={{ objectFit: 'cover', borderRadius: '15px', border: '3px solid #00ff00' }}
+                        style={{ objectFit: 'cover', borderRadius: '15px', border: '3px solid #2e6f40' }}
                         width="160"
                         height="200"
                     />
@@ -400,7 +400,7 @@ const Register = ({ especialista }) => {
                 </Form.Item>
                 <Form.Item>
                     <Button type="primary" htmlType="submit" loading={loading} block>
-                        {loading ? lang('register_button_loading') : lang('register_button')}
+                        {especialista ? loading ? lang('register_edit_button_loading') : lang('register_edit_button') : loading ? lang('register_button_loading') : lang('register_button')}
                     </Button>
                 </Form.Item>
             </Form>

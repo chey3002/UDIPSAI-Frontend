@@ -171,7 +171,7 @@ export default function IndexPaciente() {
                             key: 'sede',
                             render: (text) => (
                                 <div>
-                                    {text.nombre}
+                                    {text?.nombre}
                                 </div>
                             ),
                         },

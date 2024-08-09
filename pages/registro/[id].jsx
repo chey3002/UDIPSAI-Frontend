@@ -81,7 +81,7 @@ export default function DetailEspecialista({ especialista }) {
                 <Card.Meta
                     title={
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <h1 style={{ fontSize: '24px', color: '#003a8c' }}>{lang('informacion_especialista')} {especialista.cedula}</h1>
+                            <h1 style={{ fontSize: '24px', color: '#008000' }}>{lang('informacion_especialista')} {especialista.cedula}</h1>
                             <div>
                                 <DeleteButton onDelete={() => showDeleteConfirm(especialista.cedula)} lang={lang} />
                             </div>
@@ -96,7 +96,7 @@ export default function DetailEspecialista({ especialista }) {
                             style={{
                                 objectFit: 'cover',
                                 borderRadius: '12px',
-                                border: '3px solid #0044ff',
+                                border: '3px solid #2e6f40',
                                 width: '100%',
                                 maxWidth: '240px',
                             }}
@@ -105,7 +105,7 @@ export default function DetailEspecialista({ especialista }) {
                     </Col>
                     <Col span={24} md={12}>
                         <Col span={24} md={12}>
-                            <h3 style={{ color: '#003a8c', marginTop: '20px' }}>{lang('informacionDelEspecialista_personal')}</h3>
+                            <h3 style={{ color: '#008000', marginTop: '20px' }}>{lang('informacionDelEspecialista_personal')}</h3>
                             <p><strong>{lang('register_cedula')}:</strong> {especialista.cedula}</p>
                             <p><strong>{lang('register_primerNombre')}:</strong> {especialista.primerNombre}</p>
                             <p><strong>{lang('register_segundoNombre')}:</strong> {especialista.segundoNombre}</p>
@@ -118,7 +118,7 @@ export default function DetailEspecialista({ especialista }) {
                 <Row gutter={16}>
 
                     <Col span={24} md={12}>
-                        <h3 style={{ color: '#003a8c', marginTop: '20px' }}>{lang('informacionDelEspecialista_profesional')}</h3>
+                        <h3 style={{ color: '#008000', marginTop: '20px' }}>{lang('informacionDelEspecialista_profesional')}</h3>
 
                         <p><strong>{lang('register_id_especialidad')}:</strong> {especialista.especialidad?.area}</p>
                         <p><strong>{lang('informacionDelPaciente_sede')}:</strong> {especialista.sede?.nombre}</p>
@@ -126,7 +126,7 @@ export default function DetailEspecialista({ especialista }) {
                     </Col>
                     {especialista.esPasante && (
                         <Col span={24} md={12}>
-                            <h3 style={{ color: '#003a8c', marginTop: '20px' }}>{lang('informacionDelPasante_pasantia')}</h3>
+                            <h3 style={{ color: '#008000', marginTop: '20px' }}>{lang('informacionDelPasante_pasantia')}</h3>
 
                             <p><strong>{lang('informacionDelPasante_inicioPasantia')}:</strong> {especialista.inicioPasantia}</p>
                             <p><strong>{lang('informacionDelPasante_finPasantia')}:</strong> {especialista.finPasantia}</p>

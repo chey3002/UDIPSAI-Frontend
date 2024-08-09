@@ -284,7 +284,7 @@ const DetailPaciente = ({ paciente }) => {
 
                         <p>{lang('descripcionFichaDiagnostica')}</p>
                         <div>
-                            <Upload {...uploadProps}>
+                            {!paciente.fichaDiagnostica && <Upload {...uploadProps}>
                                 <Button
                                     icon={<UploadOutlined />}
                                     loading={uploading}
@@ -293,7 +293,7 @@ const DetailPaciente = ({ paciente }) => {
                                 >
                                     {lang('Subir_Archivo')}
                                 </Button>
-                            </Upload>
+                            </Upload>}
                             {paciente.fichaDiagnostica && (
                                 <div style={{ marginTop: '20px' }}>
                                     <Button
@@ -320,7 +320,7 @@ const DetailPaciente = ({ paciente }) => {
 
                         <p>{lang('descripcionFichaCompromiso')}</p>
                         <div>
-                            <Upload {...uploadPropsFichaCompromiso}>
+                            {!paciente.fichaCompromiso && <Upload {...uploadPropsFichaCompromiso}>
                                 <Button
                                     icon={<UploadOutlined />}
                                     loading={uploading}
@@ -329,7 +329,7 @@ const DetailPaciente = ({ paciente }) => {
                                 >
                                     {lang('Subir_Archivo')}
                                 </Button>
-                            </Upload>
+                            </Upload>}
                             {paciente.fichaCompromiso && (
                                 <div style={{ marginTop: '20px' }}>
                                     <Button

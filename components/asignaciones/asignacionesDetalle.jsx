@@ -11,17 +11,31 @@ const AssignmentDetails = ({ pasanteSeleccionado, handlePasanteDeselect, lang })
     const [sedes, setSedes] = useState([]);
     const [pacientes, setPacientes] = useState([]);
     const [asignaciones, setAsignaciones] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         fetchSedes();
     }, []);
 
     useEffect(() => {
+
         if (pasanteSeleccionado) {
-            fetchAsignaciones(pasanteSeleccionado.cedula);
-            fetchPacientes();
+            fetchData();
+
         }
     }, [pasanteSeleccionado]);
+    const fetchData = async () => {
+        setLoading(true);
+        const asignacionesFetch = await fetchAsignaciones(pasanteSeleccionado.cedula);
+        const pacientesFetch = await fetchPacientes();
+        await filterPacientes(pacientesFetch, asignacionesFetch);
+        setLoading(false);
+    }
+    const filterPacientes = async (pacientesFetch, asignacionesFetch) => {
+        const pacientes = pacientesFetch.filter(p => asignacionesFetch.find(a => a.paciente.id === p.id) === undefined);
+        setPacientes(pacientes);
+        setAsignaciones(asignacionesFetch);
+    }
 
     const fetchPacientes = async () => {
         const formData = new FormData();
@@ -29,7 +43,7 @@ const AssignmentDetails = ({ pasanteSeleccionado, handlePasanteDeselect, lang })
         formData.append('sedeId', sede);
         try {
             const { data } = await axios.post(`${process.env.BASE_URL}api/pacientes/buscar`, formData);
-            setPacientes(data);
+            return data;
         } catch (error) {
             console.log(error);
         }
@@ -47,7 +61,7 @@ const AssignmentDetails = ({ pasanteSeleccionado, handlePasanteDeselect, lang })
     const fetchAsignaciones = async (cedula) => {
         try {
             const { data } = await axios.get(`${process.env.BASE_URL}api/asignaciones/pasante/${cedula}`);
-            setAsignaciones(data);
+            return data;
         } catch (error) {
             console.log(error);
         }
@@ -55,26 +69,40 @@ const AssignmentDetails = ({ pasanteSeleccionado, handlePasanteDeselect, lang })
 
     const asignarPaciente = async (pacienteId) => {
         try {
+            setLoading(true);
+            //veificar si el paciente ya esta asignado
+            const asignacionesFetch = await fetchAsignaciones(pasanteSeleccionado.cedula);
+            const pacienteAsignado = asignacionesFetch.find(a => a.paciente.id === pacienteId);
+            if (pacienteAsignado) {
+                message.error('El paciente ya está asignado');
+                return;
+            }
             await axios.post(`${process.env.BASE_URL}api/asignaciones/asignar`, {
                 pacienteId,
                 pasanteId: pasanteSeleccionado.cedula,
             });
             message.success('Asignación realizada con éxito');
-            fetchAsignaciones(pasanteSeleccionado.cedula);
+            await fetchData();
+            setLoading(false);
         } catch (error) {
             console.log(error);
             message.error('Error al realizar la asignación');
+            setLoading(false);
         }
     };
 
     const eliminarAsignacion = async (asignacionId) => {
         try {
+            setLoading(true);
             await axios.delete(`${process.env.BASE_URL}api/asignaciones/eliminar/${asignacionId}`);
             message.success('Asignación eliminada con éxito');
-            fetchAsignaciones(pasanteSeleccionado.cedula);
+            await fetchData();
+            setLoading(false);
         } catch (error) {
+
             console.log(error);
             message.error('Error al eliminar la asignación');
+            setLoading(false);
         }
     };
 
@@ -90,7 +118,7 @@ const AssignmentDetails = ({ pasanteSeleccionado, handlePasanteDeselect, lang })
                         <p><strong>{lang("especialidad")}:</strong> {pasanteSeleccionado.especialidad.area}</p>
                     </Col>
                     <Col span={8}>
-                        <Button type="primary" danger onClick={handlePasanteDeselect}>{lang("Deseleccionar_Pasante")}</Button>
+                        <Button type="primary" disabled={loading} danger onClick={handlePasanteDeselect}>{lang("Deseleccionar_Pasante")}</Button>
                     </Col>
                 </Row>
             </Card>
@@ -102,7 +130,7 @@ const AssignmentDetails = ({ pasanteSeleccionado, handlePasanteDeselect, lang })
                         value={searchVal}
                         onChange={e => setSearchVal(e.target.value)}
                         placeholder={lang("Buscar_Paciente")}
-                        onSearch={fetchPacientes}
+                        onSearch={fetchData}
                     />
                 </Col>
                 <Col span={8}>
@@ -133,7 +161,7 @@ const AssignmentDetails = ({ pasanteSeleccionado, handlePasanteDeselect, lang })
                     title={lang("acciones")}
                     key="acciones"
                     render={(text, record) => (
-                        <Button type="primary" onClick={() => asignarPaciente(record.id)}>{lang("Asignar")}</Button>
+                        <Button type="primary" disabled={loading} onClick={() => asignarPaciente(record.id)}>{lang("Asignar")}</Button>
                     )}
                 />
             </Table>
@@ -154,7 +182,7 @@ const AssignmentDetails = ({ pasanteSeleccionado, handlePasanteDeselect, lang })
                     title={lang("acciones")}
                     key="acciones"
                     render={(text, record) => (
-                        <Button type="primary" danger onClick={() => eliminarAsignacion(record.id)}>{lang("eliminar")}</Button>
+                        <Button type="primary" disabled={loading} danger onClick={() => eliminarAsignacion(record.id)}>{lang("eliminar")}</Button>
                     )}
                 />
             </Table>

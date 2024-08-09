@@ -13,6 +13,13 @@ export default function BreadCrumbEspecialista({ cedula, page }) {
                     items: [
                         {
                             label: (
+                                <a rel="noopener noreferrer" href={`/registro/${cedula}`}>
+                                    {t('Ver')}
+                                </a>
+                            ),
+                        },
+                        {
+                            label: (
                                 <a rel="noopener noreferrer" href={`/registro/edit/${cedula}`}>
                                     {t('editar')}
                                 </a>
