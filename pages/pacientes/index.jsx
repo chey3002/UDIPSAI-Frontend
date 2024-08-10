@@ -11,13 +11,21 @@ import DownloadTemplateButton from '@/components/downloadTemplateButton';
 
 const { Title } = Typography;
 
-const fetchPacientes = async (searchVal, sede) => {
+const fetchPacientes = async (searchVal, sede, isPasante, pasanteID) => {
     const formData = new FormData();
     formData.append('search', searchVal);
     formData.append('sedeId', sede);
+    console.log(isPasante, pasanteID);
+
     try {
-        const { data } = await axios.post(process.env['BASE_URL'] + 'api/pacientes/buscar', formData);
-        return { data };
+        if (isPasante) {
+            formData.append('pasanteId', pasanteID);
+            const { data: pacientes } = await axios.post(process.env['BASE_URL'] + 'api/asignaciones/buscar', formData);
+            return { data: pacientes };
+        } else {
+            const { data } = await axios.post(process.env['BASE_URL'] + 'api/pacientes/buscar', formData);
+            return { data };
+        }
     } catch (error) {
         console.log(error);
     }
@@ -29,9 +37,10 @@ export default function IndexPaciente() {
     const [origData, setOrigData] = useState([]);
     const [loading, setLoading] = useState(true);
     const { user } = useUserContext();
-
+    const [isPasante, setIsPasante] = useState(user?.esPasante);
     const [sede, setSede] = useState(user?.sede.id);
     const [sedes, setSedes] = useState([]);
+    const [pasanteID, setPasanteID] = useState(user?.cedula);
     const { t } = useTranslation('home');
     const lang = t;
 
@@ -70,7 +79,7 @@ export default function IndexPaciente() {
 
     const fetchData = async () => {
         setLoading(true);
-        const { data: users } = await fetchPacientes(searchVal, sede);
+        const { data: users } = await fetchPacientes(searchVal, sede, isPasante, pasanteID);
         setOrigData(users);
         setFilteredData(users);
 
