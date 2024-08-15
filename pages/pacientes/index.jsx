@@ -21,10 +21,10 @@ const fetchPacientes = async (searchVal, sede, isPasante, pasanteID) => {
         if (isPasante) {
             formData.append('pasanteId', pasanteID);
             const { data: pacientes } = await axios.post(process.env['BASE_URL'] + 'api/asignaciones/buscar', formData);
-            return { data: pacientes };
+            return { data: pacientes ? pacientes : [] };
         } else {
-            const { data } = await axios.post(process.env['BASE_URL'] + 'api/pacientes/buscar', formData);
-            return { data };
+            const { data: pacientes } = await axios.post(process.env['BASE_URL'] + 'api/pacientes/buscar', formData);
+            return { data: pacientes ? pacientes : [] };
         }
     } catch (error) {
         console.log(error);

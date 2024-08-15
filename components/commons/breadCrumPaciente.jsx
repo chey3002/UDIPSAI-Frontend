@@ -41,6 +41,13 @@ export default function BreadCrumbPacientes({ idPaciente, page }) {
                     </a>
                 ),
             },
+            {
+                label: (
+                    <a rel="noopener noreferrer" href={`/pacientes/fichaMedica/${idPaciente}`}>
+                        {t('FichaMedicaPaciente')}
+                    </a>
+                ),
+            },
         ];
 
         if (user?.permisos["pacientes"]) {
