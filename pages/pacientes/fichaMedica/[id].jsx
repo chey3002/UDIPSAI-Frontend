@@ -4,7 +4,7 @@ import { Card, Form, Input, Button, DatePicker, Select, InputNumber, Radio, Divi
 import axios from 'axios';
 import useTranslation from 'next-translate/useTranslation';
 import BreadCrumbPacientes from '@/components/commons/breadCrumPaciente';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { DownCircleOutlined, FilePdfOutlined } from '@ant-design/icons';
 const { Option } = Select;
 const { TextArea } = Input;
@@ -21,7 +21,7 @@ export default function EditarFichaMedica({ ficha }) {
                 ...fichaData,
                 'paciente.nombresApellidos': fichaData.paciente.nombresApellidos,
                 'paciente.ciudad': fichaData.paciente.ciudad,
-                'paciente.fechaNacimiento': moment(fichaData.paciente.fechaNacimiento, 'YYYY-MM-DD'),
+                'paciente.fechaNacimiento': dayjs(fichaData.paciente.fechaNacimiento, 'YYYY-MM-DD'),
                 'paciente.edad': fichaData.paciente.edad,
                 'paciente.tieneDiscapacidad': fichaData.paciente.tieneDiscapacidad === 'si',
                 'paciente.tipoDiscapacidad': fichaData.paciente.tipoDiscapacidad,
@@ -29,7 +29,7 @@ export default function EditarFichaMedica({ ficha }) {
                 'paciente.portadorCarnet': fichaData.paciente.portadorCarnet,
                 'paciente.institucionEducativa.nombreInstitucion': fichaData.paciente.institucionEducativa.nombreInstitucion,
                 'paciente.anioEducacion': fichaData.paciente.anioEducacion,
-                'fecha': fichaData.fecha ? moment(fichaData.fecha, 'YYYY-MM-DD') : moment(new Date(), 'YYYY-MM-DD'),
+                'fecha': fichaData.fecha ? dayjs(fichaData.fecha, 'YYYY-MM-DD') : dayjs(new Date(), 'YYYY-MM-DD'),
                 'fuenteDeInformacion': fichaData.fuenteDeInformacion,
                 'motivoConsulta': fichaData.motivoConsulta,
                 // 'elEstudianteViveCon': fichaData.elEstudianteViveCon ? fichaData.elEstudianteViveCon : 'OTRO',
@@ -412,7 +412,7 @@ export default function EditarFichaMedica({ ficha }) {
                     <Row gutter={16}>
                         <Col xs={24} sm={12} md={8}>
                             <Form.Item label={t('fecha')} name="fecha">
-                                <DatePicker />
+                                <DatePicker format={'YYYY-MM-DD'} />
                             </Form.Item >
                         </Col>
                         <Col xs={24} sm={12} md={8}>
