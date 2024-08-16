@@ -173,10 +173,10 @@ const AssignmentDetails = ({ pasanteSeleccionado, handlePasanteDeselect, lang })
                 bordered
             >
                 <Table.Column title={lang("Ficha")} dataIndex={['paciente', 'id']} key="id" />
-                <Table.Column title={lang("nombre")} dataIndex={['paciente', 'cedula']} key="cedula" />
-                <Table.Column title={lang("Ciudad")} dataIndex={['paciente', 'nombresApellidos']} key="nombre" />
-                <Table.Column title={lang("Sede")} dataIndex={['paciente', 'ciudad']} key="ciudad" />
-                <Table.Column title={lang("Cédula")} dataIndex={['paciente', 'sede', 'nombre']} key="sede" />
+                <Table.Column title={lang("Cédula")} dataIndex={['paciente', 'cedula']} key="cedula" />
+                <Table.Column title={lang("nombre")} dataIndex={['paciente', 'nombresApellidos']} key="nombre" />
+                <Table.Column title={lang("Ciudad")} dataIndex={['paciente', 'ciudad']} key="ciudad" />
+                <Table.Column title={lang("Sede")} dataIndex={['paciente', 'sede', 'nombre']} key="sede" />
                 <Table.Column title={lang("Fecha_de_Nacimiento")} dataIndex={['paciente', 'fechaNacimiento']} key="fechaNacimiento" />
                 <Table.Column
                     title={lang("acciones")}
