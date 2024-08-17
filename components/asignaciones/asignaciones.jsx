@@ -1,18 +1,15 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { Input, Table, Card, Row, Col } from 'antd';
+import { Input, Table, Card, Row, Col, message } from 'antd';
 import axios from 'axios';
 import { useTableSearch } from '@/utils/useTableSearch';
+import { especialistasPasantes } from '@/utils/apiRequests';
 
 const Assignments = ({ pasanteSeleccionado, handlePasanteSelect, lang }) => {
     const fetchEspecialistas = async () => {
-        try {
-            const { data } = await axios.get(`${process.env.BASE_URL}api/especialistas/pasantes`);
-            setEspecialistas(data);
-            return { data };
-        } catch (error) {
-            console.log(error);
-        }
+        const { data } = await especialistasPasantes(message)
+        setEspecialistas(data);
+        return { data };
     };
 
     const [searchVal, setSearchVal] = useState('');

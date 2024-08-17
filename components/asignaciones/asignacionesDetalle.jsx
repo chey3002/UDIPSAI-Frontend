@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Input, Select, Table, Button, Card, message, Row, Col, Divider } from 'antd';
 import axios from 'axios';
 import { useUserContext } from '@/assets/useUserContext';
+import { asignacionesAsignar, asignacionesEliminar, asignacionesPasante, pacientesBuscar, sedesListar } from '@/utils/apiRequests';
 
 const AssignmentDetails = ({ pasanteSeleccionado, handlePasanteDeselect, lang }) => {
     const { user } = useUserContext();
@@ -41,69 +42,45 @@ const AssignmentDetails = ({ pasanteSeleccionado, handlePasanteDeselect, lang })
         const formData = new FormData();
         formData.append('search', searchVal);
         formData.append('sedeId', sede);
-        try {
-            const { data } = await axios.post(`${process.env.BASE_URL}api/pacientes/buscar`, formData);
-            return data;
-        } catch (error) {
-            console.log(error);
-        }
+
+        const { data } = await pacientesBuscar(formData, message);
+        return data;
     };
 
     const fetchSedes = async () => {
-        try {
-            const { data } = await axios.get(`${process.env.BASE_URL}api/sedes/listar`);
-            setSedes(data);
-        } catch (error) {
-            console.log(error);
-        }
+        const { data } = await sedesListar(message);
+        setSedes(data);
     };
 
     const fetchAsignaciones = async (cedula) => {
-        try {
-            const { data } = await axios.get(`${process.env.BASE_URL}api/asignaciones/pasante/${cedula}`);
-            return data;
-        } catch (error) {
-            console.log(error);
-        }
+
+        const { data } = await asignacionesPasante(cedula, message);
+        return data;
     };
 
     const asignarPaciente = async (pacienteId) => {
-        try {
-            setLoading(true);
-            //veificar si el paciente ya esta asignado
-            const asignacionesFetch = await fetchAsignaciones(pasanteSeleccionado.cedula);
-            const pacienteAsignado = asignacionesFetch.find(a => a.paciente.id === pacienteId);
-            if (pacienteAsignado) {
-                message.error('El paciente ya está asignado');
-                return;
-            }
-            await axios.post(`${process.env.BASE_URL}api/asignaciones/asignar`, {
-                pacienteId,
-                pasanteId: pasanteSeleccionado.cedula,
-            });
-            message.success('Asignación realizada con éxito');
-            await fetchData();
-            setLoading(false);
-        } catch (error) {
-            console.log(error);
-            message.error('Error al realizar la asignación');
-            setLoading(false);
+
+        setLoading(true);
+        //veificar si el paciente ya esta asignado
+        const asignacionesFetch = await fetchAsignaciones(pasanteSeleccionado.cedula);
+        const pacienteAsignado = asignacionesFetch.find(a => a.paciente.id === pacienteId);
+        if (pacienteAsignado) {
+            message.error('El paciente ya está asignado');
+            return;
         }
+        await asignacionesAsignar(pacienteId, pasanteSeleccionado.cedula, message)
+        message.success('Asignación realizada con éxito');
+        await fetchData();
+        setLoading(false);
     };
 
     const eliminarAsignacion = async (asignacionId) => {
-        try {
-            setLoading(true);
-            await axios.delete(`${process.env.BASE_URL}api/asignaciones/eliminar/${asignacionId}`);
-            message.success('Asignación eliminada con éxito');
-            await fetchData();
-            setLoading(false);
-        } catch (error) {
+        setLoading(true);
+        await asignacionesEliminar(asignacionId, message, setLoading);
+        message.success('Asignación eliminada con éxito');
+        await fetchData();
+        setLoading(false);
 
-            console.log(error);
-            message.error('Error al eliminar la asignación');
-            setLoading(false);
-        }
     };
 
     return (

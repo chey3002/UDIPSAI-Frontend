@@ -8,6 +8,7 @@ import styles from "./login.module.css";
 import useTranslation from 'next-translate/useTranslation'
 import Image from "next/image";
 import axios from "axios";
+import { loginAPI } from "@/utils/apiRequests";
 
 const { Password } = Input;
 
@@ -37,19 +38,9 @@ const Login = () => {
             contrasena: formData.password
         }
         console.log(`Username: ${formData.username}, Password: ${formData.password}`);
-        await axios.post(process.env['BASE_URL'] + 'api/especialistas/login', values)
-            .then((response) => {
-                console.log(response);
-                const usuario = { ...response.data };
-                setUser({
-                    ...usuario,
-                    username: usuario.primerNombre + " " + usuario.primerApellido,
-                });
-            }).catch((error) => {
-                console.log(error);
-                setShow(true);
-                setLoading(false);
-            });
+
+        await loginAPI(values, setShow, setLoading, setUser);
+
         // if (formData.username === "admin" && formData.password === "admin") {
         //     setUser({
         //         ...formData,

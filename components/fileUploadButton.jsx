@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Upload, Button, message, Row, Col, Modal, Card } from 'antd';
 import { FileExcelOutlined, UploadOutlined as UploadIcon } from '@ant-design/icons';
 import useTranslation from 'next-translate/useTranslation';
+import { pacientesUpload } from '@/utils/apiRequests';
 
 const FileUploadButton = () => {
     const [fileList, setFileList] = useState([]);
@@ -16,20 +17,11 @@ const FileUploadButton = () => {
 
         const formData = new FormData();
         formData.append('file', fileList[0]);
+        const response = await pacientesUpload(formData, message)
+        await setModal2Content(response.data);
+        await setModal2Open(true);
 
-        try {
-            const response = await axios.post(process.env['BASE_URL'] + "api/pacientes/upload", formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-            await setModal2Content(response.data);
-            await setModal2Open(true);
 
-        } catch (error) {
-            console.error('Error al subir el archivo:', error);
-            message.error('Error al subir el archivo: ' + error.message);
-        }
     };
 
     const { t } = useTranslation('home');

@@ -5,6 +5,7 @@ import { Button, Card, Col, Form, Input, Row, Select, Upload, Checkbox, message 
 import { UploadOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import useTranslation from 'next-translate/useTranslation';
+import { institucionesListar, pacientesActualizar, pacientesCrear, sedesListar } from '@/utils/apiRequests';
 
 const { TextArea } = Input;
 
@@ -71,27 +72,16 @@ const FormPaciente = ({ paciente }) => {
 
     useEffect(() => {
         const fetchSedes = async () => {
-            try {
-                const { data: sedesData } = await axios.get(process.env['BASE_URL'] + 'api/sedes/listar').catch((error) => {
-                    console.log(error);
-                });
-                console.log(sedesData);
-                setSedes(sedesData);
-            } catch (error) {
-                console.log(error);
-            }
+            const { data: sedesData } = await sedesListar(message);
+            console.log(sedesData);
+            setSedes(sedesData);
         }
         fetchSedes();
         const fetchInstituciones = async () => {
-            try {
-                const response = await axios.get(`${process.env['BASE_URL']}api/instituciones/listar`);
-                setInstitucionesEducativas(response.data);
-                console.log(response.data);
-            } catch (error) {
-                console.error('Error fetching instituciones educativas:', error);
-            }
+            const response = await institucionesListar(message);
+            setInstitucionesEducativas(response.data);
+            console.log(response.data);
         };
-
         fetchInstituciones();
     }, []);
 
@@ -145,23 +135,12 @@ const FormPaciente = ({ paciente }) => {
             const request = { ...formState, pacienteEstado: 1, porcentajeDiscapacidad: parseInt(formState.porcentajeDiscapacidad) };
             delete request.id
 
-            await axios.put(process.env['BASE_URL'] + 'api/pacientes/actualizar/' + formState.id, request)
-                .then(() => {
-                    window.location.href = '/pacientes';
-                }).catch((error) => {
-                    console.log(error);
-                });
+            await pacientesActualizar(formState.id, request, message);
         } else {
             // Create
             const request = { ...formState, pacienteEstado: 1 };
             delete request.id;
-            await axios.post(process.env['BASE_URL'] + 'api/pacientes/insertar', request)
-                .then((response) => {
-                    console.log(response);
-                    window.location.href = '/pacientes';
-                }).catch((error) => {
-                    console.log(error);
-                });
+            await pacientesCrear(request, message);
         }
     };
     const beforeUpload = (file) => {
