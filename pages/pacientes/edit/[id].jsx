@@ -1,17 +1,17 @@
 import { useUserContext } from '@/assets/useUserContext';
 import FormPaciente from '@/components/pacientes/patientForm'
 import MenuWrapper from '@/components/sidebar'
-import { toIndex } from '@/utils/toindex/toindex';
 import React, { useEffect, useState } from 'react'
-import { Card } from 'react-bootstrap';
-import axios from 'axios';
 import useTranslation from 'next-translate/useTranslation'
 import BreadCrumbPacientes from '@/components/commons/breadCrumPaciente';
+import { pacienteById } from '@/utils/apiRequests';
+import { Card, message } from 'antd';
 
 export default function EditarPaciente({ paciente }) {
 
     const { t } = useTranslation('home');
     const lang = t;
+    console.log(paciente);
     if (paciente === null) {
         return (
             <MenuWrapper setLang={true} >
@@ -33,7 +33,8 @@ export default function EditarPaciente({ paciente }) {
     )
 }
 export const getServerSideProps = async (context) => {
-    const res = await axios.get(process.env['HOST'] + 'api/pacientes/listar/' + context.query.id)
+    const res = await pacienteById(context.query.id);
+    console.log(res);
     if (res.data === null) {
         return {
             props: {

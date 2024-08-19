@@ -2,9 +2,9 @@ import nextTranslate from 'next-translate-plugin';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = nextTranslate({
-    reactStrictMode: true,
+    reactStrictMode: false,
     env: {
-        BASE_URL: process.env['HOST']
+        APIURL: process.env['APIURL']
     },
 })
 

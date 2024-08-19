@@ -2,11 +2,11 @@ import MenuWrapper from '@/components/sidebar';
 import { Input, Table, Modal, message, Button, Card, Row, Col, Form, Upload } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useUserContext } from '@/assets/useUserContext';
-import axios from 'axios';
 import useTranslation from 'next-translate/useTranslation';
 import BreadCrumbPacientes from '@/components/commons/breadCrumPaciente';
 import { render } from '@testing-library/react';
 import { EditOutlined, DeleteOutlined, RightOutlined, UploadOutlined } from '@ant-design/icons';
+import { documentoGet, pacienteById, seguimientosActualizar, seguimientosCrear, seguimientosDelete, seguimientosDeleteFile, seguimientosPacienteListar, seguimientosUploadFile } from '@/utils/apiRequests';
 
 const { TextArea } = Input;
 const buttonStyle = {
@@ -25,7 +25,7 @@ const DeleteButton = ({ onDelete, lang }) => (
 );
 const fetchSeguimientos = async (id) => {
     try {
-        const { data } = await axios.get(`${process.env['BASE_URL']}api/seguimientos/paciente/${id}`);
+        const { data } = await seguimientosPacienteListar(id);
         return { data };
     } catch (error) {
         console.log(error);
@@ -35,7 +35,7 @@ const fetchSeguimientos = async (id) => {
 
 const fetchPaciente = async (id) => {
     try {
-        const { data } = await axios.get(`${process.env['BASE_URL']}api/pacientes/listar/${id}`);
+        const { data } = await pacienteById(id);
         return { data };
     } catch (error) {
         console.log(error);
@@ -108,10 +108,10 @@ export default function IndexSeguimientos({ paciente, seguimientos }) {
             values.estado = '1'
             values.especialista = { cedula: user.cedula };
             if (currentSeguimiento) {
-                await axios.put(`${process.env['BASE_URL']}api/seguimientos/${currentSeguimiento.id}`, values);
+                await seguimientosActualizar(currentSeguimiento.id, values, message);
                 message.success(lang('seguimientoActualizado'));
             } else {
-                await axios.post(`${process.env['BASE_URL']}api/seguimientos`, values);
+                await seguimientosCrear(values, message);
                 message.success(lang('seguimientoCreado'));
             }
             setIsModalVisible(false);
@@ -128,7 +128,7 @@ export default function IndexSeguimientos({ paciente, seguimientos }) {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`${process.env['BASE_URL']}api/seguimientos/${id}`);
+            await seguimientosDelete(id, message);
             message.success(lang('seguimientoEliminado'));
             fetchData();
         } catch (error) {
@@ -160,11 +160,7 @@ export default function IndexSeguimientos({ paciente, seguimientos }) {
 
         try {
             setUploading(true);
-            const resp = await axios.post(process.env['BASE_URL'] + `api/seguimientos/${idSeguimiento}/documento`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
+            const resp = await seguimientosUploadFile(idSeguimiento, formData, message);
             message.success(lang('archivoSubido'));
             paciente.fichaDiagnostica = {
                 id: resp.data.split(' ')[5],
@@ -178,7 +174,11 @@ export default function IndexSeguimientos({ paciente, seguimientos }) {
     };
     const openDocument = async (documentoId) => {
         try {
-            const response = await axios.get(process.env['BASE_URL'] + `api/documentos/${documentoId}`);
+            const response = await documentoGet(documentoId, message);
+            if (!response) {
+                message.error(lang('errorAbrirDocumento'));
+                return;
+            }
             const { contenido } = response.data;
             const blob = new Blob([Uint8Array.from(atob(contenido), c => c.charCodeAt(0))], { type: 'application/pdf' });
             const url = URL.createObjectURL(blob);
@@ -191,8 +191,11 @@ export default function IndexSeguimientos({ paciente, seguimientos }) {
 
     const downloadDocument = async (documentoId) => {
         try {
-            const response = await axios.get(process.env['BASE_URL'] + `api/documentos/${documentoId}`);
-            const { contenido } = response.data;
+            const response = await documentoGet(documentoId, message);
+            if (!response) {
+                message.error(lang('errorAbrirDocumento'));
+                return;
+            } const { contenido } = response.data;
             const blob = new Blob([Uint8Array.from(atob(contenido), c => c.charCodeAt(0))], { type: 'application/pdf' });
             const url = URL.createObjectURL(blob);
 
@@ -206,7 +209,7 @@ export default function IndexSeguimientos({ paciente, seguimientos }) {
     };
     const handleDeleteDocument = async (id) => {
         try {
-            await axios.delete(process.env['BASE_URL'] + `api/seguimientos/documento/${id}`);
+            await seguimientosDeleteFile(id, message);
             message.success(lang('documentoEliminado'));
             window.location.reload();
         } catch (error) {

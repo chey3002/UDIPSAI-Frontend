@@ -2,8 +2,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { Button, Card, Col, Form, Input, Row, Select, message } from 'antd';
-import axios from 'axios';
 import useTranslation from 'next-translate/useTranslation';
+import { institucionesActualizar, institucionesCrear } from '@/utils/apiRequests';
 
 const { TextArea } = Input;
 
@@ -47,26 +47,14 @@ const FormInstitucion = ({ institucion }) => {
     const handleSubmit = async () => {
         if (institucion) {
             // Update
-            await axios.put(process.env['BASE_URL'] + 'api/instituciones/actualizar/' + formState.id, formState)
-                .then(() => {
-                    window.location.href = '/pacientes/institucionesEducativas';
-                }).catch((error) => {
-                    console.log(error);
-                });
+            institucionesActualizar(formState.id, formState, message);
         } else {
             // Create
             const request = {
                 ...formState, institucionEstado: 1
             };
             delete request.id;
-
-            await axios.post(process.env['BASE_URL'] + 'api/instituciones/insertar', request)
-                .then((response) => {
-                    console.log(response);
-                    window.location.href = '/pacientes/institucionesEducativas';
-                }).catch((error) => {
-                    console.log(error);
-                });
+            await institucionesCrear(request, message);
         }
     };
 

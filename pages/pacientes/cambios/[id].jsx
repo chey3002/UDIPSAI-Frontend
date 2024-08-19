@@ -1,9 +1,9 @@
 import React from 'react';
-import { Table, Typography, Collapse } from 'antd';
-import axios from 'axios';
+import { Table, Typography, Collapse, message } from 'antd';
 import MenuWrapper from '@/components/sidebar';
 import BreadCrumbPacientes from '@/components/commons/breadCrumPaciente';
 import useTranslation from 'next-translate/useTranslation';
+import { historialDeCambios } from '@/utils/apiRequests';
 
 const { Text } = Typography;
 const { Panel } = Collapse;
@@ -128,7 +128,7 @@ export default function HistorialCambiosTable({ cambios, paciente }) {
 };
 
 export const getServerSideProps = async (context) => {
-    const res = await axios.get(process.env['HOST'] + 'api/historial-cambios/listar/' + context.query.id);
+    const res = await historialDeCambios(context.query.id, message);
     if (res.data === null) {
         return {
             props: {

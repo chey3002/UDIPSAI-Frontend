@@ -4,12 +4,12 @@ import { useUserContext } from '@/assets/useUserContext';
 import MenuWrapper from '@/components/sidebar';
 import React, { useState, useEffect } from 'react';
 import { Button, Card, Row, Col, Modal, message, Table, Upload } from 'antd';
-import axios from 'axios';
 import { UploadOutlined } from '@ant-design/icons';
 import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 import { act } from 'react';
 import BreadCrumbPacientes from '@/components/commons/breadCrumPaciente';
+import { documentoGet, testEliminar, testPaciientes, testSubir } from '@/utils/apiRequests';
 
 const { Dragger } = Upload;
 
@@ -29,7 +29,7 @@ export default function PacienteTests({ pacienteId }) {
     const fetchTests = async () => {
         try {
             setLoading(true);
-            const response = await axios.get(process.env['BASE_URL'] + `api/tests/paciente/${pacienteId}`);
+            const response = await testPaciientes(pacienteId, message);
             setTests(response.data);
             setLoading(false);
         } catch (error) {
@@ -67,10 +67,7 @@ export default function PacienteTests({ pacienteId }) {
                         fecha: new Date().toISOString().split('T')[0],
                         contenido: base64Content,
                     };
-
-
-                    await axios.post(process.env['BASE_URL'] + 'api/tests', newTest);
-                    message.success(lang('testSubido'));
+                    await testSubir(newTest, message);
                     fetchTests();
                 } catch (error) {
                     message.error(lang('errorSubirTest'));
@@ -81,8 +78,7 @@ export default function PacienteTests({ pacienteId }) {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(process.env['BASE_URL'] + `api/tests/${id}`);
-            message.success(lang('testEliminado'));
+            await testEliminar(id, message);
             fetchTests();
         } catch (error) {
             message.error(lang('errorEliminarTest'));
@@ -104,8 +100,11 @@ export default function PacienteTests({ pacienteId }) {
 
     const openDocument = async (documentoId, nombreArchivo) => {
         try {
-            const response = await axios.get(process.env['BASE_URL'] + `api/documentos/${documentoId}`);
-            const { contenido } = response.data;
+            const response = await documentoGet(documentoId, message);
+            if (!response) {
+                message.error(lang('errorAbrirDocumento'));
+                return;
+            } const { contenido } = response.data;
             const blob = new Blob([Uint8Array.from(atob(contenido), c => c.charCodeAt(0))], { type: 'application/pdf' });
             const url = URL.createObjectURL(blob);
             window.open(url, '_blank');
@@ -116,8 +115,11 @@ export default function PacienteTests({ pacienteId }) {
 
     const downloadDocument = async (documentoId, nombreArchivo) => {
         try {
-            const response = await axios.get(process.env['BASE_URL'] + `api/documentos/${documentoId}`);
-            const { contenido } = response.data;
+            const response = await documentoGet(documentoId, message);
+            if (!response) {
+                message.error(lang('errorAbrirDocumento'));
+                return;
+            } const { contenido } = response.data;
             const blob = new Blob([Uint8Array.from(atob(contenido), c => c.charCodeAt(0))], { type: 'application/pdf' });
             const url = URL.createObjectURL(blob);
 

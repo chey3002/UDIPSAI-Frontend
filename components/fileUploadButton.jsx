@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { Upload, Button, message, Row, Col, Modal, Card } from 'antd';
 import { FileExcelOutlined, UploadOutlined as UploadIcon } from '@ant-design/icons';
 import useTranslation from 'next-translate/useTranslation';

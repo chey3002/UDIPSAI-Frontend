@@ -5,7 +5,7 @@ import { Form, Input, Button, Alert, Checkbox, Row, Col, Card, Upload, Image, me
 import { UploadOutlined } from '@ant-design/icons';
 import useTranslation from 'next-translate/useTranslation';
 import Logo from "@/assets/ucacue-logo.png";
-import axios from 'axios';
+import { especialistasCrear, especialistasNoPasantesListar, especialistasUpdate, sedesListar } from "@/utils/apiRequests";
 
 const { Option } = Select;
 
@@ -34,31 +34,18 @@ const Register = ({ especialista }) => {
     const [loading, setLoading] = useState(false);
     const [especialistas, setEspecialistas] = useState([]);
 
+
+
     useEffect(() => {
         const fetchEspecialistas = async () => {
-            try {
-                const response = await axios.get(`${process.env['BASE_URL']}api/especialistas/activos/nopasantes`);
-                setEspecialistas(response.data);
-                console.log(response.data);
-            } catch (error) {
-                console.error('Error fetching especialistas:', error);
-            }
+            const response = await especialistasNoPasantesListar(message);
+            setEspecialistas(response.data);
         };
 
         fetchEspecialistas();
-    }, []);
-
-    useEffect(() => {
         const fetchSedes = async () => {
-            try {
-                const { data: sedesData } = await axios.get(process.env['BASE_URL'] + 'api/sedes/listar').catch((error) => {
-                    console.log(error);
-                });
-                console.log(sedesData);
-                setSedes(sedesData);
-            } catch (error) {
-                console.log(error);
-            }
+            const response = await sedesListar(message);
+            setSedes(response.data);
         }
         fetchSedes();
         console.log(especialista);
@@ -112,30 +99,11 @@ const Register = ({ especialista }) => {
         if (especialista) {
             // Update
             console.log('Updating:', values);
-            await axios.put(process.env['BASE_URL'] + 'api/especialistas/actualizar/' + values.cedula, values)
-                .then((res) => {
-                    console.log(res);
-                    if (res.status === 200) {
-                        window.location.href = '/registro';
-
-                    } else {
-                        console.log('Error updating especialista'
-
-                        );
-                    }
-                }).catch((error) => {
-                    console.log(error);
-                });
+            await especialistasUpdate(values.cedula, values, message);
         } else {
             // Create
             const request = { ...values, especialistaEstado: 1 };
-            await axios.post(process.env['BASE_URL'] + 'api/especialistas/insertar', request)
-                .then((response) => {
-                    console.log(response);
-                    window.location.href = '/registro';
-                }).catch((error) => {
-                    console.log(error);
-                });
+            await especialistasCrear(request, message);
         }
         setLoading(false);
     };
@@ -362,7 +330,7 @@ const Register = ({ especialista }) => {
                                 placeholder={lang('register_selectEspecialista')}
                                 optionFilterProp="children"
                                 filterOption={(input, option) =>
-                                    (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                                    (option?.label + " " + option?.value).toLowerCase().includes(input.toLowerCase())
                                 }
                                 onChange={onChange}
                                 options={especialistas.map(especialista => ({

@@ -1,7 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { Input, Table, Card, Row, Col, message } from 'antd';
-import axios from 'axios';
 import { useTableSearch } from '@/utils/useTableSearch';
 import { especialistasPasantes } from '@/utils/apiRequests';
 

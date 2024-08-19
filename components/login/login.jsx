@@ -41,13 +41,6 @@ const Login = () => {
 
         await loginAPI(values, setShow, setLoading, setUser);
 
-        // if (formData.username === "admin" && formData.password === "admin") {
-        //     setUser({
-        //         ...formData,
-        //         username: formData.username,
-        //     });
-        // }
-        // const response = await axios.get(process.env['BASE_URL'] + 'api/pacientes/listar/')
         setLoading(false);
     };
 

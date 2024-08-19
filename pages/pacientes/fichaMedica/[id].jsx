@@ -1,11 +1,11 @@
 import MenuWrapper from '@/components/sidebar';
 import React, { useState, useEffect } from 'react';
 import { Card, Form, Input, Button, DatePicker, Select, InputNumber, Radio, Divider, Upload, message, Checkbox, Row, Col, Image } from 'antd';
-import axios from 'axios';
 import useTranslation from 'next-translate/useTranslation';
 import BreadCrumbPacientes from '@/components/commons/breadCrumPaciente';
 import dayjs from 'dayjs';
 import { DownCircleOutlined, FilePdfOutlined } from '@ant-design/icons';
+import { fichaMedicaActualizar, fichaMedicaById, fichaMedicaPDF } from '@/utils/apiRequests';
 const { Option } = Select;
 const { TextArea } = Input;
 
@@ -204,7 +204,7 @@ export default function EditarFichaMedica({ ficha }) {
                 'trastornosPsicologicosFamiliares': responseForm.trastornosPsicologicosFamiliares,
                 'problemasAprendizajeFamiliares': responseForm.problemasAprendizajeFamiliares,
             }
-            await axios.put(`${process.env['BASE_URL']}api/fichas-medicas/${fichaData.id}`, response);
+            await fichaMedicaActualizar(fichaData.id, response, message);
             message.success('Ficha médica actualizada con éxito');
         } catch (error) {
             message.error('Error al actualizar la ficha médica');
@@ -214,19 +214,9 @@ export default function EditarFichaMedica({ ficha }) {
     };
     const handleDownload = async () => {
         try {
-            const response = await fetch(`${process.env['BASE_URL']}api/fichas-medicas/${fichaData.id}/reporte`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/pdf',
-                },
-            });
+            const response = await fichaMedicaPDF(fichaData.id, message);
 
-            if (!response.ok) {
-                throw new Error('Error al descargar el archivo');
-            }
-
-            const blob = await response.blob();
-            const url = window.URL.createObjectURL(blob);
+            const url = window.URL.createObjectURL(new Blob([response.data]));
             const a = document.createElement('a');
             a.href = url;
 
@@ -240,26 +230,13 @@ export default function EditarFichaMedica({ ficha }) {
             console.error('Error al descargar el PDF:', error);
         }
     };
+
     const handleOpenPDF = async () => {
         try {
-            const response = await fetch(`${process.env['BASE_URL']}api/fichas-medicas/${fichaData.id}/reporte`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/pdf',
-                },
-            });
+            const response = await fichaMedicaPDF(fichaData.id, message);
 
-            if (!response.ok) {
-                message.error('Error al obtener el archivo');
-            }
 
-            const blob = await response.blob();
-
-            // Crear un objeto Blob que representa el PDF y abrirlo en una nueva ventana
-            const file = new Blob([blob], { type: 'application/pdf' });
-            file.name = `ficha_medica_${fichaData.paciente.nombresApellidos}_${fichaData.paciente.cedula}_${fichaData.id}.pdf`;
-            console.log(file);
-
+            const file = new Blob([response.data], { type: 'application/pdf' });
             const fileURL = URL.createObjectURL(file);
 
             // Abrir en una nueva pestaña o ventana
@@ -950,7 +927,7 @@ export default function EditarFichaMedica({ ficha }) {
 
 export const getServerSideProps = async (context) => {
     try {
-        const res = await axios.get(`${process.env['HOST']}api/fichas-medicas/paciente/${context.query.id}`);
+        const res = await fichaMedicaById(context.params.id);
         console.log('res:', res.data);
 
         if (res.status === 200) {

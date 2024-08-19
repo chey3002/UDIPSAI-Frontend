@@ -3,10 +3,10 @@ import MenuWrapper from '@/components/sidebar';
 import { Input, Table, Modal, message, Button, Card, Row, Col, Typography } from 'antd';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import axios from 'axios';
 import useTranslation from 'next-translate/useTranslation';
 import { useTableSearch } from '@/utils/useTableSearch';
 import { useUserContext } from '@/assets/useUserContext';
+import { especialistasActivos, especialistasDelete } from '@/utils/apiRequests';
 
 const { Title } = Typography;
 
@@ -15,9 +15,7 @@ const fetchEspecialistas = async (searchVal) => {
         const formData = new FormData();
         formData.append('search', searchVal);
 
-        const { data } = await axios.get(process.env['BASE_URL'] + 'api/especialistas/activos').catch((error) => {
-            console.log(error);
-        });
+        const { data } = await especialistasActivos(message)
 
         return { data };
     } catch (error) {
@@ -36,7 +34,7 @@ export default function IndexEspecialistas() {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(process.env['BASE_URL'] + `api/especialistas/${id}`);
+            await especialistasDelete(id, message);
             message.success(lang('especialistaEliminado'));
             window.location.href = '/registro';
         } catch (error) {

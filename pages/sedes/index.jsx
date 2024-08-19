@@ -1,28 +1,18 @@
 import MenuWrapper from '@/components/sidebar';
 import { Input, Table, Modal, message, Button, Card, Row, Col, Form } from 'antd';
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import useTranslation from 'next-translate/useTranslation';
+import { sedes, sedesActualizar, sedesCrear, sedesEliminar, sedesListar } from '@/utils/apiRequests';
 
 const { TextArea } = Input;
 
 const fetchSedes = async () => {
     try {
-        const { data } = await axios.get(`${process.env['BASE_URL']}api/sedes/listar`);
+        const { data } = await sedesListar(message);
         return { data };
     } catch (error) {
         console.log(error);
         return { data: [] };
-    }
-};
-
-const fetchSede = async (id) => {
-    try {
-        const { data } = await axios.get(`${process.env['BASE_URL']}api/sedes/listar/${id}`);
-        return { data };
-    } catch (error) {
-        console.log(error);
-        return { data: null };
     }
 };
 
@@ -70,10 +60,10 @@ export default function IndexSedes({ sedes }) {
             const values = await form.validateFields();
             values.estado = 1;
             if (currentSede) {
-                await axios.put(`${process.env['BASE_URL']}api/sedes/actualizar/${currentSede.id}`, values);
+                await sedesActualizar(currentSede.id, values, message);
                 message.success(lang('sedeActualizada'));
             } else {
-                await axios.post(`${process.env['BASE_URL']}api/sedes/insertar`, values);
+                await sedesCrear(values, message);
                 message.success(lang('sedeCreada'));
             }
             setIsModalVisible(false);
@@ -90,7 +80,7 @@ export default function IndexSedes({ sedes }) {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`${process.env['BASE_URL']}api/sedes/eliminar/${id}`);
+            await sedesEliminar(id, message);
             message.success(lang('sedeEliminada'));
             fetchData();
         } catch (error) {

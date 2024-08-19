@@ -1,9 +1,9 @@
 import MenuWrapper from '@/components/sidebar';
 import { Input, Table, Modal, message, Button, Card, Row, Col, Form, Select, Typography } from 'antd';
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import useTranslation from 'next-translate/useTranslation';
 import { useTableSearch } from '@/utils/useTableSearch';
+import { institucionesActualizar, institucionesCrear, institucionesEliminar, institucionesListar } from '@/utils/apiRequests';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -11,7 +11,7 @@ const { Title } = Typography;
 
 const fetchInstituciones = async () => {
     try {
-        const { data } = await axios.get(`${process.env['BASE_URL']}api/instituciones/listar`);
+        const { data } = await institucionesListar(message);
         return { data };
     } catch (error) {
         console.log(error);
@@ -74,10 +74,10 @@ export default function IndexInstituciones({ instituciones }) {
             const values = await form.validateFields();
             values.institucionEstado = 1;
             if (currentInstitucion) {
-                await axios.put(`${process.env['BASE_URL']}api/instituciones/actualizar/${currentInstitucion.id}`, values);
+                await institucionesActualizar(currentInstitucion.id, values, message);
                 message.success(lang('institucionActualizada'));
             } else {
-                await axios.post(`${process.env['BASE_URL']}api/instituciones/insertar`, values);
+                await institucionesCrear(values, message);
                 message.success(lang('institucionCreada'));
             }
             setIsModalVisible(false);
@@ -93,14 +93,8 @@ export default function IndexInstituciones({ instituciones }) {
     };
 
     const handleDelete = async (id) => {
-        try {
-            await axios.delete(`${process.env['BASE_URL']}api/instituciones/eliminar/${id}`);
-            message.success(lang('institucionEliminada'));
-            fetchData();
-        } catch (error) {
-            message.error(lang('errorEliminarInstitucion'));
-            console.error(error);
-        }
+        await institucionesEliminar(id, message);
+        fetchData();
     };
 
     const showDeleteConfirm = (id) => {

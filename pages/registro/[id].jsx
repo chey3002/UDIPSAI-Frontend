@@ -4,10 +4,10 @@ import MenuWrapper from '@/components/sidebar';
 import Link from 'next/link';
 import React from 'react';
 import { Button, Card, Row, Col, Modal, message } from 'antd';
-import axios from 'axios';
 import useTranslation from 'next-translate/useTranslation';
 import BreadCrumbEspecialista from '@/components/commons/breadCrumbEspecialista';
 import { DeleteOutlined } from '@ant-design/icons';
+import { especialistasById, especialistasDelete } from '@/utils/apiRequests';
 
 const buttonStyle = {
     marginRight: '10px',
@@ -44,7 +44,7 @@ export default function DetailEspecialista({ especialista }) {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(process.env['BASE_URL'] + `api/especialistas/${id}`);
+            await especialistasDelete(id, message);
             message.success(lang('especialistaEliminado'));
             window.location.href = '/registro';
         } catch (error) {
@@ -140,8 +140,8 @@ export default function DetailEspecialista({ especialista }) {
 }
 
 export const getServerSideProps = async (context) => {
-    const res = await axios.get(process.env['HOST'] + 'api/especialistas/' + context.query.id);
-    if (res.data === null) {
+    const res = await especialistasById(context.query.id, message);
+    if (res === null) {
         return {
             props: {
                 especialista: null,
@@ -150,7 +150,7 @@ export const getServerSideProps = async (context) => {
     }
     return {
         props: {
-            especialista: res.data,
+            especialista: res,
         },
     };
 };

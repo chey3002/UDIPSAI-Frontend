@@ -5,9 +5,9 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { Button, Card, Row, Col, Modal, message, Upload, Image } from 'antd';
 import { EditOutlined, DeleteOutlined, RightOutlined, UploadOutlined } from '@ant-design/icons';
-import axios from 'axios';
 import useTranslation from 'next-translate/useTranslation';
 import BreadCrumbPacientes from '@/components/commons/breadCrumPaciente';
+import { documentoDelete, documentoGet, pacienteById, pacienteFichaCompromisoDelete, pacienteFichaDiagnosticaDelete, pacientesEliminar, pacientesFichaCompromiso, pacientesFichaDiagnostica } from '@/utils/apiRequests';
 
 const buttonStyle = {
     marginRight: '10px',
@@ -45,11 +45,10 @@ const DetailPaciente = ({ paciente }) => {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(process.env['BASE_URL'] + `api/pacientes/eliminar/${id}`);
+            await pacientesEliminar(id, message);
             message.success(lang('pacienteEliminado'));
             window.location.href = '/pacientes';
         } catch (error) {
-            message.error(lang('errorEliminarPaciente'));
             console.error(error);
         }
     };
@@ -73,12 +72,7 @@ const DetailPaciente = ({ paciente }) => {
 
         try {
             setUploading(true);
-            const resp = await axios.post(process.env['BASE_URL'] + `api/pacientes/${paciente.id}/documento`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-            message.success(lang('archivoSubido'));
+            const resp = await pacientesFichaDiagnostica(paciente.id, formData, message);
             paciente.fichaDiagnostica = {
                 id: resp.data.split(' ')[5],
             };
@@ -95,12 +89,7 @@ const DetailPaciente = ({ paciente }) => {
 
         try {
             setUploading(true);
-            const resp = await axios.post(process.env['BASE_URL'] + `api/pacientes/${paciente.id}/fichaCompromiso`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-            message.success(lang('archivoSubido'));
+            const resp = await pacientesFichaCompromiso(paciente.id, formData, message);
             paciente.fichaCompromiso = {
                 id: resp.data.split(' ')[5],
             };
@@ -113,7 +102,11 @@ const DetailPaciente = ({ paciente }) => {
     };
     const openDocument = async (documentoId) => {
         try {
-            const response = await axios.get(process.env['BASE_URL'] + `api/documentos/${documentoId}`);
+            const response = await documentoGet(documentoId, message);
+            if (!response) {
+                message.error(lang('errorAbrirDocumento'));
+                return;
+            }
             const { contenido } = response.data;
             const blob = new Blob([Uint8Array.from(atob(contenido), c => c.charCodeAt(0))], { type: 'application/pdf' });
             const url = URL.createObjectURL(blob);
@@ -126,7 +119,11 @@ const DetailPaciente = ({ paciente }) => {
 
     const downloadDocument = async (documentoId) => {
         try {
-            const response = await axios.get(process.env['BASE_URL'] + `api/documentos/${documentoId}`);
+            const response = await documentoGet(documentoId, message);
+            if (!response) {
+                message.error(lang('errorDescargarDocumento'));
+                return;
+            }
             const { contenido } = response.data;
             const blob = new Blob([Uint8Array.from(atob(contenido), c => c.charCodeAt(0))], { type: 'application/pdf' });
             const url = URL.createObjectURL(blob);
@@ -142,7 +139,7 @@ const DetailPaciente = ({ paciente }) => {
 
     const handleDeleteDocument = async () => {
         try {
-            await axios.delete(process.env['BASE_URL'] + `api/pacientes/documentos/${paciente.id}`);
+            await pacienteFichaDiagnosticaDelete(paciente.id, message);
             message.success(lang('documentoEliminado'));
             window.location.reload();
         } catch (error) {
@@ -151,7 +148,7 @@ const DetailPaciente = ({ paciente }) => {
     };
     const handleDeleteFichaCompromiso = async () => {
         try {
-            await axios.delete(process.env['BASE_URL'] + `api/pacientes/fichaCompromiso/${paciente.id}`);
+            await pacienteFichaCompromisoDelete(paciente.id, message);
             message.success(lang('documentoEliminado'));
             window.location.reload();
         } catch (error) {
@@ -363,7 +360,7 @@ const DetailPaciente = ({ paciente }) => {
 };
 
 export const getServerSideProps = async (context) => {
-    const res = await axios.get(process.env['BASE_URL'] + 'api/pacientes/listar/' + context.query.id);
+    const res = await pacienteById(context.query.id);
     if (res.data === null) {
         return {
             props: {

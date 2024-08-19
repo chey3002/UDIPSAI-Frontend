@@ -1,7 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { Input, Select, Table, Button, Card, message, Row, Col, Divider } from 'antd';
-import axios from 'axios';
 import { useUserContext } from '@/assets/useUserContext';
 import { asignacionesAsignar, asignacionesEliminar, asignacionesPasante, pacientesBuscar, sedesListar } from '@/utils/apiRequests';
 

@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Card, Col, Form, Input, Row, Select, Upload, Checkbox, message } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-import axios from 'axios';
 import useTranslation from 'next-translate/useTranslation';
 import { institucionesListar, pacientesActualizar, pacientesCrear, sedesListar } from '@/utils/apiRequests';
 

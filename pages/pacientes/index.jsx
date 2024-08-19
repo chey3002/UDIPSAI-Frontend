@@ -4,10 +4,10 @@ import { Input, Table, Modal, message, Button, Card, Row, Col, Select, Form, Typ
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useUserContext } from '@/assets/useUserContext';
-import axios from 'axios';
 import useTranslation from 'next-translate/useTranslation';
 import FileUploadButton from '@/components/fileUploadButton';
 import DownloadTemplateButton from '@/components/downloadTemplateButton';
+import { asignacionesBuscar, pacientesBuscar, pacientesEliminar, sedesListar } from '@/utils/apiRequests';
 
 const { Title } = Typography;
 
@@ -20,11 +20,11 @@ const fetchPacientes = async (searchVal, sede, isPasante, pasanteID) => {
     try {
         if (isPasante) {
             formData.append('pasanteId', pasanteID);
-            const { data: pacientes } = await axios.post(process.env['BASE_URL'] + 'api/asignaciones/buscar', formData);
-            return { data: pacientes ? pacientes : [] };
+            const { data } = await asignacionesBuscar(formData, message);
+            return { data };
         } else {
-            const { data: pacientes } = await axios.post(process.env['BASE_URL'] + 'api/pacientes/buscar', formData);
-            return { data: pacientes ? pacientes : [] };
+            const { data } = await pacientesBuscar(formData, message);
+            return { data };
         }
     } catch (error) {
         console.log(error);
@@ -46,8 +46,7 @@ export default function IndexPaciente() {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(process.env['BASE_URL'] + `api/pacientes/eliminar/${id}`);
-            message.success(lang('pacienteEliminado'));
+            await pacientesEliminar(id, message);
             fetchData(); // Refresh data after deletion
         } catch (error) {
             message.error(lang('errorEliminarPaciente'));
@@ -80,6 +79,8 @@ export default function IndexPaciente() {
     const fetchData = async () => {
         setLoading(true);
         const { data: users } = await fetchPacientes(searchVal, sede, isPasante, pasanteID);
+        console.log(users);
+
         setOrigData(users);
         setFilteredData(users);
 
@@ -93,7 +94,7 @@ export default function IndexPaciente() {
     useEffect(() => {
         const fetchSedes = async () => {
             try {
-                const { data: sedesData } = await axios.get(process.env['BASE_URL'] + 'api/sedes/listar');
+                const { data: sedesData } = await sedesListar(message);
                 setSedes(sedesData);
             } catch (error) {
                 console.log(error);
