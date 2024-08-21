@@ -1,8 +1,12 @@
 import axios from 'axios';
+//axios headers
+const token = "nOsr9FprhOWfLEti5KGJUK6RJWL8R0Ek"
+axios.defaults.headers.common['access-token-udipsai'] = "nOsr9FprhOWfLEti5KGJUK6RJWL8R0Ek"
 const pacientesUpload = async (formData, message) => {
     try {
         const response = await axios.post(process.env['APIURL'] + "api/pacientes/upload", formData, {
             headers: {
+                'access-token-udipsai': token,
                 'Content-Type': 'multipart/form-data',
             },
         });
@@ -216,6 +220,8 @@ const pacientesFichaDiagnostica = async (id, formData, message) => {
     try {
         const resp = await axios.post(process.env['APIURL'] + `api/pacientes/${id}/documento`, formData, {
             headers: {
+                'access-token-udipsai': token,
+
                 'Content-Type': 'multipart/form-data',
             },
         });
@@ -230,6 +236,8 @@ const pacientesFichaCompromiso = async (id, formData, message) => {
     try {
         const response = await axios.post(process.env['APIURL'] + `api/pacientes/${id}/fichaCompromiso`, formData, {
             headers: {
+                'access-token-udipsai': token,
+
                 'Content-Type': 'multipart/form-data',
             },
 
@@ -343,6 +351,8 @@ const fichaMedicaPDF = async (id, message) => {
         const response = await axios.get(`${process.env['APIURL']}api/fichas-medicas/${id}/reporte`, {
             responseType: 'blob',
             headers: {
+                'access-token-udipsai': token,
+
                 'Content-Type': 'application/pdf',
             },
         });
@@ -414,6 +424,8 @@ const seguimientosUploadFile = async (id, formData, message) => {
     try {
         const response = await axios.post(process.env['APIURL'] + `api/seguimientos/${id}/documento`, formData, {
             headers: {
+                'access-token-udipsai': token,
+
                 'Content-Type': 'multipart/form-data',
             },
         });
