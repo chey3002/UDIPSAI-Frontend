@@ -48,6 +48,13 @@ export default function BreadCrumbPacientes({ idPaciente, page }) {
                     </a>
                 ),
             },
+            {
+                label: (
+                    <a rel="noopener noreferrer" href={`/pacientes/fichaPsicologiaEducativa/${idPaciente}`}>
+                        {t('FichaPsicologiaEducativa')}
+                    </a>
+                ),
+            },
         ];
 
         if (user?.permisos["pacientes"]) {

@@ -32,6 +32,9 @@ export default function EditarFichaMedica({ ficha }) {
                 'fecha': fichaData.fecha ? dayjs(fichaData.fecha, 'YYYY-MM-DD') : dayjs(new Date(), 'YYYY-MM-DD'),
                 'fuenteDeInformacion': fichaData.fuenteDeInformacion,
                 'motivoConsulta': fichaData.motivoConsulta,
+                'parentesco': fichaData.parentesco,
+                'personaQDeriva': fichaData.personaQDeriva,
+
                 // 'elEstudianteViveCon': fichaData.elEstudianteViveCon ? fichaData.elEstudianteViveCon : 'OTRO',
                 'elEstudianteViveCon': fichaData.elEstudianteViveCon,
                 'elEstudianteViveConOtro': fichaData.elEstudianteViveConOtro,
@@ -128,6 +131,8 @@ export default function EditarFichaMedica({ ficha }) {
                 'paciente': fichaData.paciente,
                 'fecha': responseForm.fecha,
                 'fuenteDeInformacion': responseForm.fuenteDeInformacion,
+                'parentesco': responseForm.parentesco,
+                'personaQDeriva': responseForm.personaQDeriva,
                 'motivoConsulta': responseForm.motivoConsulta,
                 'elEstudianteViveCon': responseForm.elEstudianteViveCon,
                 'elEstudianteViveConOtro': responseForm.elEstudianteViveConOtro,
@@ -394,6 +399,18 @@ export default function EditarFichaMedica({ ficha }) {
                         </Col>
                         <Col xs={24} sm={12} md={8}>
                             <Form.Item label={t('FuenteDeInformacion')} name="fuenteDeInformacion">
+                                <Input />
+                            </Form.Item>
+                        </Col>
+                        <Col xs={24} sm={12} md={8}>
+                            <Form.Item label={t('Parentesco')} name="parentesco">
+                                <Input />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Row gutter={16}>
+                        <Col xs={24} sm={24} md={24}>
+                            <Form.Item label={t('PersonaQDeriva')} name="personaQDeriva">
                                 <Input />
                             </Form.Item>
                         </Col>

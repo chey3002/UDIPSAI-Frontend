@@ -34,7 +34,7 @@ export default function EditarPaciente({ paciente }) {
 }
 export const getServerSideProps = async (context) => {
     const res = await pacienteById(context.query.id);
-    console.log(res);
+    console.log(res.data);
     if (res.data === null) {
         return {
             props: {

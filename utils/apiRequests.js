@@ -333,11 +333,10 @@ const fichaMedicaActualizar = async (id, request, message) => {
     try {
         await axios.put(`${process.env['APIURL']}api/fichas-medicas/${id}`, request);
     } catch (error) {
-        message.error('Error al actualizar la ficha médica: ' + error.message);
         console.error(error);
     }
 }
-const fichaMedicaById = async (id, message) => {
+const fichaMedicaById = async (id) => {
     try {
         const response = await axios.get(`${process.env['APIURL']}api/fichas-medicas/paciente/${id}`);
         return response;
@@ -472,6 +471,40 @@ const testEliminar = async (id, message) => {
         console.error(error);
     }
 }
+const fichaPsicologiaEducativaById = async (id) => {
+    try {
+        const response = await axios.get(process.env['APIURL'] + `api/psicologia-educativa/paciente/${id}`);
+        return response;
+    } catch (error) {
+        console.error(error);
+        return { data: [] };
+    }
+}
+const fichaPsicologiaEducativaActualizar = async (id, request, message) => {
+    try {
+        await axios.put(`${process.env['APIURL']}api/psicologia-educativa/${id}`, request);
+    } catch (error) {
+        message.error('Error al actualizar la ficha de psicología educativa: ' + error.message);
+        console.error(error);
+    }
+}
+const psicologiaEducativaPDF = async (id, message) => {
+    try {
+        const response = await axios.get(`${process.env['APIURL']}api/psicologia-educativa/${id}/reporte`, {
+            responseType: 'blob',
+            headers: {
+                'access-token-udipsai': token,
+
+                'Content-Type': 'application/pdf',
+            },
+        });
+        return response;
+    } catch (error) {
+        console.error(error);
+        message.error('Error al obtener el reporte de la ficha médica: ' + error.message)
+        return null;
+    }
+}
 export {
     asignacionesBuscar, historialDeCambios,
     asignacionesEliminar, loginAPI,
@@ -494,5 +527,7 @@ export {
     seguimientosActualizar, seguimientosCrear,
     seguimientosDelete, seguimientosUploadFile,
     seguimientosDeleteFile, testPaciientes,
-    testSubir, testEliminar
+    testSubir, testEliminar,
+    fichaPsicologiaEducativaById, fichaPsicologiaEducativaActualizar,
+    psicologiaEducativaPDF
 };
