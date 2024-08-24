@@ -121,7 +121,7 @@ const institucionesListar = async (message) => {
 const pacientesActualizar = async (id, request, message) => {
     await axios.put(process.env['APIURL'] + 'api/pacientes/actualizar/' + id, request)
         .then(() => {
-            window.location.href = '/pacientes'
+            window.location.href = '/pacientes/' + id;
         }).catch((error) => {
             console.log(error)
             message.error('Error al actualizar el paciente: ' + error.message)
@@ -178,7 +178,7 @@ const especialistasUpdate = async (id, request, message) => {
         .then((res) => {
             console.log(res);
             if (res.status === 200) {
-                window.location.href = '/registro';
+                window.location.href = '/registro/' + id;
 
             } else {
                 console.log('Error updating especialista')

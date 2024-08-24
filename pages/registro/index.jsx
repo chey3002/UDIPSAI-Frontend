@@ -1,6 +1,5 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import MenuWrapper from '@/components/sidebar';
-import { Input, Table, Modal, message, Button, Card, Row, Col, Typography } from 'antd';
+import { Input, Table, Modal, message, Button, Card, Row, Col, Typography, Select } from 'antd';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import useTranslation from 'next-translate/useTranslation';
@@ -15,7 +14,7 @@ const fetchEspecialistas = async (searchVal) => {
         const formData = new FormData();
         formData.append('search', searchVal);
 
-        const { data } = await especialistasActivos(message)
+        const { data } = await especialistasActivos(message);
 
         return { data };
     } catch (error) {
@@ -27,6 +26,7 @@ export default function IndexEspecialistas() {
     const [searchVal, setSearchVal] = useState('');
     const [origData, setOrigData] = useState([]);
     const [searchIndex, setSearchIndex] = useState([]);
+    const [estadoFilter, setEstadoFilter] = useState('todos'); // Estado para el filtro de especialistas
     const { t } = useTranslation('home');
     const { user } = useUserContext();
 
@@ -70,6 +70,12 @@ export default function IndexEspecialistas() {
         return allValues;
     };
 
+    const filterDataByEstado = (data) => {
+        if (estadoFilter === 'todos') return data; // Mostrar todos si el filtro es "todos"
+        const isActive = estadoFilter === 'true'; // Convertir a booleano
+        return data.filter(item => item.especialistaEstado === isActive);
+    };
+
     const fetchData = async () => {
         const { data: users } = await fetchEspecialistas(searchVal);
         setOrigData(users);
@@ -78,10 +84,6 @@ export default function IndexEspecialistas() {
             return { allValues: allValues.toString() };
         });
         setSearchIndex(searchInd);
-    };
-
-    const onSearch = () => {
-        fetchData();
     };
 
     useEffect(() => {
@@ -113,9 +115,22 @@ export default function IndexEspecialistas() {
                             size="large"
                         />
                     </Col>
+                    <Col xs={24} sm={12}>
+                        <Select
+                            placeholder={lang('filtrarPorEstado')}
+                            onChange={value => setEstadoFilter(value)}
+                            value={estadoFilter}
+                            allowClear={false}
+                            size="large"
+                        >
+                            <Select.Option value="todos">{lang('todos')}</Select.Option>
+                            <Select.Option value="true">{lang('activo')}</Select.Option>
+                            <Select.Option value="false">{lang('inactivo')}</Select.Option>
+                        </Select>
+                    </Col>
                 </Row>
                 <Table
-                    dataSource={filteredData}
+                    dataSource={filterDataByEstado(filteredData)}
                     columns={[
                         {
                             title: lang('cedula'),
@@ -141,7 +156,17 @@ export default function IndexEspecialistas() {
                                     {text?.area}
                                 </span>
                             )
+                        }, {
+                            title: lang('EstadoEspecialista'),
+                            dataIndex: 'especialistaEstado',
+                            key: 'especialistaEstado',
+                            render: (text) => (
+                                <div>
+                                    {text ? <span style={{ color: '#fff', backgroundColor: '#28a745', padding: '5px', borderRadius: '5px' }}>{lang('activo')}</span> : <span style={{ color: '#fff', backgroundColor: '#dc3545', padding: '5px', borderRadius: '5px' }}>{lang('inactivo')}</span>}
+                                </div>
+                            ),
                         },
+
                         {
                             title: lang('acciones'),
                             key: 'actions',

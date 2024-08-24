@@ -7,7 +7,7 @@ import { Button, Card, Row, Col, Modal, message, Upload, Image } from 'antd';
 import { EditOutlined, DeleteOutlined, RightOutlined, UploadOutlined } from '@ant-design/icons';
 import useTranslation from 'next-translate/useTranslation';
 import BreadCrumbPacientes from '@/components/commons/breadCrumPaciente';
-import { documentoDelete, documentoGet, pacienteById, pacienteFichaCompromisoDelete, pacienteFichaDiagnosticaDelete, pacientesEliminar, pacientesFichaCompromiso, pacientesFichaDiagnostica } from '@/utils/apiRequests';
+import { documentoDelete, documentoGet, pacienteById, pacienteFichaCompromisoDelete, pacienteFichaDiagnosticaDelete, pacientesActualizar, pacientesEliminar, pacientesFichaCompromiso, pacientesFichaDiagnostica } from '@/utils/apiRequests';
 
 const buttonStyle = {
     marginRight: '10px',
@@ -191,6 +191,23 @@ const DetailPaciente = ({ paciente }) => {
         customRequest: ({ file }) => handleUploadFichaCompromiso(file),
         showUploadList: false,
     };
+    const handleReactivar = async () => {
+        try {
+            const formState = {
+                ...paciente,
+                institucionEducativa: paciente.institucionEducativa?.id,
+                sede: paciente.sede?.id,
+                pacienteEstado: 1,
+                jornada: paciente.jornada?.id,
+            }
+            delete formState.id;
+            await pacientesActualizar(paciente.id, formState, message);
+            message.success(lang('pacienteReactivado'));
+        } catch (error) {
+            console.error(error);
+        }
+
+    }
 
     return (
         <MenuWrapper setLang={true}>
@@ -209,9 +226,17 @@ const DetailPaciente = ({ paciente }) => {
                     title={
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <h1 style={{ fontSize: '24px', color: '#003a8c' }}>{lang('informacionDelPaciente_title')} {paciente.id}</h1>
-                            <div>
+
+                            {!paciente.pacienteEstado ? <div>
+
+                                <Button type="primary" onClick={handleReactivar} style={{ backgroundColor: '#52c41a', color: '#fff', border: 'none' }}>
+
+                                    Reactivar
+                                </Button>
+
+                            </div> : <div>
                                 <DeleteButton onDelete={() => showDeleteConfirm(paciente.id)} lang={lang} />
-                            </div>
+                            </div>}
                         </div>
                     }
                 />

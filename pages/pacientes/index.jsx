@@ -186,6 +186,17 @@ export default function IndexPaciente() {
                             ),
                         },
                         {
+                            title: lang('EstadoDelPaciente'),
+                            dataIndex: 'pacienteEstado',
+                            key: 'pacienteEstado',
+                            render: (text) => (
+                                <div>
+                                    {text ? <span style={{ color: '#fff', backgroundColor: '#28a745', padding: '5px', borderRadius: '5px' }}>{lang('activo')}</span> : <span style={{ color: '#fff', backgroundColor: '#dc3545', padding: '5px', borderRadius: '5px' }}>{lang('inactivo')}</span>}
+                                </div>
+                            ),
+
+                        },
+                        {
                             title: lang('acciones'),
                             key: 'actions',
                             dataIndex: 'id',

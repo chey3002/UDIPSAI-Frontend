@@ -53,6 +53,12 @@ const Assignments = ({ pasanteSeleccionado, handlePasanteSelect, lang }) => {
                         <Table.Column title={lang("Primer_Apellido")} dataIndex="primerApellido" key="primerApellido" />
                         <Table.Column title={lang("especialidad")} dataIndex={['especialidad', 'area']} key="especialidad" />
                         <Table.Column title={lang("Especialista_Asignado")} dataIndex="especialistaAsignado" key="especialistaAsignado" />
+                        <Table.Column title={lang("EstadoEspecialista")} dataIndex="especialistaEstado" key="especialistaEstado" render={
+                            (text) => (
+                                <div>
+                                    {text ? <span style={{ color: '#fff', backgroundColor: '#28a745', padding: '5px', borderRadius: '5px' }}>{lang('activo')}</span> : <span style={{ color: '#fff', backgroundColor: '#dc3545', padding: '5px', borderRadius: '5px' }}>{lang('inactivo')}</span>}
+                                </div>
+                            )} />
                     </Table>
                 </>
             ) : (

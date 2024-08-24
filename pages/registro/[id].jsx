@@ -7,7 +7,7 @@ import { Button, Card, Row, Col, Modal, message } from 'antd';
 import useTranslation from 'next-translate/useTranslation';
 import BreadCrumbEspecialista from '@/components/commons/breadCrumbEspecialista';
 import { DeleteOutlined } from '@ant-design/icons';
-import { especialistasById, especialistasDelete } from '@/utils/apiRequests';
+import { especialistasById, especialistasDelete, especialistasUpdate } from '@/utils/apiRequests';
 
 const buttonStyle = {
     marginRight: '10px',
@@ -26,6 +26,7 @@ const DeleteButton = ({ onDelete, lang }) => (
 );
 
 export default function DetailEspecialista({ especialista }) {
+    console.log(especialista);
     const { t } = useTranslation('home');
     const lang = t;
 
@@ -65,7 +66,34 @@ export default function DetailEspecialista({ especialista }) {
             },
         });
     };
+    const handleReactivar = async () => {
+        try {
+            const formState = {
+                cedula: especialista.cedula,
+                primerNombre: especialista.primerNombre,
+                segundoNombre: especialista.segundoNombre,
+                primerApellido: especialista.primerApellido,
+                segundoApellido: especialista.segundoApellido,
+                especialidadId: especialista.especialidad ? especialista.especialidad?.id : null,
+                esPasante: especialista.esPasante,
+                inicioPasantia: especialista.inicioPasantia,
+                finPasantia: especialista.finPasantia,
+                especialistaAsignado: especialista.especialistaAsignado?.cedula,
+                imagen: especialista.imagen,
+                contrasena: especialista.contrasena,
+                contrasenaConfirm: especialista.contrasena,
+                sede: especialista.sede?.id || null,
+                especialistaEstado: 1,
+            };
+            console.log(formState);
+            await especialistasUpdate(formState.cedula, formState, message);
+            // await pacientesActualizar();
+            message.success(lang('pacienteReactivado'));
+        } catch (error) {
+            console.error(error);
+        }
 
+    }
     return (
         <MenuWrapper setLang={true}>
             <BreadCrumbEspecialista page={lang('especialista')} cedula={especialista.cedula} />
@@ -82,9 +110,14 @@ export default function DetailEspecialista({ especialista }) {
                     title={
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <h1 style={{ fontSize: '24px', color: '#008000' }}>{lang('informacion_especialista')} {especialista.cedula}</h1>
-                            <div>
+                            {!especialista.especialistaEstado ? <div>
+                                <Button type="primary" onClick={handleReactivar} style={{ backgroundColor: '#52c41a', color: '#fff', border: 'none' }}>
+
+                                    Reactivar
+                                </Button>
+                            </div> : <div>
                                 <DeleteButton onDelete={() => showDeleteConfirm(especialista.cedula)} lang={lang} />
-                            </div>
+                            </div>}
                         </div>
                     }
                 />
@@ -130,7 +163,9 @@ export default function DetailEspecialista({ especialista }) {
 
                             <p><strong>{lang('informacionDelPasante_inicioPasantia')}:</strong> {especialista.inicioPasantia}</p>
                             <p><strong>{lang('informacionDelPasante_finPasantia')}:</strong> {especialista.finPasantia}</p>
-                            <p><strong>{lang('informacionDelPasante_cedulaEspecialistaAsignado')}:</strong> {especialista.especialistaAsignado}</p>
+                            <p><strong>{lang('informacionDelPasante_cedulaEspecialistaAsignado')}:</strong> {especialista.especialistaAsignado.cedula}</p>
+                            <p><strong>{lang('informacionDelPasante_NombresEspecialistaAsignado')}:</strong> {especialista.especialistaAsignado.primerNombre + " " + especialista.especialistaAsignado.segundoNombre + " " + especialista.especialistaAsignado.primerApellido + " " + especialista.especialistaAsignado.segundoApellido}</p>
+
                         </Col>
                     )}
                 </Row>

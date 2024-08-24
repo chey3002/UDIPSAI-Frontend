@@ -88,7 +88,7 @@ const Register = ({ especialista }) => {
     const handleSubmit = async () => {
         setLoading(true);
         const values = {
-            ...form.getFieldValue(), especialistaEstado: 1
+            ...form.getFieldValue()
         };
         if (!values.esPasante) {
             values.inicioPasantia = null;
@@ -97,8 +97,9 @@ const Register = ({ especialista }) => {
         }
         delete values.contrasenaConfirm;
         if (especialista) {
+            const request = { ...values, especialistaEstado: especialista.especialistaEstado };
             // Update
-            console.log('Updating:', values);
+            console.log('Updating:', request);
             await especialistasUpdate(values.cedula, values, message);
         } else {
             // Create
