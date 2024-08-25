@@ -9,6 +9,7 @@ import useTranslation from 'next-translate/useTranslation'
 import Image from "next/image";
 import axios from "axios";
 import { loginAPI } from "@/utils/apiRequests";
+import Head from "next/head";
 
 const { Password } = Input;
 
@@ -58,6 +59,10 @@ const Login = () => {
 
     return (
         <div className={styles["sign-in__wrapper"]}>
+            <Head>
+                <meta name="description" content="UDIPSAI" />
+                <title>Login</title>
+            </Head>
             <div className={styles["sign-in__backdrop"]}></div>
             <Form className="shadow p-4 bg-white rounded" onFinish={handleSubmit}>
                 <Image className="mx-auto d-block mb-2" src={Logo} alt="logo" width={100} height={100} />
