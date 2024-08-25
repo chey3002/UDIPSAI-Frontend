@@ -9,7 +9,7 @@ export default function App({ Component, pageProps }) {
       <meta charSet="utf-8" />
       <meta name="description" content="UDIPSAI" />
       <title>UDIPSAI</title>
-      <link rel="icon" href="/favicon.ico" />
+      <link rel="icon" href="/favicon.png" type="image/png" sizes="any" />
     </Head>
     <Component {...pageProps} />
   </>
