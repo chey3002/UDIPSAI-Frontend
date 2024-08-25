@@ -52,9 +52,9 @@ export default function IndexEspecialistas() {
         Modal.confirm({
             title: lang('confirmarEliminacion'),
             content: lang('seguroEliminarEspecialista'),
-            okText: lang('si'),
+            okText: lang('Si'),
             okType: 'danger',
-            cancelText: lang('no'),
+            cancelText: lang('No'),
             onOk() {
                 handleDelete(id);
             },

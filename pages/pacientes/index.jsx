@@ -58,9 +58,9 @@ export default function IndexPaciente() {
         Modal.confirm({
             title: lang('confirmarEliminacion'),
             content: lang('seguroEliminar'),
-            okText: lang('si'),
+            okText: lang('Si'),
             okType: 'danger',
-            cancelText: lang('no'),
+            cancelText: lang('No'),
             onOk() {
                 handleDelete(id);
             },

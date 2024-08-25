@@ -139,7 +139,7 @@ const Register = ({ especialista }) => {
     const beforeUpload = (file) => {
         const isImage = file.type.startsWith('image/');
         if (!isImage) {
-            message.error('You can only upload image files!');
+            message.error(lang('onlyImagesError'));
         }
         return isImage;
     };

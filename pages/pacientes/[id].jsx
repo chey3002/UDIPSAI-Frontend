@@ -7,7 +7,8 @@ import { Button, Card, Row, Col, Modal, message, Upload, Image } from 'antd';
 import { EditOutlined, DeleteOutlined, RightOutlined, UploadOutlined } from '@ant-design/icons';
 import useTranslation from 'next-translate/useTranslation';
 import BreadCrumbPacientes from '@/components/commons/breadCrumPaciente';
-import { documentoDelete, documentoGet, pacienteById, pacienteFichaCompromisoDelete, pacienteFichaDiagnosticaDelete, pacientesActualizar, pacientesEliminar, pacientesFichaCompromiso, pacientesFichaDiagnostica } from '@/utils/apiRequests';
+import { documentoDelete, documentoGet, pacienteById, pacienteFichaCompromisoDelete, pacienteFichaDiagnosticaDelete, pacientesActualizar, pacientesEliminar, pacientesFichaCompromiso, pacientesFichaDiagnostica, reporteGeneralPDF } from '@/utils/apiRequests';
+import { DownCircleOutlined, FilePdfOutlined } from '@ant-design/icons';
 
 const buttonStyle = {
     marginRight: '10px',
@@ -208,7 +209,42 @@ const DetailPaciente = ({ paciente }) => {
         }
 
     }
+    const handleDownload = async () => {
+        try {
+            const response = await reporteGeneralPDF(paciente.id, message);
 
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const a = document.createElement('a');
+            a.href = url;
+
+            a.download = `ficha_medica_${fichaData.paciente.nombresApellidos}_${fichaData.paciente.cedula}_${fichaData.id}.pdf`; // Nombre del archivo para descargar
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(url); // Limpia la URL después de usarla
+
+        } catch (error) {
+            console.error('Error al descargar el PDF:', error);
+        }
+    };
+
+    const handleOpenPDF = async () => {
+        try {
+            const response = await reporteGeneralPDF(paciente.id, message);
+
+
+            const file = new Blob([response.data], { type: 'application/pdf' });
+            const fileURL = URL.createObjectURL(file);
+
+            // Abrir en una nueva pestaña o ventana
+            window.open(fileURL, '_blank');
+
+            // Limpiar el objeto URL después de abrirlo
+            URL.revokeObjectURL(fileURL);
+        } catch (error) {
+            message.error('Error al abrir el PDF:' + error);
+        }
+    };
     return (
         <MenuWrapper setLang={true}>
             <BreadCrumbPacientes idPaciente={paciente.id} page={lang('VerPaciente')} />
@@ -226,17 +262,33 @@ const DetailPaciente = ({ paciente }) => {
                     title={
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <h1 style={{ fontSize: '24px', color: '#003a8c' }}>{lang('informacionDelPaciente_title')} {paciente.id}</h1>
+                            <Row>
+                                <Col>
+                                    <Button onClick={handleDownload} style={{ color: "#fff", backgroundColor: "#28a745" }}>
+                                        <DownCircleOutlined />
+                                        {lang('DescargarReporteGeneral')}
+                                    </Button>
+                                </Col>
+                                <Col>
+                                    <Button onClick={handleOpenPDF} style={{ color: "#fff", backgroundColor: "#17a2b8" }}>
+                                        <FilePdfOutlined />
+                                        {lang('AbrirReporteGeneral')}
+                                    </Button>
+                                </Col>
+                                {!paciente.pacienteEstado ?
 
-                            {!paciente.pacienteEstado ? <div>
+                                    <Col>
+                                        <Button type="primary" onClick={handleReactivar} style={{ backgroundColor: '#52c41a', color: '#fff', border: 'none' }}>
 
-                                <Button type="primary" onClick={handleReactivar} style={{ backgroundColor: '#52c41a', color: '#fff', border: 'none' }}>
+                                            {lang('reactivar')}
+                                        </Button></Col>
 
-                                    Reactivar
-                                </Button>
-
-                            </div> : <div>
-                                <DeleteButton onDelete={() => showDeleteConfirm(paciente.id)} lang={lang} />
-                            </div>}
+                                    :
+                                    <Col>
+                                        <DeleteButton onDelete={() => showDeleteConfirm(paciente.id)} lang={lang} />
+                                    </Col>
+                                }
+                            </Row>
                         </div>
                     }
                 />

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Typography, Collapse, message } from 'antd';
+import { Table, Typography, Collapse, message, Card } from 'antd';
 import MenuWrapper from '@/components/sidebar';
 import BreadCrumbPacientes from '@/components/commons/breadCrumPaciente';
 import useTranslation from 'next-translate/useTranslation';
@@ -79,7 +79,16 @@ export default function HistorialCambiosTable({ cambios, paciente }) {
     const { t } = useTranslation('home');
     const lang = t;
     if (!cambios) {
-        return <h1>No hay datos disponibles.</h1>;
+        return (
+            <MenuWrapper setLang={true}>
+                <Card>
+                    <Card.Meta title={<h1>{t('Cambios')}</h1>} />
+                    <div>
+                        <h3>{t('NoSeEncontroPaciente')}</h3>
+                    </div>
+                </Card>
+            </MenuWrapper>
+        )
     }
 
     const columns = [
@@ -120,9 +129,13 @@ export default function HistorialCambiosTable({ cambios, paciente }) {
 
     return (
         <MenuWrapper setLang={true}>
-            <BreadCrumbPacientes idPaciente={paciente.id} page={lang('Cambios')} />
-            <Table columns={columns} dataSource={cambios} rowKey="id" pagination={{ defaultPageSize: 10, showSizeChanger: true, pageSizeOptions: ['10', '25', '50', '100'], showQuickJumper: true }}
-            />
+            <Card>
+
+                <BreadCrumbPacientes idPaciente={paciente.id} page={lang('Cambios')} />
+                <Card.Meta title={<h1>{lang('Cambios')}</h1>} />
+                <Table columns={columns} dataSource={cambios} rowKey="id" pagination={{ defaultPageSize: 10, showSizeChanger: true, pageSizeOptions: ['10', '25', '50', '100'], showQuickJumper: true }}
+                />
+            </Card>
         </MenuWrapper>
     );
 };

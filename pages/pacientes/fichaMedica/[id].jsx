@@ -210,9 +210,9 @@ export default function EditarFichaMedica({ ficha }) {
                 'problemasAprendizajeFamiliares': responseForm.problemasAprendizajeFamiliares,
             }
             await fichaMedicaActualizar(fichaData.id, response, message);
-            message.success('Ficha médica actualizada con éxito');
+            message.success(t('fichaMedicaActualizada'));
         } catch (error) {
-            message.error('Error al actualizar la ficha médica');
+            message.error(t('errorActualizarFichaMedica') + error);
         } finally {
             setLoading(false);
         }
@@ -232,7 +232,7 @@ export default function EditarFichaMedica({ ficha }) {
             window.URL.revokeObjectURL(url); // Limpia la URL después de usarla
 
         } catch (error) {
-            console.error('Error al descargar el PDF:', error);
+            console.error(t('errorDescargarPDF'), error);
         }
     };
 
@@ -250,7 +250,7 @@ export default function EditarFichaMedica({ ficha }) {
             // Limpiar el objeto URL después de abrirlo
             URL.revokeObjectURL(fileURL);
         } catch (error) {
-            message.error('Error al abrir el PDF:' + error);
+            message.error(t('errorAbrirPDF') + error);
         }
     };
     if (!ficha) {
@@ -269,7 +269,7 @@ export default function EditarFichaMedica({ ficha }) {
         const isImage = file.type.startsWith('image/');
         if (!isImage) {
             console.log('You can only upload image files!');
-            message.error('You can only upload image files!');
+            message.error(t('SoloPuedeSubirImagenes'));
         }
         return isImage
     };
@@ -301,20 +301,20 @@ export default function EditarFichaMedica({ ficha }) {
         <MenuWrapper setLang={true}>
             <BreadCrumbPacientes idPaciente={ficha.paciente.id} page={t('FichaMedicaPaciente')} />
             <Card>
-                <Card.Meta title={<Row >
-                    <Col xs={24} sm={24} md={12}>
+                <Card.Meta title={<Row justify={'space-between'}>
+                    <Col >
                         <h1>{t('FichaMedicaDelPaciente')}</h1>
                     </Col>
-                    <Col xs={24} sm={24} md={12} >
+                    <Col  >
 
                         <Row justify={{ xs: 'start', sm: 'start', md: 'end' }}>
                             <Button onClick={handleDownload} style={{ color: "#fff", backgroundColor: "#28a745" }}>
                                 <DownCircleOutlined />
-                                Descargar Ficha Médica
+                                {t('DescargarHistoriaClinica')}
                             </Button>
                             <Button onClick={handleOpenPDF} style={{ color: "#fff", backgroundColor: "#17a2b8" }}>
                                 <FilePdfOutlined />
-                                Abrir Ficha Médica
+                                {t('AbrirHistoriaClinica')}
                             </Button>
                         </Row>
                     </Col>
@@ -618,7 +618,7 @@ export default function EditarFichaMedica({ ficha }) {
                         </Col>
                         <Col xs={24} sm={12} md={8}>
                             <Form.Item label={t('EnfermedadesMadre')} name="enfermedadesMadre">
-                                <TextArea rows={4} />
+                                <Input />
                             </Form.Item>
                         </Col>
                         <Col xs={24} sm={12} md={8}>
@@ -917,8 +917,10 @@ export default function EditarFichaMedica({ ficha }) {
                     <Form.Item label={t('MedicamentosRequeridosOConsumo')} name="medicamentosRequeridosOConsumo">
                         <TextArea rows={4} />
                     </Form.Item>
-                    <Divider orientation='left'><h2>{t('AntecedentesFamiliares')}</h2></Divider>
-
+                    <Divider orientation='left'><h2>{t('antecedentesFamiliares')}</h2></Divider>
+                    <Col>
+                        <h3>{t('AntecedentesFamiliares')}</h3>
+                    </Col>
                     <Form.Item label={t('EnfermedadesDiscapacidadesFamiliares')} name="enfermedadesDiscapacidadesFamiliares">
                         <TextArea rows={4} />
                     </Form.Item>

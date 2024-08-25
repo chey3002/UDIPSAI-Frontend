@@ -6,6 +6,7 @@ import BreadCrumbPacientes from '@/components/commons/breadCrumPaciente';
 import dayjs from 'dayjs';
 import { DownCircleOutlined, FilePdfOutlined } from '@ant-design/icons';
 import { fichaPsicologiaEducativaActualizar, fichaPsicologiaEducativaById, psicologiaEducativaPDF } from '@/utils/apiRequests';
+import { lang } from 'moment';
 const { Option } = Select;
 const { TextArea } = Input;
 
@@ -117,9 +118,9 @@ export default function EditarFichaPsicologiaEducativa({ ficha }) {
 
             }
             await fichaPsicologiaEducativaActualizar(fichaData.id, response, message);
-            message.success('Ficha médica actualizada con éxito');
+            message.success(t('fichaPsicologiaEducativaActualizada'));
         } catch (error) {
-            message.error('Error al actualizar la ficha médica');
+            message.error(t('errorActualizarFichaPsicologiaEducativa') + error);
         } finally {
             setLoading(false);
         }
@@ -139,7 +140,7 @@ export default function EditarFichaPsicologiaEducativa({ ficha }) {
             window.URL.revokeObjectURL(url); // Limpia la URL después de usarla
 
         } catch (error) {
-            console.error('Error al descargar el PDF:', error);
+            console.error(t('errorDescargarPDF'), error);
         }
     };
 
@@ -157,7 +158,7 @@ export default function EditarFichaPsicologiaEducativa({ ficha }) {
             // Limpiar el objeto URL después de abrirlo
             URL.revokeObjectURL(fileURL);
         } catch (error) {
-            message.error('Error al abrir el PDF:' + error);
+            message.error(t('errorAbrirPDF') + error);
         }
     };
     if (!ficha) {
@@ -176,7 +177,7 @@ export default function EditarFichaPsicologiaEducativa({ ficha }) {
         const isImage = file.type.startsWith('image/');
         if (!isImage) {
             console.log('You can only upload image files!');
-            message.error('You can only upload image files!');
+            message.error(t('SoloPuedeSubirImagenes'));
         }
         return isImage
     };
@@ -208,24 +209,28 @@ export default function EditarFichaPsicologiaEducativa({ ficha }) {
         <MenuWrapper setLang={true}>
             <BreadCrumbPacientes idPaciente={ficha.paciente.id} page={t('FichaPsicologiaEducativa')} />
             <Card>
-                <Card.Meta title={<Row >
-                    <Col xs={24} sm={24} md={12}>
-                        <h1>{t('FichaPsicologiaEducativa')}</h1>
-                    </Col>
-                    <Col xs={24} sm={24} md={12} >
+                <Card.Meta title={
+                    <Row justify={'space-between'}>
+                        <Col >
+                            <h1>{t('FichaPsicologiaEducativa')}</h1>
+                        </Col>
+                        <Col  >
 
-                        <Row justify={{ xs: 'start', sm: 'start', md: 'end' }}>
-                            <Button onClick={handleDownload} style={{ color: "#fff", backgroundColor: "#28a745" }}>
-                                <DownCircleOutlined />
-                                Descargar Ficha Médica
-                            </Button>
-                            <Button onClick={handleOpenPDF} style={{ color: "#fff", backgroundColor: "#17a2b8" }}>
-                                <FilePdfOutlined />
-                                Abrir Ficha Médica
-                            </Button>
-                        </Row>
-                    </Col>
-                </Row>} />
+                            <Row justify={{ xs: 'start', sm: 'start', md: 'end' }}>
+                                <Col>
+                                    <Button onClick={handleDownload} style={{ color: "#fff", backgroundColor: "#28a745" }}>
+                                        <DownCircleOutlined />
+                                        {t('descargarFichaPsicologiaEducativa')}
+                                    </Button></Col>
+                                <Col>
+                                    <Button onClick={handleOpenPDF} style={{ color: "#fff", backgroundColor: "#17a2b8" }}>
+                                        <FilePdfOutlined />
+                                        {t('abrirFichaPsicologiaEducativa')}
+                                    </Button>
+                                </Col>
+                            </Row>
+                        </Col>
+                    </Row>} />
                 <Form form={form} layout="vertical" onFinish={onFinish}>
 
                     {/* A. DATOS PERSONALES */}

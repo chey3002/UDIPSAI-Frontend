@@ -1,8 +1,8 @@
 import MenuWrapper from '@/components/sidebar';
 import { Input, Table, Modal, message, Button, Card, Row, Col, Form } from 'antd';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import useTranslation from 'next-translate/useTranslation';
-import { sedes, sedesActualizar, sedesCrear, sedesEliminar, sedesListar } from '@/utils/apiRequests';
+import { sedesActualizar, sedesCrear, sedesEliminar, sedesListar } from '@/utils/apiRequests';
 
 const { TextArea } = Input;
 
@@ -93,9 +93,9 @@ export default function IndexSedes({ sedes }) {
         Modal.confirm({
             title: lang('confirmarEliminacion'),
             content: lang('seguroEliminarSede'),
-            okText: lang('si'),
+            okText: lang('Si'),
             okType: 'danger',
-            cancelText: lang('no'),
+            cancelText: lang('No'),
             onOk() {
                 handleDelete(id);
             },

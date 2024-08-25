@@ -16,9 +16,9 @@ export default function EditarEspecialista({ especialista }) {
         return (
             <MenuWrapper setLang={true} >
                 <Card>
-                    <Card.Meta title={<h1>Detalle del Especialista</h1>} />
+                    <Card.Meta title={<h1>{lang('edit_especialista_title')}</h1>} />
                     <div>
-                        <h3>No se encontró el especialista</h3>
+                        <h3>{lang('noSeEncontroEspecialista')}</h3>
                     </div>
                 </Card>
             </MenuWrapper>

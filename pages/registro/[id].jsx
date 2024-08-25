@@ -113,7 +113,7 @@ export default function DetailEspecialista({ especialista }) {
                             {!especialista.especialistaEstado ? <div>
                                 <Button type="primary" onClick={handleReactivar} style={{ backgroundColor: '#52c41a', color: '#fff', border: 'none' }}>
 
-                                    Reactivar
+                                    {lang('reactivar')}
                                 </Button>
                             </div> : <div>
                                 <DeleteButton onDelete={() => showDeleteConfirm(especialista.cedula)} lang={lang} />

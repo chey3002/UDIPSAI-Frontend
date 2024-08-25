@@ -481,6 +481,7 @@ const fichaPsicologiaEducativaById = async (id) => {
     }
 }
 const fichaPsicologiaEducativaActualizar = async (id, request, message) => {
+    console.log(request);
     try {
         await axios.put(`${process.env['APIURL']}api/psicologia-educativa/${id}`, request);
     } catch (error) {
@@ -502,6 +503,22 @@ const psicologiaEducativaPDF = async (id, message) => {
     } catch (error) {
         console.error(error);
         message.error('Error al obtener el reporte de la ficha médica: ' + error.message)
+        return null;
+    }
+}
+const reporteGeneralPDF = async (id, message) => {
+    try {
+        const response = await axios.get(`${process.env['APIURL']}api/pacientes/${id}/reporte-general`, {
+            responseType: 'blob',
+            headers: {
+                'access-token-udipsai': token,
+                'Content-Type': 'application/pdf',
+            },
+        });
+        return response;
+    } catch (error) {
+        console.error(error);
+        message.error('Error al obtener el reporte General del paciente: ' + error.message)
         return null;
     }
 }
@@ -529,5 +546,5 @@ export {
     seguimientosDeleteFile, testPaciientes,
     testSubir, testEliminar,
     fichaPsicologiaEducativaById, fichaPsicologiaEducativaActualizar,
-    psicologiaEducativaPDF
+    psicologiaEducativaPDF, reporteGeneralPDF
 };
