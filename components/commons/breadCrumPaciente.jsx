@@ -15,42 +15,42 @@ export default function BreadCrumbPacientes({ idPaciente, page }) {
         const patientMenuItems = [
             {
                 label: (
-                    <a rel="noopener noreferrer" href={`/pacientes/${idPaciente}`}>
+                    <a style={{ textDecoration: 'none' }} rel="noopener noreferrer" href={`/pacientes/${idPaciente}`}>
                         {t('VerPaciente')}
                     </a>
                 ),
             },
             {
                 label: (
-                    <a rel="noopener noreferrer" href={`/pacientes/edit/${idPaciente}`}>
+                    <a style={{ textDecoration: 'none' }} rel="noopener noreferrer" href={`/pacientes/edit/${idPaciente}`}>
                         {t('EditarPaciente')}
                     </a>
                 ),
             },
             {
                 label: (
-                    <a rel="noopener noreferrer" href={`/pacientes/seguimientos/${idPaciente}`}>
+                    <a style={{ textDecoration: 'none' }} rel="noopener noreferrer" href={`/pacientes/seguimientos/${idPaciente}`}>
                         {t('SeguimientosPacientes')}
                     </a>
                 ),
             },
             {
                 label: (
-                    <a rel="noopener noreferrer" href={`/pacientes/tests/${idPaciente}`}>
+                    <a style={{ textDecoration: 'none' }} rel="noopener noreferrer" href={`/pacientes/tests/${idPaciente}`}>
                         {t('TestPacientes')}
                     </a>
                 ),
             },
             {
                 label: (
-                    <a rel="noopener noreferrer" href={`/pacientes/fichaMedica/${idPaciente}`}>
+                    <a style={{ textDecoration: 'none' }} rel="noopener noreferrer" href={`/pacientes/fichaMedica/${idPaciente}`}>
                         {t('FichaMedicaPaciente')}
                     </a>
                 ),
             },
             {
                 label: (
-                    <a rel="noopener noreferrer" href={`/pacientes/fichaPsicologiaEducativa/${idPaciente}`}>
+                    <a style={{ textDecoration: 'none' }} rel="noopener noreferrer" href={`/pacientes/fichaPsicologiaEducativa/${idPaciente}`}>
                         {t('FichaPsicologiaEducativa')}
                     </a>
                 ),
@@ -60,7 +60,7 @@ export default function BreadCrumbPacientes({ idPaciente, page }) {
         if (user?.permisos["pacientes"]) {
             patientMenuItems.push({
                 label: (
-                    <a rel="noopener noreferrer" href={`/pacientes/cambios/${idPaciente}`}>
+                    <a style={{ textDecoration: 'none' }} rel="noopener noreferrer" href={`/pacientes/cambios/${idPaciente}`}>
                         {t('Cambios')}
                     </a>
                 ),
@@ -81,7 +81,7 @@ export default function BreadCrumbPacientes({ idPaciente, page }) {
                     items: [
                         {
                             label: (
-                                <a rel="noopener noreferrer" href={`/pacientes/new`}>
+                                <a style={{ textDecoration: 'none' }} rel="noopener noreferrer" href={`/pacientes/new`}>
                                     {t('NuevoPaciente')}
                                 </a>
                             ),

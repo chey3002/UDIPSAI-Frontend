@@ -4,7 +4,8 @@ import nextTranslate from 'next-translate-plugin';
 const nextConfig = nextTranslate({
     reactStrictMode: false,
     env: {
-        APIURL: process.env['APIURL']
+        APIURL: process.env['APIURL'],
+        APIKEY: process.env['APIKEY'],
     },
 })
 

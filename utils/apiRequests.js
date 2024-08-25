@@ -1,7 +1,7 @@
 import axios from 'axios';
 //axios headers
-const token = "nOsr9FprhOWfLEti5KGJUK6RJWL8R0Ek"
-axios.defaults.headers.common['access-token-udipsai'] = "nOsr9FprhOWfLEti5KGJUK6RJWL8R0Ek"
+const token = process.env['APIKEY']
+axios.defaults.headers.common['access-token-udipsai'] = token
 const pacientesUpload = async (formData, message) => {
     try {
         const response = await axios.post(process.env['APIURL'] + "api/pacientes/upload", formData, {

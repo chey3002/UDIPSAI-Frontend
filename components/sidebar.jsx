@@ -14,7 +14,9 @@ import {
     SettingOutlined,
     LogoutOutlined,
     GlobalOutlined,
-    ShopOutlined
+    ShopOutlined,
+    PlusOutlined,
+    PartitionOutlined
 } from '@ant-design/icons';
 import Link from 'next/link';
 import logo from '@/assets/images/logo_institucion.png';
@@ -70,7 +72,7 @@ export default function MenuWrapper({ children }) {
                 },
                 user?.permisos["pacientes"] ? {
                     key: '2',
-                    icon: <UserOutlined />,
+                    icon: <PlusOutlined />,
                     label: <Link style={{ color: 'fff', textDecoration: 'none' }} href="/pacientes/new">{lang('nuevo')}</Link>,
                 } : null,
                 user?.permisos["institucionesEducativas"] ? {
@@ -93,12 +95,12 @@ export default function MenuWrapper({ children }) {
                 },
                 {
                     key: '5',
-                    icon: <UserOutlined />,
+                    icon: <PlusOutlined />,
                     label: <Link style={{ color: 'fff', textDecoration: 'none' }} href="/registro/new">{lang('nuevo')}</Link>,
                 },
                 {
                     key: '8',
-                    icon: <SettingOutlined />,
+                    icon: <PartitionOutlined />,
                     label: <Link style={{ color: 'fff', textDecoration: 'none' }} href="/registro/asignaciones">{lang('asignaciones')}</Link>,
                 }
             ]

@@ -475,5 +475,6 @@
     "errorActualizarFichaPsicologiaEducativa": "Error al actualizar la ficha de Psicología Educativa: ",
     "DescargarHistoriaClinica": "Descargar Historia Clínica",
     "AbrirHistoriaClinica": "Abrir Historia Clínica",
-    "antecedentesFamiliares": "Antecedentes Familiares"
+    "antecedentesFamiliares": "Antecedentes Familiares",
+    "editarSede": "Editar Sede"
 }

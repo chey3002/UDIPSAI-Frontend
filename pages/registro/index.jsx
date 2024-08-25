@@ -122,6 +122,7 @@ export default function IndexEspecialistas() {
                             value={estadoFilter}
                             allowClear={false}
                             size="large"
+                            style={{ width: '100%' }}
                         >
                             <Select.Option value="todos">{lang('todos')}</Select.Option>
                             <Select.Option value="true">{lang('activo')}</Select.Option>

@@ -479,5 +479,6 @@
     "errorActualizarFichaPsicologiaEducativa": "Error updating the Educational Psychology Record: ",
     "DescargarHistoriaClinica": "Download Medical Record",
     "AbrirHistoriaClinica": "Open Medical Record",
-    "antecedentesFamiliares": "Family History"
+    "antecedentesFamiliares": "Family History",
+    "editarSede": "Edit Headquarter"
 }
