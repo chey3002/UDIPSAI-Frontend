@@ -67,6 +67,7 @@ export default function EditarFichaPsicologiaEducativa({ ficha }) {
                 'causaLugarTiempoRecibeApoyo': fichaData.causaLugarTiempoRecibeApoyo,
                 'aprovechamientoGeneral': fichaData.aprovechamientoGeneral ? fichaData.aprovechamientoGeneral : 'BUENO',
                 'actividadEscolar': fichaData.actividadEscolar,
+                'observaciones': fichaData.observaciones,
             });
         }
     }, [fichaData, form]);
@@ -115,6 +116,7 @@ export default function EditarFichaPsicologiaEducativa({ ficha }) {
                 'causaLugarTiempoRecibeApoyo': responseForm.causaLugarTiempoRecibeApoyo,
                 'aprovechamientoGeneral': responseForm.aprovechamientoGeneral,
                 'actividadEscolar': responseForm.actividadEscolar,
+                'observaciones': responseForm.observaciones,
 
             }
             await fichaPsicologiaEducativaActualizar(fichaData.id, response, message);
@@ -548,6 +550,15 @@ export default function EditarFichaPsicologiaEducativa({ ficha }) {
                     <Row gutter={16}>
                         <Col xs={24} sm={24} md={24}>
                             <Form.Item label={t('actividadEscolar')} name="actividadEscolar">
+                                <TextArea rows={4} />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    { /*5. Observaciones*/}
+                    <Divider orientation='left'><h2>{t('Observaciones')}</h2></Divider>
+                    <Row gutter={16}>
+                        <Col xs={24} sm={24} md={24}>
+                            <Form.Item label={t('Observaciones')} name="observaciones">
                                 <TextArea rows={4} />
                             </Form.Item>
                         </Col>

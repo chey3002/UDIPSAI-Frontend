@@ -502,7 +502,7 @@ const psicologiaEducativaPDF = async (id, message) => {
         return response;
     } catch (error) {
         console.error(error);
-        message.error('Error al obtener el reporte de la ficha médica: ' + error.message)
+        message.error('Error al obtener el reporte de la ficha de psicología educativa: ' + error.message)
         return null;
     }
 }
@@ -519,6 +519,41 @@ const reporteGeneralPDF = async (id, message) => {
     } catch (error) {
         console.error(error);
         message.error('Error al obtener el reporte General del paciente: ' + error.message)
+        return null;
+    }
+}
+const fichaPsicologiaClinicaById = async (id) => {
+    try {
+        const response = await axios.get(process.env['APIURL'] + `api/psicologia-clinica/paciente/${id}`);
+        return response;
+    } catch (error) {
+        console.error(error);
+        return { data: [] };
+    }
+}
+const fichaPsicologiaClinicaActualizar = async (id, request, message) => {
+    console.log(request);
+    try {
+        await axios.put(`${process.env['APIURL']}api/psicologia-clinica/${id}`, request);
+    } catch (error) {
+        message.error('Error al actualizar la ficha de psicología clínica: ' + error.message);
+        console.error(error);
+    }
+}
+const psicologiaClinicaPDF = async (id, message) => {
+    try {
+        const response = await axios.get(`${process.env['APIURL']}api/psicologia-clinica/${id}/reporte`, {
+            responseType: 'blob',
+            headers: {
+                'access-token-udipsai': token,
+
+                'Content-Type': 'application/pdf',
+            },
+        });
+        return response;
+    } catch (error) {
+        console.error(error);
+        message.error('Error al obtener el reporte de la psicología clínica: ' + error.message)
         return null;
     }
 }
@@ -546,5 +581,7 @@ export {
     seguimientosDeleteFile, testPaciientes,
     testSubir, testEliminar,
     fichaPsicologiaEducativaById, fichaPsicologiaEducativaActualizar,
-    psicologiaEducativaPDF, reporteGeneralPDF
+    psicologiaEducativaPDF, reporteGeneralPDF,
+    psicologiaClinicaPDF, fichaPsicologiaClinicaActualizar,
+    fichaPsicologiaClinicaById
 };
