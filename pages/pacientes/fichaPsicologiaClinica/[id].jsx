@@ -1,6 +1,6 @@
 import MenuWrapper from '@/components/sidebar';
 import React, { useState, useEffect } from 'react';
-import { Card, Form, Input, Button, DatePicker, Select, InputNumber, Radio, Divider, Upload, message, Checkbox, Row, Col, Image } from 'antd';
+import { Card, Form, Input, Button, DatePicker, Select, InputNumber, Radio, Divider, Upload, message, Checkbox, Row, Col, Image, Spin } from 'antd';
 import useTranslation from 'next-translate/useTranslation';
 import BreadCrumbPacientes from '@/components/commons/breadCrumPaciente';
 import dayjs from 'dayjs';
@@ -8,12 +8,14 @@ import { DownCircleOutlined, FilePdfOutlined } from '@ant-design/icons';
 import { fichaPsicologiaClinicaActualizar, fichaPsicologiaClinicaById, psicologiaClinicaPDF } from '@/utils/apiRequests';
 const { Option } = Select;
 const { TextArea } = Input;
+import { useUserContext } from '@/assets/useUserContext';
 
 export default function EditarFichaPsicologiaClinica({ ficha }) {
     const { t } = useTranslation('home');
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
     const [fichaData, setFichaData] = useState(ficha);
+    const { user } = useUserContext();
 
     useEffect(() => {
         if (fichaData) {
@@ -730,7 +732,9 @@ export default function EditarFichaPsicologiaClinica({ ficha }) {
             reader.readAsDataURL(file);
         }
     };
-
+    if (!user) return <MenuWrapper setLang={true} >
+        <Spin />
+    </MenuWrapper>
     return (
         <MenuWrapper setLang={true}>
             <BreadCrumbPacientes idPaciente={ficha.paciente.id} page={t('FichaPsicologiaClinica')} />
@@ -757,7 +761,7 @@ export default function EditarFichaPsicologiaClinica({ ficha }) {
                             </Row>
                         </Col>
                     </Row>} />
-                <Form form={form} layout="vertical" onFinish={onFinish}>
+                <Form form={form} disabled={!user?.permisos?.psicologiaClinica} layout="vertical" onFinish={onFinish}>
                     {/* A. DATOS PERSONALES */}
                     <Divider orientation='left'><h2>{t('DatosPersonales')}</h2></Divider>
 
