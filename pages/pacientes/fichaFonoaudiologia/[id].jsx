@@ -1300,7 +1300,8 @@ export default function EditarFichaFonoaudiologia({ ficha }) {
                                 </Select>
                             </Form.Item>
                         </Col>
-
+                    </Row>
+                    <Row gutter={16}>
 
                         <Col xs={24} sm={12} md={6}>
                             <Form.Item label={t('Otitis')} name="otitis">

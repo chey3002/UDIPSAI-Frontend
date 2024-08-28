@@ -1110,7 +1110,7 @@ export default function EditarFichaPsicologiaClinica({ ficha }) {
 
 
 
-
+                    <h3>{t('adaptacionSexual')}</h3>
                     <Row gutter={16}>
                         <Col xs={24} sm={12} md={6}>
                             <Form.Item label={t('curiosidadSexual')} name="curiosidadSexual">
@@ -2909,7 +2909,7 @@ export default function EditarFichaPsicologiaClinica({ ficha }) {
                         </Col>
                     </Row>
 
-                    <Divider orientation="left">{t('ExamenDeFunciones')}</Divider>
+                    <Divider orientation="left"><h2>{t('ExamenDeFunciones')}</h2></Divider>
 
                     <h3>{t('EstadoDeConciencia')}</h3>
 
@@ -3879,7 +3879,7 @@ export default function EditarFichaPsicologiaClinica({ ficha }) {
                         </Col>
                     </Row>
 
-                    <Divider orientation="left">{t('ImpresionDiagnostica')}</Divider>
+                    <Divider orientation="left"><h2>{t('ImpresionDiagnostica')}</h2></Divider>
 
 
 
@@ -3891,7 +3891,7 @@ export default function EditarFichaPsicologiaClinica({ ficha }) {
                         </Col>
                     </Row>
 
-                    <Divider orientation="left">{t('DerivasionDiagnostica')}</Divider>
+                    <Divider orientation="left"><h2>{t('DerivasionDiagnostica')}</h2></Divider>
 
 
 
@@ -3905,7 +3905,7 @@ export default function EditarFichaPsicologiaClinica({ ficha }) {
 
 
 
-                    <Divider orientation="left">{t('PlanDeTratamientoIndividual')}</Divider>
+                    <Divider orientation="left"><h2>{t('PlanDeTratamientoIndividual')}</h2></Divider>
 
 
 
