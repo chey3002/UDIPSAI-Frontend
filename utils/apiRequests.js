@@ -557,6 +557,42 @@ const psicologiaClinicaPDF = async (id, message) => {
         return null;
     }
 }
+
+const fichaFonoaudiologiaById = async (id) => {
+    try {
+        const response = await axios.get(process.env['APIURL'] + `api/fonoaudiologia/paciente/${id}`);
+        return response;
+    } catch (error) {
+        console.error(error);
+        return { data: [] };
+    }
+}
+const fichaFonoaudiologiaActualizar = async (id, request, message) => {
+    console.log(request);
+    try {
+        await axios.put(`${process.env['APIURL']}api/fonoaudiologia/${id}`, request);
+    } catch (error) {
+        message.error('Error al actualizar la ficha de fonoaudiología: ' + error.message);
+        console.error(error);
+    }
+}
+const fonoaudiologiaPDF = async (id, message) => {
+    try {
+        const response = await axios.get(`${process.env['APIURL']}api/fonoaudiologia/${id}/reporte`, {
+            responseType: 'blob',
+            headers: {
+                'access-token-udipsai': token,
+
+                'Content-Type': 'application/pdf',
+            },
+        });
+        return response;
+    } catch (error) {
+        console.error(error);
+        message.error('Error al obtener el reporte de  fonoaudiología: ' + error.message)
+        return null;
+    }
+}
 export {
     asignacionesBuscar, historialDeCambios,
     asignacionesEliminar, loginAPI,
@@ -583,5 +619,6 @@ export {
     fichaPsicologiaEducativaById, fichaPsicologiaEducativaActualizar,
     psicologiaEducativaPDF, reporteGeneralPDF,
     psicologiaClinicaPDF, fichaPsicologiaClinicaActualizar,
-    fichaPsicologiaClinicaById
+    fichaPsicologiaClinicaById, fichaFonoaudiologiaActualizar,
+    fichaFonoaudiologiaById, fonoaudiologiaPDF
 };

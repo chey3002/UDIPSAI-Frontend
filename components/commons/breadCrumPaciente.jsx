@@ -62,6 +62,13 @@ export default function BreadCrumbPacientes({ idPaciente, page }) {
                     </a>
                 ),
             },
+            {
+                label: (
+                    <a style={{ textDecoration: 'none' }} rel="noopener noreferrer" href={`/pacientes/fichaFonoaudiologia/${idPaciente}`}>
+                        {t('FichaFonoaudiologia')}
+                    </a>
+                ),
+            },
         ];
 
         if (user?.permisos["pacientes"]) {
