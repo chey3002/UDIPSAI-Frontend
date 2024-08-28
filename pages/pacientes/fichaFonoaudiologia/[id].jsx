@@ -312,15 +312,12 @@ export default function EditarFichaFonoaudiologia({ ficha }) {
 
                 'coloracionOidoIzquierdo': fichaData.coloracionOidoIzquierdo,
 
-
-
-
-
-
                 'atenidoPerdidaAudicionPasado': fichaData.atenidoPerdidaAudicionPasado ? fichaData.atenidoPerdidaAudicionPasado : false,
                 'obstruccionOidoIzquierdo': fichaData.obstruccionOidoIzquierdo ? fichaData.obstruccionOidoIzquierdo : null,
                 'aparienciaMenbranaTimpanicaOidoIzquierdo': fichaData.aparienciaMenbranaTimpanicaOidoIzquierdo ? fichaData.aparienciaMenbranaTimpanicaOidoIzquierdo : null,
                 'caeOidoIzquierdo': fichaData.caeOidoIzquierdo ? fichaData.caeOidoIzquierdo : null,
+                'especficarAyudaAuditiva': fichaData.especficarAyudaAuditiva,
+                'trastornoRecepcionLenguaje': fichaData.trastornoRecepcionLenguaje ? fichaData.trastornoRecepcionLenguaje : false,
             });
         }
 
@@ -617,6 +614,8 @@ export default function EditarFichaFonoaudiologia({ ficha }) {
                 'obstruccionOidoIzquierdo': responseForm.obstruccionOidoIzquierdo,
                 'aparienciaMenbranaTimpanicaOidoIzquierdo': responseForm.aparienciaMenbranaTimpanicaOidoIzquierdo,
                 'caeOidoIzquierdo': responseForm.caeOidoIzquierdo,
+                'especficarAyudaAuditiva': responseForm.especficarAyudaAuditiva,
+                'trastornoRecepcionLenguaje': responseForm.trastornoRecepcionLenguaje,
             }
             await fichaFonoaudiologiaActualizar(fichaData.id, response, message);
             message.success(t('fichaFonoaudiologiaActualizada'));
@@ -971,7 +970,14 @@ export default function EditarFichaFonoaudiologia({ ficha }) {
                             </Form.Item>
                         </Col>
 
-
+                        <Col xs={24} sm={12} md={6}>
+                            <Form.Item label={t('trastornoRecepcionLenguaje')} name="trastornoRecepcionLenguaje">
+                                <Radio.Group >
+                                    <Radio value={true}>{t('Si')}</Radio>
+                                    <Radio value={false}>{t('No')}</Radio>
+                                </Radio.Group>
+                            </Form.Item>
+                        </Col>
                         <Col xs={24} sm={12} md={6}>
                             <Form.Item label={t('AfasiaAdquiridaEpilepsia')} name="afasiaAdquiridaEpilepsia">
                                 <Radio.Group >
@@ -1000,6 +1006,7 @@ export default function EditarFichaFonoaudiologia({ ficha }) {
                                 </Radio.Group>
                             </Form.Item>
                         </Col>
+
 
 
                         <Col xs={24} sm={12} md={6}>
@@ -2001,7 +2008,11 @@ export default function EditarFichaFonoaudiologia({ ficha }) {
                                 </Radio.Group>
                             </Form.Item>
                         </Col>
-
+                        <Col xs={24} sm={12} md={12}>
+                            <Form.Item label={t('EspecficarAyudaAuditiva')} name="especficarAyudaAuditiva">
+                                <Input />
+                            </Form.Item>
+                        </Col>
 
                         <Col xs={24} sm={12} md={6}>
                             <Form.Item label={t('PercibeSonidoIgualAmbosOidos')} name="percibeSonidoIgualAmbosOidos">

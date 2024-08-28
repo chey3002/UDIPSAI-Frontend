@@ -1024,5 +1024,7 @@
     "PerforacionOidoIzquierdo": "Perforación del oído izquierdo",
     "BurbujaOidoIzquierdo": "Burbuja en el oído izquierdo",
     "ColoracionOidoIzquierdo": "Coloración del oído izquierdo",
-    "adaptacionSexual": "Adaptación Sexual: "
+    "adaptacionSexual": "Adaptación Sexual: ",
+    "EspecficarAyudaAuditiva": "Especificar ayuda auditiva",
+    "trastornoRecepcionLenguaje": "F80.2 Trastorno de la recepción del lenguaje"
 }

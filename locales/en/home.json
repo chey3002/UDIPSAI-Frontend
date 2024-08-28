@@ -1024,5 +1024,7 @@
     "PerforacionOidoIzquierdo": "Left ear perforation",
     "BurbujaOidoIzquierdo": "Bubble in the left ear",
     "ColoracionOidoIzquierdo": "Left ear coloration",
-    "adaptacionSexual": "Sexual adaptation: "
+    "adaptacionSexual": "Sexual adaptation: ",
+    "EspecficarAyudaAuditiva": "Specify hearing aid",
+    "trastornoRecepcionLenguaje": "F80.2 Language reception disorder"
 }
