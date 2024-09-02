@@ -201,11 +201,11 @@
         "Estudiantes que realizan sus prácticas pre profesionales y Vinculación con la Sociedad de las diferentes carreras de la Universidad Católica de Cuenca y otras universidades.",
         "Docentes tutores de las diferentes carreras de la Universidad Católica de Cuenca y otras universidades."
     ],
-    "TestPacientes": "Examenes",
+    "TestPacientes": "Exámenes complementarios",
     "NuevoPaciente": "Nuevo",
     "SeguimientosPacientes": "Seguimientos",
     "EditarPaciente": "Editar",
-    "VerPaciente": "Ver",
+    "VerPaciente": "Ficha Única",
     "Dashboard": "Inicio",
     "Pacientes": "Pacientes",
     "errorEliminarEspecialista": "Error al eliminar el especialista",
@@ -383,7 +383,7 @@
     "estado": "Estado",
     "register_edit_button": "Editar",
     "edit_especialista_title": "Editar Especialista",
-    "Ver": "Ver",
+    "Ver": "Información Personal",
     "seleccionarTipoInstitucion": "Seleccione un tipo de institución",
     "tipoInstitucionRequerido": "El tipo de institución es requerido",
     "direccionRequerida": "La dirección es requerida",
@@ -1026,5 +1026,7 @@
     "ColoracionOidoIzquierdo": "Coloración del oído izquierdo",
     "adaptacionSexual": "Adaptación Sexual: ",
     "EspecficarAyudaAuditiva": "Especificar ayuda auditiva",
-    "trastornoRecepcionLenguaje": "F80.2 Trastorno de la recepción del lenguaje"
+    "trastornoRecepcionLenguaje": "F80.2 Trastorno de la recepción del lenguaje",
+    "informacionDelPasante_NombresEspecialistaAsignado": "Nombres del especialista asignado",
+    "register_edit_button_loading": "Editando..."
 }

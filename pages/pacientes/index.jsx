@@ -112,21 +112,24 @@ export default function IndexPaciente() {
                         <Title level={2}>{lang('listarPacientes')}</Title>
                     </Col>
                     <Col>
-                        <Row gutter={[16, 16]}>
-                            <Col>
-                                <DownloadTemplateButton />
-                            </Col>
-                            <Col>
-                                <FileUploadButton />
-                            </Col>
-                            <Col>
-                                <Link href='/pacientes/new/'>
-                                    <Button type="primary" icon={<i className="bi bi-plus-lg"></i>}>
-                                        {lang('nuevo')}
-                                    </Button>
-                                </Link>
-                            </Col>
-                        </Row>
+                        {user?.permisos["pacientes"] && (
+                            <Row gutter={[16, 16]}>
+                                <Col>
+                                    <DownloadTemplateButton />
+                                </Col>
+                                <Col>
+                                    <FileUploadButton />
+                                </Col>
+                                <Col>
+                                    <Link href='/pacientes/new/'>
+                                        <Button type="primary" icon={<i className="bi bi-plus-lg"></i>}>
+                                            {lang('nuevo')}
+                                        </Button>
+                                    </Link>
+                                </Col>
+                            </Row>
+                        )}
+
                     </Col>
                 </Row>
                 <Row gutter={[16, 16]} style={{ marginBottom: '20px' }}>
@@ -207,14 +210,18 @@ export default function IndexPaciente() {
                                             {lang('masInformacion')}
                                         </Button>
                                     </Link>
-                                    <Link href={`/pacientes/edit/${text}`}>
-                                        <Button type="success" icon={<i className="bi bi-pencil-square"></i>} style={{ marginRight: 5, color: "#fff", backgroundColor: "#28a745" }}>
-                                            {lang('modificar')}
-                                        </Button>
-                                    </Link>
-                                    <Button onClick={() => showDeleteConfirm(text)} type="danger" icon={<i className="bi bi-trash"></i>} style={{ marginRight: 5, color: "#fff", backgroundColor: "#dc3545" }}>
-                                        {lang('eliminar')}
-                                    </Button>
+                                    {user?.permisos["pacientes"] && (
+                                        <>
+                                            <Link href={`/pacientes/edit/${text}`}>
+                                                <Button type="success" icon={<i className="bi bi-pencil-square"></i>} style={{ marginRight: 5, color: "#fff", backgroundColor: "#28a745" }}>
+                                                    {lang('modificar')}
+                                                </Button>
+                                            </Link>
+                                            <Button onClick={() => showDeleteConfirm(text)} type="danger" icon={<i className="bi bi-trash"></i>} style={{ marginRight: 5, color: "#fff", backgroundColor: "#dc3545" }}>
+                                                {lang('eliminar')}
+                                            </Button>
+                                        </>
+                                    )}
                                 </div>
                             ),
                         },

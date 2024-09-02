@@ -201,11 +201,11 @@
         "Students performing their pre-professional practices and Community Engagement from different careers of the Catholic University of Cuenca and other universities.",
         "Tutor teachers of the different careers of the Catholic University of Cuenca and other universities."
     ],
-    "TestPacientes": "Tests",
+    "TestPacientes": "Complementary Tests",
     "NuevoPaciente": "New",
     "SeguimientosPacientes": "Follow-ups",
     "EditarPaciente": "Edit",
-    "VerPaciente": "View",
+    "VerPaciente": "Unique Record",
     "Dashboard": "Dashboard",
     "Pacientes": "Patients",
     "errorEliminarEspecialista": "Error deleting specialist",
@@ -383,7 +383,7 @@
     "estado": "Status",
     "register_edit_button": "Edit",
     "edit_especialista_title": "Edit Specialist",
-    "Ver": "View",
+    "Ver": "Personal Information",
     "seleccionarTipoInstitucion": "Select Institution Type",
     "tipoInstitucionRequerido": "Institution type is required",
     "direccionRequerida": "Address is required",
@@ -1026,5 +1026,7 @@
     "ColoracionOidoIzquierdo": "Left ear coloration",
     "adaptacionSexual": "Sexual adaptation: ",
     "EspecficarAyudaAuditiva": "Specify hearing aid",
-    "trastornoRecepcionLenguaje": "F80.2 Language reception disorder"
+    "trastornoRecepcionLenguaje": "F80.2 Language reception disorder",
+    "informacionDelPasante_NombresEspecialistaAsignado": "Assigned Specialist Name",
+    "register_edit_button_loading": "Editing..."
 }

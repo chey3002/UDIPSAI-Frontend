@@ -305,19 +305,16 @@ const FormPaciente = ({ paciente }) => {
                                         placeholder={lang('informacionDelPaciente_institucionEducativa')}
                                         optionFilterProp="children"
                                         filterOption={(input, option) =>
-                                            (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                                            (option?.label + " " + option?.value).toLowerCase().includes(input.toLowerCase())
                                         }
                                         onChange={(value) => setFormState({ ...formState, institucionEducativa: value })}
                                         value={formState.institucionEducativa}
-
-                                    >
-                                        {institucionesEducativas.map(institucion => (
-                                            <Select.Option key={institucion.id} value={institucion.id}>
-                                                {institucion.nombreInstitucion}
-                                            </Select.Option>
-                                        ))}
-
-                                    </Select>
+                                        options={institucionesEducativas.map(institucion => ({
+                                            value: institucion.id,
+                                            label: institucion.nombreInstitucion
+                                        }))
+                                        }
+                                    />
                                 </Form.Item>
                             </Col>
                             {formState.institucionEducativa ? <Col span={12}>

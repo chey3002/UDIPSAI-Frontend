@@ -27,6 +27,8 @@ const AssignmentDetails = ({ pasanteSeleccionado, handlePasanteDeselect, lang })
     const fetchData = async () => {
         setLoading(true);
         const asignacionesFetch = await fetchAsignaciones(pasanteSeleccionado.cedula);
+        console.log(asignacionesFetch);
+
         const pacientesFetch = await fetchPacientes();
         await filterPacientes(pacientesFetch, asignacionesFetch);
         setLoading(false);
@@ -162,7 +164,7 @@ const AssignmentDetails = ({ pasanteSeleccionado, handlePasanteDeselect, lang })
                 <Table.Column title={lang("Ciudad")} dataIndex={['paciente', 'ciudad']} key="ciudad" />
                 <Table.Column title={lang("Sede")} dataIndex={['paciente', 'sede', 'nombre']} key="sede" />
                 <Table.Column title={lang("Fecha_de_Nacimiento")} dataIndex={['paciente', 'fechaNacimiento']} key="fechaNacimiento" />
-                <Table.Column title={lang("EstadoDelPaciente")} dataIndex="pacienteEstado" key="pacienteEstado" render={
+                <Table.Column title={lang("EstadoDelPaciente")} dataIndex={['paciente', 'pacienteEstado']} key="pacienteEstado" render={
                     (text) => (
                         <div>
                             {text ? <span style={{ color: '#fff', backgroundColor: '#28a745', padding: '5px', borderRadius: '5px' }}>{lang('activo')}</span> : <span style={{ color: '#fff', backgroundColor: '#dc3545', padding: '5px', borderRadius: '5px' }}>{lang('inactivo')}</span>}

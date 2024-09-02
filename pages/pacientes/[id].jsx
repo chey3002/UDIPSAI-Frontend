@@ -9,6 +9,7 @@ import useTranslation from 'next-translate/useTranslation';
 import BreadCrumbPacientes from '@/components/commons/breadCrumPaciente';
 import { documentoDelete, documentoGet, pacienteById, pacienteFichaCompromisoDelete, pacienteFichaDiagnosticaDelete, pacientesActualizar, pacientesEliminar, pacientesFichaCompromiso, pacientesFichaDiagnostica, reporteGeneralPDF } from '@/utils/apiRequests';
 import { DownCircleOutlined, FilePdfOutlined } from '@ant-design/icons';
+import { useUserContext } from '@/assets/useUserContext';
 
 const buttonStyle = {
     marginRight: '10px',
@@ -30,6 +31,8 @@ const DetailPaciente = ({ paciente }) => {
     const { t } = useTranslation('home');
     const lang = t;
     const [uploading, setUploading] = useState(false);
+    const { user } = useUserContext();
+
 
     if (paciente === null) {
         return (
@@ -275,19 +278,21 @@ const DetailPaciente = ({ paciente }) => {
                                         {lang('AbrirReporteGeneral')}
                                     </Button>
                                 </Col>
-                                {!paciente.pacienteEstado ?
+                                {user?.permisos["pacientes"] && (
+                                    <>
+                                        {!paciente.pacienteEstado ?
+                                            <Col>
+                                                <Button type="primary" onClick={handleReactivar} style={{ backgroundColor: '#52c41a', color: '#fff', border: 'none' }}>
+                                                    {lang('reactivar')}
+                                                </Button></Col>
+                                            :
+                                            <Col>
+                                                <DeleteButton onDelete={() => showDeleteConfirm(paciente.id)} lang={lang} />
+                                            </Col>
+                                        }
+                                    </>
+                                )}
 
-                                    <Col>
-                                        <Button type="primary" onClick={handleReactivar} style={{ backgroundColor: '#52c41a', color: '#fff', border: 'none' }}>
-
-                                            {lang('reactivar')}
-                                        </Button></Col>
-
-                                    :
-                                    <Col>
-                                        <DeleteButton onDelete={() => showDeleteConfirm(paciente.id)} lang={lang} />
-                                    </Col>
-                                }
                             </Row>
                         </div>
                     }

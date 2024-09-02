@@ -22,13 +22,6 @@ export default function BreadCrumbPacientes({ idPaciente, page }) {
             },
             {
                 label: (
-                    <a style={{ textDecoration: 'none' }} rel="noopener noreferrer" href={`/pacientes/edit/${idPaciente}`}>
-                        {t('EditarPaciente')}
-                    </a>
-                ),
-            },
-            {
-                label: (
                     <a style={{ textDecoration: 'none' }} rel="noopener noreferrer" href={`/pacientes/seguimientos/${idPaciente}`}>
                         {t('SeguimientosPacientes')}
                     </a>
@@ -78,7 +71,14 @@ export default function BreadCrumbPacientes({ idPaciente, page }) {
                         {t('Cambios')}
                     </a>
                 ),
-            });
+            },
+                {
+                    label: (
+                        <a style={{ textDecoration: 'none' }} rel="noopener noreferrer" href={`/pacientes/edit/${idPaciente}`}>
+                            {t('EditarPaciente')}
+                        </a>
+                    ),
+                },);
         }
 
         items.push({
@@ -88,7 +88,7 @@ export default function BreadCrumbPacientes({ idPaciente, page }) {
             }
         });
     } else {
-        if (user.permisos["pacientes"]) {
+        if (user?.permisos["pacientes"]) {
             items.push({
                 title: page,
                 menu: {

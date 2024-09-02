@@ -166,7 +166,17 @@ export default function IndexEspecialistas() {
                                     {text ? <span style={{ color: '#fff', backgroundColor: '#28a745', padding: '5px', borderRadius: '5px' }}>{lang('activo')}</span> : <span style={{ color: '#fff', backgroundColor: '#dc3545', padding: '5px', borderRadius: '5px' }}>{lang('inactivo')}</span>}
                                 </div>
                             ),
+                        }, {
+                            title: lang('register_esPasante'),
+                            dataIndex: 'esPasante',
+                            key: 'esPasante',
+                            render: (text) => (
+                                <div>
+                                    {text ? <span style={{ color: '#fff', backgroundColor: '#28a745', padding: '5px', borderRadius: '5px' }}>{lang('register_esPasante')}</span> : ''}
+                                </div>
+                            ),
                         },
+
 
                         {
                             title: lang('acciones'),

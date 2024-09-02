@@ -100,7 +100,7 @@ const Register = ({ especialista }) => {
             const request = { ...values, especialistaEstado: especialista.especialistaEstado };
             // Update
             console.log('Updating:', request);
-            await especialistasUpdate(values.cedula, values, message);
+            await especialistasUpdate(values.cedula, request, message);
         } else {
             // Create
             const request = { ...values, especialistaEstado: 1 };
