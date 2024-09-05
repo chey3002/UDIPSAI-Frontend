@@ -32,13 +32,29 @@ const renderValue = (value) => {
     }
 };
 const isDifferent = (value, compareValue) => {
+    // Imprime el valor y el valor a comparar
     console.log(value, compareValue, value !== compareValue);
 
-    if (typeof value === 'object' && value !== null) {
-        return Object.keys(value).some(key => isDifferent(value[key], compareValue[key]));
+    // Verifica si ambos valores son objetos
+    if (typeof value === 'object' && value !== null && typeof compareValue === 'object' && compareValue !== null) {
+        // Obtiene las claves de ambos objetos
+        const valueKeys = Object.keys(value);
+        const compareValueKeys = Object.keys(compareValue);
+
+        // Verifica si las claves son diferentes
+        if (valueKeys.length !== compareValueKeys.length) {
+            return true;
+        }
+
+        // Compara los valores de las claves en ambos objetos
+        return valueKeys.some(key => isDifferent(value[key], compareValue[key]));
     } else {
+        // Si no son objetos, compara los valores directamente
         return value !== compareValue;
     }
+};
+const typeofValue = (value) => {
+    return typeof value;
 }
 const renderJsonCell = (jsonString, compareJsonString) => {
     try {
@@ -59,8 +75,8 @@ const renderJsonCell = (jsonString, compareJsonString) => {
                         dataIndex: 'value',
                         key: 'value',
                         render: (text, record) => (
-                            <span style={{ backgroundColor: isDifferent(record.value, record.value) ? 'yellow' : 'inherit' }}>
-                                {renderValue(text)}
+                            <span >
+                                {renderValue(text === null ? 'null' : typeofValue(text) === 'object' ? text : text.toString())}
                             </span>
                         )
                     },
@@ -142,6 +158,8 @@ export default function HistorialCambiosTable({ cambios, paciente }) {
 
 export const getServerSideProps = async (context) => {
     const res = await historialDeCambios(context.query.id, message);
+    console.log(res.data);
+
     if (res.data === null) {
         return {
             props: {

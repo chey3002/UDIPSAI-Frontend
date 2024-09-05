@@ -279,7 +279,7 @@ const pacienteFichaCompromisoDelete = async (documentoId, message) => {
 }
 const historialDeCambios = async (id, message) => {
     try {
-        const response = await axios.get(process.env['APIURL'] + `api/historial-cambios/listar/${id}`);
+        const response = await axios.get(process.env['APIURL'] + `api/historial-cambios/listar/todos/${id}`);
         return response;
     } catch (error) {
         message.error('Error al obtener el historial de cambios: ' + error.message);
