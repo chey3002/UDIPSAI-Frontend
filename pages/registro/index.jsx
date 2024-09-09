@@ -26,7 +26,7 @@ export default function IndexEspecialistas() {
     const [searchVal, setSearchVal] = useState('');
     const [origData, setOrigData] = useState([]);
     const [searchIndex, setSearchIndex] = useState([]);
-    const [estadoFilter, setEstadoFilter] = useState('todos'); // Estado para el filtro de especialistas
+    const [estadoFilter, setEstadoFilter] = useState('true'); // Estado para el filtro de especialistas
     const { t } = useTranslation('home');
     const { user } = useUserContext();
 

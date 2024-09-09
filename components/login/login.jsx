@@ -7,7 +7,6 @@ import Router from 'next/router'
 import styles from "./login.module.css";
 import useTranslation from 'next-translate/useTranslation'
 import Image from "next/image";
-import axios from "axios";
 import { loginAPI } from "@/utils/apiRequests";
 import Head from "next/head";
 

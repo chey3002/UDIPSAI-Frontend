@@ -285,6 +285,7 @@ const Register = ({ especialista }) => {
                                     { value: 5, label: 'Terapia de Lenguaje y Fonoaudiología' },
                                     { value: 6, label: 'Estimulación Temprana' },
                                     { value: 7, label: 'Recuperación Pedagógica' },
+                                    { value: 8, label: 'Odontología' },
                                 ]}
                             />
                         </Form.Item>
