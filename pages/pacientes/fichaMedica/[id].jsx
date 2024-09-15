@@ -280,6 +280,7 @@ export default function EditarFichaMedica({ ficha }) {
         if (!file) {
             setFichaData({
                 ...fichaData,
+                ...form.getFieldsValue(),
                 genogramaFamiliar: null,
             });
             return;
@@ -291,6 +292,7 @@ export default function EditarFichaMedica({ ficha }) {
             const base64Data = reader.result.split(",")[1];
             setFichaData({
                 ...fichaData,
+                ...form.getFieldsValue(),
                 genogramaFamiliar: base64Data,
             });
         };

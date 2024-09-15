@@ -30,6 +30,8 @@ export default function PacienteTests({ pacienteId }) {
         try {
             setLoading(true);
             const response = await testPaciientes(pacienteId, message);
+            console.log(response);
+
             setTests(response.data);
             setLoading(false);
         } catch (error) {
@@ -65,9 +67,12 @@ export default function PacienteTests({ pacienteId }) {
                         activo: '1',
                         nombreArchivo: file.name,
                         fecha: new Date().toISOString().split('T')[0],
-                        contenido: base64Content,
+                        contenido: ""
                     };
-                    await testSubir(newTest, message);
+                    const form = new FormData();
+                    form.append('file', file);
+                    form.append('testDTO', JSON.stringify(newTest));
+                    await testSubir(form, message);
                     fetchTests();
                 } catch (error) {
                     message.error(lang('errorSubirTest'));
@@ -100,13 +105,24 @@ export default function PacienteTests({ pacienteId }) {
 
     const openDocument = async (documentoId, nombreArchivo) => {
         try {
+
             const response = await documentoGet(documentoId, message);
+            console.log(response);
+
             if (!response) {
                 message.error(lang('errorAbrirDocumento'));
                 return;
-            } const { contenido } = response.data;
-            const blob = new Blob([Uint8Array.from(atob(contenido), c => c.charCodeAt(0))], { type: 'application/pdf' });
-            const url = URL.createObjectURL(blob);
+            } const contenido = response.data;
+
+            console.log(contenido);
+
+            const binaryString = atob(contenido); // 'contenido' es la cadena base64
+            const len = binaryString.length;
+            const bytes = new Uint8Array(len);
+            for (let i = 0; i < len; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+            }
+            const blob = new Blob([bytes], { type: 'application/pdf' }); const url = URL.createObjectURL(blob);
             window.open(url, '_blank');
         } catch (error) {
             message.error(lang('errorAbrirDocumento'));
@@ -119,9 +135,14 @@ export default function PacienteTests({ pacienteId }) {
             if (!response) {
                 message.error(lang('errorAbrirDocumento'));
                 return;
-            } const { contenido } = response.data;
-            const blob = new Blob([Uint8Array.from(atob(contenido), c => c.charCodeAt(0))], { type: 'application/pdf' });
-            const url = URL.createObjectURL(blob);
+            } const contenido = response.data;
+            const binaryString = atob(contenido); // 'contenido' es la cadena base64
+            const len = binaryString.length;
+            const bytes = new Uint8Array(len);
+            for (let i = 0; i < len; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+            }
+            const blob = new Blob([bytes], { type: 'application/pdf' }); const url = URL.createObjectURL(blob);
 
             const a = document.createElement('a');
             a.href = url;

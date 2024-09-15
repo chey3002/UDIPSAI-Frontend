@@ -28,6 +28,7 @@ const DeleteButton = ({ onDelete, lang }) => (
 );
 
 const DetailPaciente = ({ paciente }) => {
+    console.log(paciente);
     const { t } = useTranslation('home');
     const lang = t;
     const [uploading, setUploading] = useState(false);
@@ -111,9 +112,14 @@ const DetailPaciente = ({ paciente }) => {
                 message.error(lang('errorAbrirDocumento'));
                 return;
             }
-            const { contenido } = response.data;
-            const blob = new Blob([Uint8Array.from(atob(contenido), c => c.charCodeAt(0))], { type: 'application/pdf' });
-            const url = URL.createObjectURL(blob);
+            const contenido = response.data;
+            const binaryString = atob(contenido); // 'contenido' es la cadena base64
+            const len = binaryString.length;
+            const bytes = new Uint8Array(len);
+            for (let i = 0; i < len; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+            }
+            const blob = new Blob([bytes], { type: 'application/pdf' }); const url = URL.createObjectURL(blob);
             window.open(url, '_blank');
         } catch (error) {
             message.error(lang('errorAbrirDocumento'));
@@ -128,9 +134,14 @@ const DetailPaciente = ({ paciente }) => {
                 message.error(lang('errorDescargarDocumento'));
                 return;
             }
-            const { contenido } = response.data;
-            const blob = new Blob([Uint8Array.from(atob(contenido), c => c.charCodeAt(0))], { type: 'application/pdf' });
-            const url = URL.createObjectURL(blob);
+            const contenido = response.data;
+            const binaryString = atob(contenido); // 'contenido' es la cadena base64
+            const len = binaryString.length;
+            const bytes = new Uint8Array(len);
+            for (let i = 0; i < len; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+            }
+            const blob = new Blob([bytes], { type: 'application/pdf' }); const url = URL.createObjectURL(blob);
 
             const a = document.createElement('a');
             a.href = url;
@@ -399,7 +410,7 @@ const DetailPaciente = ({ paciente }) => {
 
                         <p>{lang('descripcionFichaCompromiso')}</p>
                         <div>
-                            {!paciente.fichaCompromiso && <Upload {...uploadPropsFichaCompromiso}>
+                            {!paciente.fichaCompromiso?.id && <Upload {...uploadPropsFichaCompromiso}>
                                 <Button
                                     icon={<UploadOutlined />}
                                     loading={uploading}
@@ -409,7 +420,7 @@ const DetailPaciente = ({ paciente }) => {
                                     {lang('Subir_Archivo')}
                                 </Button>
                             </Upload>}
-                            {paciente.fichaCompromiso && (
+                            {paciente.fichaCompromiso?.id && (
                                 <div style={{ marginTop: '20px' }}>
                                     <Button
                                         type="link"

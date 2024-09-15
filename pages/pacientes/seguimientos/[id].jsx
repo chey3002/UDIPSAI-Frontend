@@ -63,6 +63,8 @@ export const getServerSideProps = async (context) => {
 };
 
 export default function IndexSeguimientos({ paciente, seguimientos }) {
+    console.log(seguimientos);
+
     const [seguimientosState, setSeguimientos] = useState(seguimientos);
     const [loading, setLoading] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -175,16 +177,26 @@ export default function IndexSeguimientos({ paciente, seguimientos }) {
     const openDocument = async (documentoId) => {
         try {
             const response = await documentoGet(documentoId, message);
+            console.log(response);
             if (!response) {
+                console.log('error');
+
                 message.error(lang('errorAbrirDocumento'));
                 return;
             }
-            const { contenido } = response.data;
-            const blob = new Blob([Uint8Array.from(atob(contenido), c => c.charCodeAt(0))], { type: 'application/pdf' });
+            const contenido = response.data;
+            console.log(contenido);
+            const binaryString = atob(contenido); // 'contenido' es la cadena base64
+            const len = binaryString.length;
+            const bytes = new Uint8Array(len);
+            for (let i = 0; i < len; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+            }
+            const blob = new Blob([bytes], { type: 'application/pdf' });
             const url = URL.createObjectURL(blob);
             window.open(url, '_blank');
         } catch (error) {
-            message.error(lang('errorAbrirDocumento'));
+            message.error(lang('errorAbrirDocumento ' + error));
         }
     };
 
@@ -195,8 +207,14 @@ export default function IndexSeguimientos({ paciente, seguimientos }) {
             if (!response) {
                 message.error(lang('errorAbrirDocumento'));
                 return;
-            } const { contenido } = response.data;
-            const blob = new Blob([Uint8Array.from(atob(contenido), c => c.charCodeAt(0))], { type: 'application/pdf' });
+            } const contenido = response.data;
+            const binaryString = atob(contenido); // 'contenido' es la cadena base64
+            const len = binaryString.length;
+            const bytes = new Uint8Array(len);
+            for (let i = 0; i < len; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+            }
+            const blob = new Blob([bytes], { type: 'application/pdf' });
             const url = URL.createObjectURL(blob);
 
             const a = document.createElement('a');

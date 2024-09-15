@@ -681,29 +681,7 @@ export default function EditarFichaFonoaudiologia({ ficha }) {
         }
         return isImage
     };
-    const handleFileChange = (info) => {
-        const file = info.fileList[0]?.originFileObj;
-        if (!file) {
-            setFichaData({
-                ...fichaData,
-                genogramaFamiliar: null,
-            });
-            return;
-        }
-        if (!beforeUpload(info.file))
-            return;
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            const base64Data = reader.result.split(",")[1];
-            setFichaData({
-                ...fichaData,
-                genogramaFamiliar: base64Data,
-            });
-        };
-        if (file) {
-            reader.readAsDataURL(file);
-        }
-    };
+
     if (!user) return <MenuWrapper setLang={true} >
         <Spin />
     </MenuWrapper>

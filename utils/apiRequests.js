@@ -218,6 +218,8 @@ const pacientesEliminar = async (id, message) => {
 }
 const pacientesFichaDiagnostica = async (id, formData, message) => {
     try {
+        console.log(formData);
+
         const resp = await axios.post(process.env['APIURL'] + `api/pacientes/${id}/documento`, formData, {
             headers: {
                 'access-token-udipsai': token,
@@ -225,6 +227,8 @@ const pacientesFichaDiagnostica = async (id, formData, message) => {
                 'Content-Type': 'multipart/form-data',
             },
         });
+        console.log(resp);
+
         return resp;
     } catch (error) {
         console.error('Error al subir el archivo:', error);
@@ -251,7 +255,11 @@ const pacientesFichaCompromiso = async (id, formData, message) => {
 }
 const documentoGet = async (documentoId, message) => {
     try {
-        const response = await axios.get(process.env['APIURL'] + `api/documentos/${documentoId}`);
+        console.log(documentoId);
+
+        const response = await axios.get(process.env['APIURL'] + `api/documentos/${documentoId}/contenido`);
+        console.log(response);
+
         return response;
     } catch (error) {
         message.error('Error al obtener el documento: ' + error.message);
@@ -288,9 +296,10 @@ const historialDeCambios = async (id, message) => {
     }
 }
 const especialistasById = async (id, message) => {
-
+    console.log(id)
     try {
         const res = await axios.get(process.env['APIURL'] + 'api/especialistas/' + id).then(async res => {
+            console.log(res)
             let especialistaAsignado = null
             if (res.data.especialistaAsignado) {
                 console.log(res.data)
@@ -454,7 +463,13 @@ const testPaciientes = async (id, message) => {
 }
 const testSubir = async (request, message) => {
     try {
-        await axios.post(process.env['APIURL'] + 'api/tests', request);
+        await axios.post(process.env['APIURL'] + 'api/tests', request, {
+            headers: {
+                'access-token-udipsai': token,
+                'Content-Type': 'multipart/form-data',
+            },
+        }
+        );
         message.success('Test subido correctamente');
 
     } catch (error) {

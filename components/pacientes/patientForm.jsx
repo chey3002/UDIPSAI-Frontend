@@ -131,9 +131,11 @@ const FormPaciente = ({ paciente }) => {
     const handleSubmit = async () => {
         if (paciente) {
             // Update
-            const request = { ...formState, pacienteEstado: paciente.pacienteEstado, porcentajeDiscapacidad: parseInt(formState.porcentajeDiscapacidad) };
-            delete request.id
 
+            const request = { ...formState, pacienteEstado: paciente.pacienteEstado, porcentajeDiscapacidad: parseInt(formState.porcentajeDiscapacidad), fichaCompromiso: paciente.fichaCompromiso?.id || null };
+            delete request.id
+            console.log(request);
+            console.log(formState);
             await pacientesActualizar(formState.id, request, message);
         } else {
             // Create
