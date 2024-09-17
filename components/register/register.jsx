@@ -24,7 +24,7 @@ const Register = ({ especialista }) => {
         inicioPasantia: null,
         finPasantia: null,
         especialistaAsignado: "",
-        "sede": 1
+        sedeId: 1
     });
     const [sedes, setSedes] = useState([]);
     const [form] = Form.useForm();
@@ -64,7 +64,7 @@ const Register = ({ especialista }) => {
                 imagen: especialista.imagen,
                 contrasena: especialista.contrasena,
                 contrasenaConfirm: especialista.contrasena,
-                sede: especialista.sede?.id || null,
+                sedeId: especialista.sede?.id || null,
             });
             setFormData({
                 cedula: especialista.cedula,
@@ -80,7 +80,7 @@ const Register = ({ especialista }) => {
                 imagen: especialista.imagen,
                 contrasena: especialista.contrasena,
                 contrasenaConfirm: especialista.contrasena,
-                sede: especialista.sede?.id || null,
+                sedeId: especialista.sede?.id || null,
             });
         }
     }, [especialista]);
@@ -104,6 +104,7 @@ const Register = ({ especialista }) => {
         } else {
             // Create
             const request = { ...values, especialistaEstado: 1 };
+            console.log('Creating:', request);
             await especialistasCrear(request, message);
         }
         setLoading(false);
@@ -160,7 +161,7 @@ const Register = ({ especialista }) => {
             especialistaAsignado: form.getFieldValue().especialistaAsignado ? form.getFieldValue().especialistaAsignado.value : null,
             contrasena: form.getFieldValue().contrasena,
             contrasenaConfirm: form.getFieldValue().contrasenaConfirm,
-            sede: form.getFieldValue().sede ? form.getFieldValue().sede.value : null
+            sedeId: form.getFieldValue().sedeId ? form.getFieldValue().sedeId.value : null
 
         });
     };
@@ -205,8 +206,8 @@ const Register = ({ especialista }) => {
                         <Button icon={<UploadOutlined />}>{lang('register_subirImagen')}</Button>
                     </Upload>
                 </Form.Item>
-                <Form.Item name="sede" label={lang('informacionDelPaciente_sede')}>
-                    <Select name="sede" value={formData.sede} onChange={onChange} style={{ width: '200px' }}>
+                <Form.Item name="sedeId" label={lang('informacionDelPaciente_sede')}>
+                    <Select name="sedeId" value={formData.sedeId} onChange={onChange} style={{ width: '200px' }}>
                         {sedes.map((sedemap) => (
                             <Select.Option key={sedemap.id} value={sedemap.id}>{sedemap.nombre}</Select.Option>
                         ))}

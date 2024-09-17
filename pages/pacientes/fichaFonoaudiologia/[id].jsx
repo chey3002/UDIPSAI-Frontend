@@ -22,15 +22,15 @@ export default function EditarFichaFonoaudiologia({ ficha }) {
             form.setFieldsValue({
                 ...fichaData,
                 'paciente.nombresApellidos': fichaData.paciente.nombresApellidos,
-                'paciente.ciudad': fichaData.paciente.ciudad,
-                'paciente.fechaNacimiento': dayjs(fichaData.paciente.fechaNacimiento, 'YYYY-MM-DD'),
+                'paciente.ciudad': fichaData.paciente?.ciudad,
+                'paciente.fechaNacimiento': dayjs(fichaData.paciente?.fechaNacimiento, 'YYYY-MM-DD'),
                 'paciente.edad': fichaData.paciente.edad,
                 'paciente.tieneDiscapacidad': fichaData.paciente.tieneDiscapacidad === 'si',
                 'paciente.tipoDiscapacidad': fichaData.paciente.tipoDiscapacidad,
                 'paciente.porcentajeDiscapacidad': fichaData.paciente.porcentajeDiscapacidad,
                 'paciente.portadorCarnet': fichaData.paciente.portadorCarnet,
-                'paciente.institucionEducativa.nombreInstitucion': fichaData.paciente.institucionEducativa.nombreInstitucion,
-                'paciente.anioEducacion': fichaData.paciente.anioEducacion,
+                'paciente.institucionEducativa.nombreInstitucion': fichaData.paciente?.institucionEducativa?.nombreInstitucion,
+                'paciente.anioEducacion': fichaData.paciente?.anioEducacion,
 
 
 

@@ -345,6 +345,7 @@ const DetailPaciente = ({ paciente }) => {
                     <Col span={24} md={12}>
                         <h3 style={{ color: '#003a8c', marginTop: '20px' }}>{lang('informacionDelPaciente_title_educativa')}</h3>
                         <p><strong>{lang('informacionDelPaciente_anioEducacion')}:</strong> {paciente.anioEducacion}</p>
+                        <p><strong>{lang('informacionDelPaciente_institucionEducativa')}:</strong> {paciente.institucionEducativa?.nombreInstitucion}</p>
                         <p><strong>{lang('informacionDelPaciente_direccionInstitucion')}:</strong> {paciente.institucionEducativa?.direccion}</p>
                         <p><strong>{lang('informacionDelPaciente_paralelo')}:</strong> {paciente.paralelo}</p>
                         <p><strong>{lang('informacionDelPaciente_perteneceInclusion')}:</strong> {paciente.perteneceInclusion}</p>

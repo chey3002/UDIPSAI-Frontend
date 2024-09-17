@@ -49,7 +49,7 @@ const FormPaciente = ({ paciente }) => {
                 ...paciente,
                 id: paciente.id,
                 sede: paciente.sede?.id || null,
-                tipoInstitucion: paciente.tipoInstitucion?.toString() || 1,
+                tipoInstitucion: paciente.tipoInstitucion,
                 jornada: paciente.jornada?.id || 1,
                 tieneDiscapacidad: paciente.tieneDiscapacidad?.toString() || 'no',
                 institucionEducativa: paciente.institucionEducativa ? { value: paciente.institucionEducativa.id, label: paciente.institucionEducativa.nombreInstitucion } : null,
@@ -321,7 +321,7 @@ const FormPaciente = ({ paciente }) => {
                             </Col>
                             {formState.institucionEducativa ? <Col span={12}>
                                 <p><b>{lang('informacionDelPaciente_direccionInstitucion')}:</b> {institucionesEducativas.find(institucion => institucion.id === formState.institucionEducativa)?.direccion}</p>
-                                <p><b>{lang('informacionDelPaciente_tipoInstitucion')}:</b> {institucionesEducativas.find(institucion => institucion.id == formState.institucionEducativa)?.tipoInstitucion == 1 ? 'Fiscal' : institucionesEducativas.find(institucion => institucion.id == formState.institucionEducativa)?.tipoInstitucion == 2 ? 'Fiscomisional' : institucionesEducativas.find(institucion => institucion.id == formState.institucionEducativa)?.tipoInstitucion == 3 ? 'Particular' : 'Otro'}</p>
+                                <p><b>{lang('informacionDelPaciente_tipoInstitucion')}:</b> {institucionesEducativas.find(institucion => institucion.id == formState.institucionEducativa)?.tipoInstitucion}</p>
 
                             </Col> : <Col span={12}></Col>}
                             <Col span={12}>
