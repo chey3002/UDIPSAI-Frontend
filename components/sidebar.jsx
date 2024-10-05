@@ -155,7 +155,7 @@ export default function MenuWrapper({ children }) {
             >
                 <div style={{ display: 'grid', justifyContent: 'center', margin: '16px 0' }}>
                     <Link href="/dashboard/">
-                        <Image src={logo} width={collapsed ? 80 : 200} alt="UcacueLogo" />
+                        <Image unoptimized src={logo} width={collapsed ? 80 : 200} alt="UcacueLogo" />
                     </Link>
                 </div>
                 <Menu mode="vertical" defaultSelectedKeys={['1']} items={menuItems} />

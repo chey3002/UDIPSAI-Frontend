@@ -64,7 +64,7 @@ const Login = () => {
             </Head>
             <div className={styles["sign-in__backdrop"]}></div>
             <Form className="shadow p-4 bg-white rounded" onFinish={handleSubmit}>
-                <Image className="mx-auto d-block mb-2" src={Logo} alt="logo" width={100} height={100} />
+                <Image unoptimized className="mx-auto d-block mb-2" src={Logo} alt="logo" width={100} height={100} />
                 <div className="h4 mb-2 text-center">{lang('login_title')}</div>
                 {show && (
                     <Alert className="mb-2" type="error" closable onClose={() => setShow(false)} message={lang('login_incorrect')}>

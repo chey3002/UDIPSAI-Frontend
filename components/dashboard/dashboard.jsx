@@ -12,7 +12,7 @@ const Dashboard = () => {
     <div className="wpb-content-wrapper">
       <Row style={{ padding: '32px 0' }}>
         <Col xs={24} md={12}>
-          <Image className="" src={logoUdipsai} alt="logo" style={{ width: "100%", height: 'auto' }} />
+          <Image unoptimized className="" src={logoUdipsai} alt="logo" style={{ width: "100%", height: 'auto' }} />
         </Col>
         <Col xs={24} md={12}>
           <Title level={1} style={{ fontSize: '36px' }}>
