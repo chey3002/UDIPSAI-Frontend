@@ -11,7 +11,7 @@ export default function EditarPaciente({ paciente }) {
 
     const { t } = useTranslation('home');
     const lang = t;
-    console.log(paciente);
+    //console.log(paciente);
     if (paciente === null) {
         return (
             <MenuWrapper setLang={true} >
@@ -34,7 +34,7 @@ export default function EditarPaciente({ paciente }) {
 }
 export const getServerSideProps = async (context) => {
     const res = await pacienteById(context.query.id);
-    console.log(res.data);
+    //console.log(res.data);
     if (res.data === null) {
         return {
             props: {

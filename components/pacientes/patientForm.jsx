@@ -43,7 +43,7 @@ const FormPaciente = ({ paciente }) => {
     const [initialValues, setInitialValues] = useState({});
     useEffect(() => {
         if (paciente) {
-            console.log(paciente);
+            //console.log(paciente);
             setInitialValues({
                 ...formState,
                 ...paciente,
@@ -72,14 +72,14 @@ const FormPaciente = ({ paciente }) => {
     useEffect(() => {
         const fetchSedes = async () => {
             const { data: sedesData } = await sedesListar(message);
-            console.log(sedesData);
+            //console.log(sedesData);
             setSedes(sedesData);
         }
         fetchSedes();
         const fetchInstituciones = async () => {
             const response = await institucionesListar(message);
             setInstitucionesEducativas(response.data);
-            console.log(response.data);
+            //console.log(response.data);
         };
         fetchInstituciones();
     }, []);
@@ -88,8 +88,8 @@ const FormPaciente = ({ paciente }) => {
     const lang = t;
 
     const handleChange = (event) => {
-        console.log(event);
-        console.log(formState);
+        //console.log(event);
+        //console.log(formState);
         setFormState({
             ...formState,
             [event.target.name]: event.target.value
@@ -134,8 +134,8 @@ const FormPaciente = ({ paciente }) => {
 
             const request = { ...formState, pacienteEstado: paciente.pacienteEstado, porcentajeDiscapacidad: parseInt(formState.porcentajeDiscapacidad), fichaCompromiso: paciente.fichaCompromiso?.id || null };
             delete request.id
-            console.log(request);
-            console.log(formState);
+            //console.log(request);
+            //console.log(formState);
             await pacientesActualizar(formState.id, request, message);
         } else {
             // Create
@@ -147,7 +147,7 @@ const FormPaciente = ({ paciente }) => {
     const beforeUpload = (file) => {
         const isImage = file.type.startsWith('image/');
         if (!isImage) {
-            console.log('You can only upload image files!');
+            //console.log('You can only upload image files!');
             message.error('You can only upload image files!');
         }
         return isImage

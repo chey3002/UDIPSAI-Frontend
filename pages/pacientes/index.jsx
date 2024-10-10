@@ -15,7 +15,7 @@ const fetchPacientes = async (searchVal, sede, isPasante, pasanteID) => {
     const formData = new FormData();
     formData.append('search', searchVal);
     formData.append('sedeId', sede);
-    console.log(isPasante, pasanteID);
+    //console.log(isPasante, pasanteID);
 
     try {
         if (isPasante) {
@@ -27,7 +27,7 @@ const fetchPacientes = async (searchVal, sede, isPasante, pasanteID) => {
             return { data };
         }
     } catch (error) {
-        console.log(error);
+        //console.log(error);
     }
 };
 
@@ -79,7 +79,7 @@ export default function IndexPaciente() {
     const fetchData = async () => {
         setLoading(true);
         const { data: users } = await fetchPacientes(searchVal, sede, isPasante, pasanteID);
-        console.log(users);
+        //console.log(users);
 
         setOrigData(users);
         setFilteredData(users);
@@ -97,7 +97,7 @@ export default function IndexPaciente() {
                 const { data: sedesData } = await sedesListar(message);
                 setSedes(sedesData);
             } catch (error) {
-                console.log(error);
+                //console.log(error);
             }
         }
         fetchSedes();

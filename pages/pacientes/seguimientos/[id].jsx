@@ -28,7 +28,7 @@ const fetchSeguimientos = async (id) => {
         const { data } = await seguimientosPacienteListar(id);
         return { data };
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         return { data: [] };
     }
 };
@@ -38,7 +38,7 @@ const fetchPaciente = async (id) => {
         const { data } = await pacienteById(id);
         return { data };
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         return { data: null };
     }
 };
@@ -63,7 +63,7 @@ export const getServerSideProps = async (context) => {
 };
 
 export default function IndexSeguimientos({ paciente, seguimientos }) {
-    console.log(seguimientos);
+    //console.log(seguimientos);
 
     const [seguimientosState, setSeguimientos] = useState(seguimientos);
     const [loading, setLoading] = useState(false);
@@ -177,15 +177,15 @@ export default function IndexSeguimientos({ paciente, seguimientos }) {
     const openDocument = async (documentoId) => {
         try {
             const response = await documentoGet(documentoId, message);
-            console.log(response);
+            //console.log(response);
             if (!response) {
-                console.log('error');
+                //console.log('error');
 
                 message.error(lang('errorAbrirDocumento'));
                 return;
             }
             const contenido = response.data;
-            console.log(contenido);
+            //console.log(contenido);
             const binaryString = atob(contenido); // 'contenido' es la cadena base64
             const len = binaryString.length;
             const bytes = new Uint8Array(len);
@@ -274,7 +274,7 @@ export default function IndexSeguimientos({ paciente, seguimientos }) {
             dataIndex: 'documento',
             key: 'documento',
             render: (text, record) => {
-                console.log(text)
+                //console.log(text)
                 return < div >
                     {!text && <Upload {...uploadProps}
                         customRequest={({ file }) => handleUpload(file, record.id)}

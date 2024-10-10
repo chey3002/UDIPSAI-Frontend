@@ -48,7 +48,7 @@ const Register = ({ especialista }) => {
             setSedes(response.data);
         }
         fetchSedes();
-        console.log(especialista);
+        //console.log(especialista);
         if (especialista) {
             form.setFieldsValue({
                 cedula: especialista.cedula,
@@ -99,12 +99,12 @@ const Register = ({ especialista }) => {
         if (especialista) {
             const request = { ...values, especialistaEstado: especialista.especialistaEstado };
             // Update
-            console.log('Updating:', request);
+            //console.log('Updating:', request);
             await especialistasUpdate(values.cedula, request, message);
         } else {
             // Create
             const request = { ...values, especialistaEstado: 1 };
-            console.log('Creating:', request);
+            //console.log('Creating:', request);
             await especialistasCrear(request, message);
         }
         setLoading(false);
@@ -146,7 +146,7 @@ const Register = ({ especialista }) => {
     };
 
     const onChange = () => {
-        console.log(form.getFieldsValue());
+        //console.log(form.getFieldsValue());
         setFormData({
             ...formData,
             cedula: form.getFieldsValue().cedula,

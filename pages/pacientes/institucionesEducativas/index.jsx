@@ -14,7 +14,7 @@ const fetchInstituciones = async () => {
         const { data } = await institucionesListar(message);
         return { data };
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         return { data: [] };
     }
 };

@@ -33,7 +33,7 @@ const renderValue = (value) => {
 };
 const isDifferent = (value, compareValue) => {
     // Imprime el valor y el valor a comparar
-    console.log(value, compareValue, value !== compareValue);
+    //console.log(value, compareValue, value !== compareValue);
 
     // Verifica si ambos valores son objetos
     if (typeof value === 'object' && value !== null && typeof compareValue === 'object' && compareValue !== null) {
@@ -158,7 +158,7 @@ export default function HistorialCambiosTable({ cambios, paciente }) {
 
 export const getServerSideProps = async (context) => {
     const res = await historialDeCambios(context.query.id, message);
-    console.log(res.data);
+    //console.log(res.data);
 
     if (res.data === null) {
         return {

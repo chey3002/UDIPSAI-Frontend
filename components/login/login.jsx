@@ -37,7 +37,7 @@ const Login = () => {
             cedula: formData.username,
             contrasena: formData.password
         }
-        console.log(`Username: ${formData.username}, Password: ${formData.password}`);
+        //console.log(`Username: ${formData.username}, Password: ${formData.password}`);
 
         await loginAPI(values, setShow, setLoading, setUser);
 

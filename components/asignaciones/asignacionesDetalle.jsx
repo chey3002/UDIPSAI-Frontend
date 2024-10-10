@@ -27,7 +27,7 @@ const AssignmentDetails = ({ pasanteSeleccionado, handlePasanteDeselect, lang })
     const fetchData = async () => {
         setLoading(true);
         const asignacionesFetch = await fetchAsignaciones(pasanteSeleccionado.cedula);
-        console.log(asignacionesFetch);
+        //console.log(asignacionesFetch);
 
         const pacientesFetch = await fetchPacientes();
         await filterPacientes(pacientesFetch, asignacionesFetch);

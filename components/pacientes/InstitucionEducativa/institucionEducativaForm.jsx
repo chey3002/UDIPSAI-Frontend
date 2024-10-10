@@ -17,7 +17,7 @@ const FormInstitucion = ({ institucion }) => {
 
     useEffect(() => {
         if (institucion) {
-            console.log(institucion);
+            //console.log(institucion);
             setFormState({
                 ...formState,
                 ...institucion,

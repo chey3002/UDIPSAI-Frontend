@@ -30,7 +30,7 @@ export default function PacienteTests({ pacienteId }) {
         try {
             setLoading(true);
             const response = await testPaciientes(pacienteId, message);
-            console.log(response);
+            //console.log(response);
 
             setTests(response.data);
             setLoading(false);
@@ -107,14 +107,14 @@ export default function PacienteTests({ pacienteId }) {
         try {
 
             const response = await documentoGet(documentoId, message);
-            console.log(response);
+            //console.log(response);
 
             if (!response) {
                 message.error(lang('errorAbrirDocumento'));
                 return;
             } const contenido = response.data;
 
-            console.log(contenido);
+            //console.log(contenido);
 
             const binaryString = atob(contenido); // 'contenido' es la cadena base64
             const len = binaryString.length;

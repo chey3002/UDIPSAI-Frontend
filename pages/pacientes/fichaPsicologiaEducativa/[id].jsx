@@ -5,7 +5,7 @@ import useTranslation from 'next-translate/useTranslation';
 import BreadCrumbPacientes from '@/components/commons/breadCrumPaciente';
 import dayjs from 'dayjs';
 import { DownCircleOutlined, FilePdfOutlined } from '@ant-design/icons';
-import { fichaPsicologiaEducativaActualizar, fichaPsicologiaEducativaById, psicologiaEducativaPDF } from '@/utils/apiRequests';
+import { fichaPsicologiaEducativaActualizar, fichaPsicologiaEducativaById, pacienteById, psicologiaEducativaPDF } from '@/utils/apiRequests';
 const { Option } = Select;
 const { TextArea } = Input;
 import { useUserContext } from '@/assets/useUserContext';
@@ -78,7 +78,7 @@ export default function EditarFichaPsicologiaEducativa({ ficha }) {
         setLoading(true);
         try {
             const responseForm = form.getFieldsValue();
-            console.log(responseForm);
+            //console.log(responseForm);
             const response = {
                 ...fichaData,
                 'paciente': fichaData.paciente,
@@ -180,7 +180,7 @@ export default function EditarFichaPsicologiaEducativa({ ficha }) {
     const beforeUpload = (file) => {
         const isImage = file.type.startsWith('image/');
         if (!isImage) {
-            console.log('You can only upload image files!');
+            //console.log('You can only upload image files!');
             message.error(t('SoloPuedeSubirImagenes'));
         }
         return isImage
@@ -562,14 +562,27 @@ export default function EditarFichaPsicologiaEducativa({ ficha }) {
 export const getServerSideProps = async (context) => {
     try {
         const res = await fichaPsicologiaEducativaById(context.params.id);
-        console.log('res:', res.data);
+        //console.log('res:', res.data);
 
         if (res.status === 200) {
-            return {
-                props: {
-                    ficha: res.data,
-                },
-            };
+            const paciente = await pacienteById(res.data.paciente.id);
+            if (paciente.status === 200) {
+                let ficha = res.data;
+                ficha.paciente = paciente.data;
+                return {
+                    props: {
+                        ficha
+                    },
+                };
+            } else {
+                let ficha = res.data;
+                ficha.paciente = null;
+                return {
+                    props: {
+                        ficha
+                    },
+                };
+            }
         }
     } catch (error) {
         console.error(error);

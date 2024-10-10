@@ -33,7 +33,7 @@ export default function EditarEspecialista({ especialista }) {
 }
 export const getServerSideProps = async (context) => {
     const res = await especialistasById(context.query.id, message);
-    console.log(res);
+    //console.log(res);
     if (res === null) {
         return {
             props: {

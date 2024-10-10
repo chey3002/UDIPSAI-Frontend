@@ -28,7 +28,7 @@ const DeleteButton = ({ onDelete, lang }) => (
 );
 
 const DetailPaciente = ({ paciente }) => {
-    console.log(paciente);
+    //console.log(paciente);
     const { t } = useTranslation('home');
     const lang = t;
     const [uploading, setUploading] = useState(false);

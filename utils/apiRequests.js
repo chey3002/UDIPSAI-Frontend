@@ -23,7 +23,7 @@ const especialistasPasantes = async (message) => {
         const response = await axios.get(`${process.env.APIURL}api/especialistas/pasantes`);
         return response;
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         message.error('Error al obtener los especialistas: ' + error.message)
         return { data: [] };
     }
@@ -33,7 +33,7 @@ const pacientesBuscar = async (formData, message) => {
         const response = await axios.post(`${process.env.APIURL}api/pacientes/buscar`, formData);
         return response;
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         message.error('Error al buscar pacientes: ' + error.message)
         return { data: [] };
     }
@@ -43,7 +43,7 @@ const asignacionesBuscar = async (formData, message) => {
         const response = await axios.post(process.env['APIURL'] + 'api/asignaciones/buscar', formData);
         return response;
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         message.error('Error al buscar pacientes: ' + error.message)
         return { data: [] };
     }
@@ -53,7 +53,7 @@ const sedesListar = async (message) => {
         const response = await axios.get(`${process.env.APIURL}api/sedes/listar`);
         return response;
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         message.error('Error al obtener las sedes: ' + error.message)
         return { data: [] };
     }
@@ -63,7 +63,7 @@ const asignacionesPasante = async (cedula, message) => {
         const response = await axios.get(`${process.env.APIURL}api/asignaciones/pasante/${cedula}`);
         return response;
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         message.error('Error al obtener las asignaciones del pasante: ' + error.message)
         return { data: [] };
     }
@@ -76,7 +76,7 @@ const asignacionesAsignar = async (pacienteId, pasanteId, message) => {
         });
         return response;
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         message.error('Error al asignar el paciente: ' + error.message)
         return { data: [] };
     }
@@ -86,7 +86,7 @@ const asignacionesEliminar = async (asignacionId, message, setLoading) => {
         const response = await axios.delete(`${process.env.APIURL}api/asignaciones/eliminar/${asignacionId}`);
         return response;
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         message.error('Error al eliminar la asignación: ' + error.message)
         setLoading(false)
         return { data: [] };
@@ -95,14 +95,14 @@ const asignacionesEliminar = async (asignacionId, message, setLoading) => {
 const loginAPI = async (values, setShow, setLoading, setUser) => {
     await axios.post(process.env['APIURL'] + 'api/especialistas/login', values)
         .then((response) => {
-            console.log(response);
+            //console.log(response);
             const usuario = { ...response.data };
             setUser({
                 ...usuario,
                 username: usuario.primerNombre + " " + usuario.primerApellido,
             });
         }).catch((error) => {
-            console.log(error);
+            //console.log(error);
             setShow(true);
             setLoading(false);
         });
@@ -113,7 +113,7 @@ const institucionesListar = async (message) => {
         const response = await axios.get(`${process.env['APIURL']}api/instituciones/listar`);
         return response;
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         message.error('Error al obtener las instituciones: ' + error.message)
         return { data: [] };
     }
@@ -123,17 +123,17 @@ const pacientesActualizar = async (id, request, message) => {
         .then(() => {
             window.location.href = '/pacientes/' + id;
         }).catch((error) => {
-            console.log(error)
+            //console.log(error)
             message.error('Error al actualizar el paciente: ' + error.message)
         });
 }
 const pacientesCrear = async (request, message) => {
     await axios.post(process.env['APIURL'] + 'api/pacientes/insertar', request)
         .then((response) => {
-            console.log(response);
+            //console.log(response);
             window.location.href = '/pacientes';
         }).catch((error) => {
-            console.log(error);
+            //console.log(error);
             message.error('Error al crear el paciente: ' + error.message);
         });
 }
@@ -141,16 +141,16 @@ const institucionesActualizar = async (id, request, message) => {
     await axios.put(process.env['APIURL'] + 'api/instituciones/actualizar/' + id, request)
         .then(() => {
         }).catch((error) => {
-            console.log(error);
+            //console.log(error);
             message.error('Error al actualizar la institución: ' + error.message);
         });
 }
 const institucionesCrear = async (request, message) => {
     await axios.post(process.env['APIURL'] + 'api/instituciones/insertar', request)
         .then((response) => {
-            console.log(response);
+            //console.log(response);
         }).catch((error) => {
-            console.log(error);
+            //console.log(error);
             message.error('Error al crear la institución: ' + error.message)
         });
 }
@@ -176,26 +176,26 @@ const especialistasNoPasantesListar = async (message) => {
 const especialistasUpdate = async (id, request, message) => {
     await axios.put(process.env['APIURL'] + 'api/especialistas/actualizar/' + id, request)
         .then((res) => {
-            console.log(res);
+            //console.log(res);
             if (res.status === 200) {
                 window.location.href = '/registro/' + id;
 
             } else {
-                console.log('Error updating especialista')
+                //console.log('Error updating especialista')
                 message.error('Error al actualizar el especialista: ' + res)
             }
         }).catch((error) => {
-            console.log(error);
+            //console.log(error);
             message.error('Error al actualizar el especialista: ' + error.message)
         });
 }
 const especialistasCrear = async (request, message) => {
     await axios.post(process.env['APIURL'] + 'api/especialistas/insertar', request)
         .then((response) => {
-            console.log(response);
+            //console.log(response);
             window.location.href = '/registro';
         }).catch((error) => {
-            console.log(error);
+            //console.log(error);
         });
 }
 const pacienteById = async (id, message) => {
@@ -203,7 +203,7 @@ const pacienteById = async (id, message) => {
         const response = await axios.get(`${process.env['APIURL']}api/pacientes/listar/${id}`);
         return response;
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         return { data: null };
     }
 }
@@ -218,7 +218,7 @@ const pacientesEliminar = async (id, message) => {
 }
 const pacientesFichaDiagnostica = async (id, formData, message) => {
     try {
-        console.log(formData);
+        //console.log(formData);
 
         const resp = await axios.post(process.env['APIURL'] + `api/pacientes/${id}/documento`, formData, {
             headers: {
@@ -227,7 +227,7 @@ const pacientesFichaDiagnostica = async (id, formData, message) => {
                 'Content-Type': 'multipart/form-data',
             },
         });
-        console.log(resp);
+        //console.log(resp);
 
         return resp;
     } catch (error) {
@@ -255,26 +255,26 @@ const pacientesFichaCompromiso = async (id, formData, message) => {
 }
 const documentoGet = async (documentoId, message) => {
     try {
-        console.log(documentoId);
+        //console.log(documentoId);
 
         const response = await axios.get(process.env['APIURL'] + `api/documentos/${documentoId}/contenido`);
-        console.log(response);
+        //console.log(response);
 
         return response;
     } catch (error) {
         message.error('Error al obtener el documento: ' + error.message);
-        console.log(error);
+        //console.log(error);
         return null;
     }
 }
 const pacienteFichaDiagnosticaDelete = async (documentoId, message) => {
     try {
-        console.log(documentoId);
+        //console.log(documentoId);
 
         await axios.delete(process.env['APIURL'] + `api/pacientes/documentos/${documentoId}`);
     } catch (error) {
         message.error('Error al eliminar el documento: ' + error.message);
-        console.log(error);
+        //console.log(error);
     }
 }
 const pacienteFichaCompromisoDelete = async (documentoId, message) => {
@@ -282,7 +282,7 @@ const pacienteFichaCompromisoDelete = async (documentoId, message) => {
         await axios.delete(process.env['APIURL'] + `api/pacientes/fichaCompromiso/${documentoId}`);
     } catch (error) {
         message.error('Error al eliminar el documento: ' + error.message);
-        console.log(error);
+        //console.log(error);
     }
 }
 const historialDeCambios = async (id, message) => {
@@ -296,21 +296,21 @@ const historialDeCambios = async (id, message) => {
     }
 }
 const especialistasById = async (id, message) => {
-    console.log(id)
+    //console.log(id)
     try {
         const res = await axios.get(process.env['APIURL'] + 'api/especialistas/' + id).then(async res => {
-            console.log(res)
+            //console.log(res)
             let especialistaAsignado = null
             if (res.data.especialistaAsignado) {
-                console.log(res.data)
+                //console.log(res.data)
                 especialistaAsignado = await axios.get(process.env['APIURL'] + 'api/especialistas/' + res.data.especialistaAsignado).then(
                     res => {
-                        console.log(res.data)
+                        //console.log(res.data)
                         return res.data
                     }
                 )
             }
-            console.log(especialistaAsignado)
+            //console.log(especialistaAsignado)
             return { ...res.data, especialistaAsignado: especialistaAsignado }
 
         })
@@ -496,7 +496,7 @@ const fichaPsicologiaEducativaById = async (id) => {
     }
 }
 const fichaPsicologiaEducativaActualizar = async (id, request, message) => {
-    console.log(request);
+    //console.log(request);
     try {
         await axios.put(`${process.env['APIURL']}api/psicologia-educativa/${id}`, request);
     } catch (error) {
@@ -547,7 +547,7 @@ const fichaPsicologiaClinicaById = async (id) => {
     }
 }
 const fichaPsicologiaClinicaActualizar = async (id, request, message) => {
-    console.log(request);
+    //console.log(request);
     try {
         await axios.put(`${process.env['APIURL']}api/psicologia-clinica/${id}`, request);
     } catch (error) {
@@ -583,7 +583,7 @@ const fichaFonoaudiologiaById = async (id) => {
     }
 }
 const fichaFonoaudiologiaActualizar = async (id, request, message) => {
-    console.log(request);
+    //console.log(request);
     try {
         await axios.put(`${process.env['APIURL']}api/fonoaudiologia/${id}`, request);
     } catch (error) {

@@ -26,7 +26,7 @@ const DeleteButton = ({ onDelete, lang }) => (
 );
 
 export default function DetailEspecialista({ especialista }) {
-    console.log(especialista);
+    //console.log(especialista);
     const { t } = useTranslation('home');
     const lang = t;
 
@@ -85,7 +85,7 @@ export default function DetailEspecialista({ especialista }) {
                 sede: especialista.sede?.id || null,
                 especialistaEstado: 1,
             };
-            console.log(formState);
+            //console.log(formState);
             await especialistasUpdate(formState.cedula, formState, message);
             // await pacientesActualizar();
             message.success(lang('pacienteReactivado'));
@@ -176,7 +176,7 @@ export default function DetailEspecialista({ especialista }) {
 
 export const getServerSideProps = async (context) => {
     const res = await especialistasById(context.query.id, message);
-    console.log(res);
+    //console.log(res);
     if (res === null) {
         return {
             props: {
