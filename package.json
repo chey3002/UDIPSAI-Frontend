@@ -23,6 +23,7 @@
     "react-responsive": "^10.0.0",
     "react-select": "^5.8.0",
     "sharp": "^0.33.5",
+    "validator-ec": "^1.2.0",
     "zustand": "^4.5.2"
   },
   "devDependencies": {

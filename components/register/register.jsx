@@ -6,6 +6,7 @@ import { UploadOutlined } from '@ant-design/icons';
 import useTranslation from 'next-translate/useTranslation';
 import Logo from "@/assets/ucacue-logo.png";
 import { especialistasCrear, especialistasNoPasantesListar, especialistasUpdate, sedesListar } from "@/utils/apiRequests";
+import { isCedula, isRUC } from "validator-ec";
 
 const { Option } = Select;
 
@@ -86,10 +87,15 @@ const Register = ({ especialista }) => {
     }, [especialista]);
 
     const handleSubmit = async () => {
-        setLoading(true);
         const values = {
             ...form.getFieldValue()
         };
+        if (!isCedula(values.cedula) && !isRUC(values.cedula)) {
+            message.error('Cédula o RUC inválido');
+            return;
+        }
+        setLoading(true);
+
         if (!values.esPasante) {
             values.inicioPasantia = null;
             values.finPasantia = null;
@@ -223,7 +229,11 @@ const Register = ({ especialista }) => {
                         if (!/[0-9]/.test(e.key)) {
                             e.preventDefault();
                         }
-                    }} disabled={especialista} />
+
+                    }}
+                        disabled={especialista}
+                        onWheel={(e) => e.target.blur()} maxLength={13} controls={false} />
+
                 </Form.Item>
                 <Row gutter={16}>
                     <Col span={12}>

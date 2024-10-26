@@ -5,6 +5,7 @@ import { Button, Card, Col, Form, Input, Row, Select, Upload, Checkbox, message 
 import { UploadOutlined } from '@ant-design/icons';
 import useTranslation from 'next-translate/useTranslation';
 import { institucionesListar, pacientesActualizar, pacientesCrear, sedesListar } from '@/utils/apiRequests';
+import { isCedula, isRUC } from "validator-ec";
 
 const { TextArea } = Input;
 
@@ -129,6 +130,15 @@ const FormPaciente = ({ paciente }) => {
     };
 
     const handleSubmit = async () => {
+        if (formState.cedula) {
+            console.log(formState.cedula);
+
+            if (!isCedula(formState.cedula) && !isRUC(formState.cedula)) {
+                message.error('Cédula o RUC inválido');
+                return;
+            }
+        }
+
         if (paciente) {
             // Update
 
@@ -210,7 +220,12 @@ const FormPaciente = ({ paciente }) => {
                             </Col>
                             <Col span={12}>
                                 <Form.Item label={lang('informacionDelPaciente_cedula')}>
-                                    <Input type="text" name="cedula" value={formState.cedula} onChange={handleChange} />
+                                    <Input onWheel={(e) => e.target.blur()} maxLength={13} controls={false} changeOnWheel onKeyPress={(e) => {
+                                        if (!/[0-9]/.test(e.key)) {
+                                            e.preventDefault();
+                                        }
+
+                                    }} name="cedula" value={formState.cedula} onChange={handleChange} />
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
@@ -235,12 +250,22 @@ const FormPaciente = ({ paciente }) => {
                             </Col>
                             <Col span={12}>
                                 <Form.Item label={lang('informacionDelPaciente_telefono')}>
-                                    <Input type="text" name="telefono" value={formState.telefono} onChange={handleChange} />
+                                    <Input onWheel={(e) => e.target.blur()} maxLength={10} controls={false} onKeyPress={(e) => {
+                                        if (!/[0-9]/.test(e.key)) {
+                                            e.preventDefault();
+                                        }
+
+                                    }} name="telefono" value={formState.telefono} onChange={handleChange} />
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
                                 <Form.Item label={lang('informacionDelPaciente_celular')}>
-                                    <Input type="text" name="celular" value={formState.celular} onChange={handleChange} />
+                                    <Input onWheel={(e) => e.target.blur()} maxLength={10} controls={false} onKeyPress={(e) => {
+                                        if (!/[0-9]/.test(e.key)) {
+                                            e.preventDefault();
+                                        }
+
+                                    }} name="celular" value={formState.celular} onChange={handleChange} />
                                 </Form.Item>
                             </Col>
                         </Row>
