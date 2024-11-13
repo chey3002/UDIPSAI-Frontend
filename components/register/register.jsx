@@ -357,7 +357,10 @@ const Register = ({ especialista }) => {
                 <Form.Item
                     label={lang('register_password')}
                     name="contrasena"
-                    rules={[{ required: true, message: lang('register_password') }]}
+                    rules={[
+                        { required: true, message: lang('register_password') },
+                        { min: 8, message: 'La contraseña debe tener al menos 8 caracteres' }
+                    ]}
                 >
                     <Input.Password />
                 </Form.Item>
@@ -367,6 +370,7 @@ const Register = ({ especialista }) => {
                     dependencies={['contrasena']}
                     rules={[
                         { required: true, message: lang('register_passwordConfirm') },
+                        { min: 8, message: 'La contraseña debe tener al menos 8 caracteres' },
                         ({ getFieldValue }) => ({
                             validator(_, value) {
                                 if (!value || getFieldValue('contrasena') === value) {
@@ -379,6 +383,7 @@ const Register = ({ especialista }) => {
                 >
                     <Input.Password />
                 </Form.Item>
+
                 <Form.Item>
                     <Button type="primary" htmlType="submit" loading={loading} block>
                         {especialista ? loading ? lang('register_edit_button_loading') : lang('register_edit_button') : loading ? lang('register_button_loading') : lang('register_button')}

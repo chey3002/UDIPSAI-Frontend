@@ -38,7 +38,7 @@ export default function IndexPaciente() {
     const [loading, setLoading] = useState(true);
     const { user } = useUserContext();
     const [isPasante, setIsPasante] = useState(user?.esPasante);
-    const [sede, setSede] = useState(user?.sede.id);
+    const [sede, setSede] = useState(user?.sede?.id);
     const [sedes, setSedes] = useState([]);
     const [pasanteID, setPasanteID] = useState(user?.cedula);
     const { t } = useTranslation('home');
